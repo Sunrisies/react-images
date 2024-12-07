@@ -1,0 +1,51 @@
+{
+  "name": "react-admin",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "dev": "vite --port=3001",
+    "build": "vite build",
+    "serve": "vite preview",
+    "start": "vite",
+    "commit": "git-cz"
+  },
+  "devDependencies": {
+    "@commitlint/config-conventional": "^19.6.0",
+    "@tanstack/eslint-plugin-query": "^5.62.1",
+    "@tanstack/router-plugin": "^1.86.0",
+    "@types/node": "^22.10.1",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.2",
+    "autoprefixer": "^10.4.20",
+    "commitizen": "^4.3.1",
+    "cz-git": "^1.11.0",
+    "postcss": "^8.4.49",
+    "sass-embedded": "^1.82.0",
+    "tailwindcss": "^3.4.16",
+    "vite": "^6.0.3"
+  },
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.1.0",
+    "@tanstack/react-query": "^5.62.3",
+    "@tanstack/react-router": "^1.86.1",
+    "@tanstack/router-devtools": "^1.86.1",
+    "antd": "^5.22.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "dayjs": "^1.11.13",
+    "framer-motion": "^11.13.1",
+    "lucide-react": "^0.468.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^2.5.5",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-git"
+    }
+  }
+}
