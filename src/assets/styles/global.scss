@@ -1,6 +1,11 @@
 @import url('./shadcn.scss');
 @import url('./tailwind.scss');
-
+@import url('./loading.scss');
+:root {
+  --purple-primary: #727cf5;
+  --purple-primary-active: #575dcf;
+  --purple-primary-hover: #a1acff;
+}
 /* 滚动条整体部分 */
 ::-webkit-scrollbar {
   width: 8px; /* 垂直滚动条的宽度 */

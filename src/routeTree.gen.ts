@@ -12,7 +12,9 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as GalleryImport } from './routes/gallery'
+import { Route as DetailImport } from './routes/detail'
 import { Route as BlogImport } from './routes/blog'
+import { Route as ArticlesImport } from './routes/articles'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 
@@ -24,9 +26,21 @@ const GalleryRoute = GalleryImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const DetailRoute = DetailImport.update({
+  id: '/detail',
+  path: '/detail',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const BlogRoute = BlogImport.update({
   id: '/blog',
   path: '/blog',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ArticlesRoute = ArticlesImport.update({
+  id: '/articles',
+  path: '/articles',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,11 +74,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
+    '/articles': {
+      id: '/articles'
+      path: '/articles'
+      fullPath: '/articles'
+      preLoaderRoute: typeof ArticlesImport
+      parentRoute: typeof rootRoute
+    }
     '/blog': {
       id: '/blog'
       path: '/blog'
       fullPath: '/blog'
       preLoaderRoute: typeof BlogImport
+      parentRoute: typeof rootRoute
+    }
+    '/detail': {
+      id: '/detail'
+      path: '/detail'
+      fullPath: '/detail'
+      preLoaderRoute: typeof DetailImport
       parentRoute: typeof rootRoute
     }
     '/gallery': {
@@ -82,14 +110,18 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/articles': typeof ArticlesRoute
   '/blog': typeof BlogRoute
+  '/detail': typeof DetailRoute
   '/gallery': typeof GalleryRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/articles': typeof ArticlesRoute
   '/blog': typeof BlogRoute
+  '/detail': typeof DetailRoute
   '/gallery': typeof GalleryRoute
 }
 
@@ -97,30 +129,43 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/articles': typeof ArticlesRoute
   '/blog': typeof BlogRoute
+  '/detail': typeof DetailRoute
   '/gallery': typeof GalleryRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/blog' | '/gallery'
+  fullPaths: '/' | '/about' | '/articles' | '/blog' | '/detail' | '/gallery'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/blog' | '/gallery'
-  id: '__root__' | '/' | '/about' | '/blog' | '/gallery'
+  to: '/' | '/about' | '/articles' | '/blog' | '/detail' | '/gallery'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/articles'
+    | '/blog'
+    | '/detail'
+    | '/gallery'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  ArticlesRoute: typeof ArticlesRoute
   BlogRoute: typeof BlogRoute
+  DetailRoute: typeof DetailRoute
   GalleryRoute: typeof GalleryRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  ArticlesRoute: ArticlesRoute,
   BlogRoute: BlogRoute,
+  DetailRoute: DetailRoute,
   GalleryRoute: GalleryRoute,
 }
 
@@ -136,7 +181,9 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
+        "/articles",
         "/blog",
+        "/detail",
         "/gallery"
       ]
     },
@@ -146,8 +193,14 @@ export const routeTree = rootRoute
     "/about": {
       "filePath": "about.tsx"
     },
+    "/articles": {
+      "filePath": "articles.tsx"
+    },
     "/blog": {
       "filePath": "blog.tsx"
+    },
+    "/detail": {
+      "filePath": "detail.tsx"
     },
     "/gallery": {
       "filePath": "gallery.tsx"
