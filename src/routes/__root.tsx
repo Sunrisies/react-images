@@ -3,7 +3,7 @@ import { Link, Outlet, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 
 export const Route = createRootRoute({
-  component: RootComponent,
+  component: RootComponent
 })
 
 function RootComponent() {
@@ -13,7 +13,7 @@ function RootComponent() {
         <Link
           to="/"
           activeProps={{
-            className: 'font-bold',
+            className: 'font-bold'
           }}
           activeOptions={{ exact: true }}
         >
@@ -22,10 +22,18 @@ function RootComponent() {
         <Link
           to="/about"
           activeProps={{
-            className: 'font-bold',
+            className: 'font-bold'
           }}
         >
           About
+        </Link>
+        <Link
+          to="/gallery"
+          activeProps={{
+            className: 'font-bold'
+          }}
+        >
+          图库
         </Link>
       </div>
       <hr />
