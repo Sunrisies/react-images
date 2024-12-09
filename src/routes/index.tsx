@@ -1,15 +1,29 @@
-import * as React from 'react'
+import { ImageGallery } from '@/components/image-gallery'
 import { createFileRoute } from '@tanstack/react-router'
-import { Button } from '@/components/ui/button'
+import { useQuery } from '@tanstack/react-query'
+import { request } from '@/utils/fetch'
+import { GalleryItem } from '@/types/gallery.types'
 export const Route = createFileRoute('/')({
-  component: HomeComponent,
+  component: RouteComponent,
 })
 
-function HomeComponent() {
+function RouteComponent() {
+  const { isPending, error, data } = useQuery({
+    queryKey: ['repoData'],
+    queryFn: async () => {
+      const response = await request.get<GalleryItem[]>('/upload/multiple')
+      console.log(response, 'response')
+      return response.data
+    },
+  })
+  if (isPending) return 'Loading...'
+
+  if (error) return 'An error has occurred: ' + error.message
   return (
-    <div className="p-2">
-      <h3 className='text-center border border-red-400 bg-red-400'>Welcome Home!</h3>
-      <Button>Click me!</Button>
-    </div>
+    <main className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-200 py-12">
+      <div className="container mx-auto px-4">
+        <ImageGallery data={data} />
+      </div>
+    </main>
   )
 }
