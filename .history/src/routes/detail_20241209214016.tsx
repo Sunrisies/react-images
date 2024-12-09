@@ -9,7 +9,6 @@ import 'md-editor-rt/lib/style.css'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import {ArticlePublishForm} from '@/components/article-publish-form'
 export const Route = createFileRoute('/detail')({
   component: RouteComponent
 })
@@ -60,7 +59,7 @@ function RouteComponent() {
     scrollElement: document.documentElement
   })
   const formSchema = z.object({
-    username: z.string().min(2, { message: '用户名至少需要2个字符' }).max(50, { message: '用户名最多需要50个字符' })
+    username: z.string().min(2).max(50)
   })
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -85,30 +84,31 @@ function RouteComponent() {
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>发布文章</DialogTitle>
-                <DialogDescription></DialogDescription>
-                <ArticlePublishForm></ArticlePublishForm>
-                {/* <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                    <FormField
-                      control={form.control}
-                      name="username"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Username</FormLabel>
-                          <FormControl>
-                            <Input placeholder="shadcn" {...field} />
-                          </FormControl>
-                          <FormDescription>This is your public display name.</FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <div className="flex justify-around items-center">
-                      <Button>取消</Button>
-                      <Button type="submit">确定</Button>
-                    </div>
-                  </form>
-                </Form> */}
+                <DialogDescription>
+                  
+                </DialogDescription>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                      <FormField
+                        control={form.control}
+                        name="username"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Username</FormLabel>
+                            <FormControl>
+                              <Input placeholder="shadcn" {...field} />
+                            </FormControl>
+                            <FormDescription>This is your public display name.</FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <div className="flex justify-around items-center">
+                        <Button>取消</Button>
+                        <Button type="submit">确定</Button>
+                      </div>
+                    </form>
+                  </Form>
               </DialogHeader>
             </DialogContent>
           </Dialog>

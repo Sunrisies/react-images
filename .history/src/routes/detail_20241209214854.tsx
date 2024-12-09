@@ -9,7 +9,6 @@ import 'md-editor-rt/lib/style.css'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import {ArticlePublishForm} from '@/components/article-publish-form'
 export const Route = createFileRoute('/detail')({
   component: RouteComponent
 })
@@ -86,8 +85,7 @@ function RouteComponent() {
               <DialogHeader>
                 <DialogTitle>发布文章</DialogTitle>
                 <DialogDescription></DialogDescription>
-                <ArticlePublishForm></ArticlePublishForm>
-                {/* <Form {...form}>
+                <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                     <FormField
                       control={form.control}
@@ -108,7 +106,7 @@ function RouteComponent() {
                       <Button type="submit">确定</Button>
                     </div>
                   </form>
-                </Form> */}
+                </Form>
               </DialogHeader>
             </DialogContent>
           </Dialog>
