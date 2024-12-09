@@ -86,7 +86,7 @@ function RouteComponent() {
               <DialogHeader>
                 <DialogTitle>发布文章</DialogTitle>
                 <DialogDescription></DialogDescription>
-                <ArticlePublishForm></ArticlePublishForm>
+                ArticlePublishForm()
                 {/* <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                     <FormField
