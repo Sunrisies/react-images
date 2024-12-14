@@ -2,32 +2,41 @@ import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Textarea } from '@/components/ui/textarea'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import * as z from "zod"
-
+import * as z from 'zod'
+import { request } from '@/utils/fetch'
+interface TypeOptions {
+  value: string
+  label: string
+}
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
-const categories = [
-  { id: 'backend', name: '后端' },
-  { id: 'frontend', name: '前端' },
-  { id: 'android', name: 'Android' },
-  { id: 'ios', name: 'iOS' },
-  { id: 'ai', name: '人工智能' },
-  { id: 'devtools', name: '开发工具' },
-  { id: 'codelife', name: '代码人生' },
-  { id: 'reading', name: '阅读' }
-]
+
+const getTags = async (): Promise<TypeOptions[]> => {
+  const { data, code } = await request.get<TypeOptions[]>(`/tags`)
+  if (code === 200) {
+    return data;
+  }
+  return [];
+};
+const getCategories = async (): Promise<TypeOptions[]> => {
+  const { data, code } = await request.get<TypeOptions[]>(`/categories`)
+  if (code === 200) {
+    return data
+  }
+  return []
+}
 
 export function ArticlePublishForm() {
   const [coverImage, setCoverImage] = useState<string | null>(null)
 
   const articleSchema = z.object({
     category: z.string({
-      required_error: "请选择一个分类",
+      required_error: '请选择一个分类'
     }),
-    tags: z.array(z.string()).min(1, "请至少添加一个标签"),
+    tags: z.array(z.string()).min(1, '请至少添加一个标签'),
     coverImage: z.string().optional(),
-    summary: z.string().max(100, "摘要不能超过100个字符").optional(),
+    summary: z.string().max(100, '摘要不能超过100个字符').optional()
   })
   type ArticleFormValues = z.infer<typeof articleSchema>
 
@@ -36,7 +45,7 @@ export function ArticlePublishForm() {
     defaultValues: {
       category: '',
       tags: [],
-      summary: '',
+      summary: ''
     }
   })
 
@@ -44,7 +53,17 @@ export function ArticlePublishForm() {
     console.log(values)
     // Handle form submission
   }
-
+  const [imageUrl, setImageUrl] = useState<string>();
+  const [tags, setTags] = useState<TypeOptions[]>([]);
+  const [categories, setCategories] = useState<TypeOptions[]>([]);
+  useEffect(() => {
+    getTags().then((data) => {
+      setTags(data)
+    })
+    getCategories().then((data) => {
+      setCategories(data)
+    })
+  }, [])
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
@@ -72,12 +91,12 @@ export function ArticlePublishForm() {
                 <div className="flex flex-wrap gap-2">
                   {categories.map((category) => (
                     <Button
-                      key={category.id}
+                      key={category.value}
                       type="button"
-                      variant={field.value === category.id ? 'default' : 'outline'}
-                      onClick={() => field.onChange(category.id)}
+                      variant={field.value === category.label ? 'default' : 'outline'}
+                      onClick={() => field.onChange(category.value)}
                     >
-                      {category.name}
+                      {category.label}
                     </Button>
                   ))}
                 </div>
@@ -162,7 +181,7 @@ export function ArticlePublishForm() {
               <FormLabel className="w-20 leading-10">
                 编辑摘要<span className="text-red-500">*</span>
               </FormLabel>
-              <FormControl className='flex-1'>
+              <FormControl className="flex-1">
                 <div className="relative">
                   <Textarea
                     {...field}

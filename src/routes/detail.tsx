@@ -85,30 +85,7 @@ function RouteComponent() {
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>发布文章</DialogTitle>
-                <DialogDescription></DialogDescription>
                 <ArticlePublishForm></ArticlePublishForm>
-                {/* <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                    <FormField
-                      control={form.control}
-                      name="username"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Username</FormLabel>
-                          <FormControl>
-                            <Input placeholder="shadcn" {...field} />
-                          </FormControl>
-                          <FormDescription>This is your public display name.</FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <div className="flex justify-around items-center">
-                      <Button>取消</Button>
-                      <Button type="submit">确定</Button>
-                    </div>
-                  </form>
-                </Form> */}
               </DialogHeader>
             </DialogContent>
           </Dialog>
