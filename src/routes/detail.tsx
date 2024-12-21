@@ -9,15 +9,35 @@ import 'md-editor-rt/lib/style.css'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import {ArticlePublishForm} from '@/components/article-publish-form'
+import { ArticlePublishForm } from '@/components/article-publish-form'
+import { Select, SelectProps } from 'antd'
 export const Route = createFileRoute('/detail')({
   component: RouteComponent
 })
+const articleSchema = z.object({
+  category: z.string({
+    required_error: '请选择一个分类'
+  }),
+  tags: z.string().min(1, '请至少添加一个标签'),
+  coverImage: z.string().optional(),
+  summary: z.string().max(100, '摘要不能超过100个字符').optional()
+})
+type ArticleFormValues = z.infer<typeof articleSchema>
 const uploadUrl = 'https://blog.chaoyang1024.top:2345/api/upload/image'
+type UpdateType = {
+  title: string
+  content: string
+  status: string
+  author: string
+  category_id: string
+  tags: number[]
+  cover: string
+  summary: string
+}
 function RouteComponent() {
-  const [from, setFrom] = useState({
+  const [from, setFrom] = useState<UpdateType>({
     title: '',
-    category_id: null,
+    category_id: '',
     tags: [] as number[],
     cover: '',
     summary: '',
@@ -68,24 +88,29 @@ function RouteComponent() {
       username: ''
     }
   })
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+
+  function handleFormSubmit({ category, tags, coverImage, summary }: ArticleFormValues) {
+    console.log('父组件的数据')
+    fromSet(category, 'category_id')
+    fromSet(tags, 'tags')
+    coverImage && fromSet(coverImage, 'cover')
+    summary && fromSet(summary, 'summary')
+    console.log(from, 'from',coverImage)
   }
+
   return (
     <>
       <div className="flex flex-col gap-3 h-full">
         <div className="flex gap-3 mb-3">
           <Input placeholder="输入文章标题..." onChange={(e) => fromSet(e.target.value, 'title')} />
-          <Dialog>
+          <Dialog >
             <DialogTrigger asChild>
               <Button>发布</Button>
             </DialogTrigger>
             <DialogContent>
-              <DialogHeader>
+              <DialogHeader >
                 <DialogTitle>发布文章</DialogTitle>
-                <ArticlePublishForm></ArticlePublishForm>
+                <ArticlePublishForm onSubmit={handleFormSubmit}></ArticlePublishForm>
               </DialogHeader>
             </DialogContent>
           </Dialog>
