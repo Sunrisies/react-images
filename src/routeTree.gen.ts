@@ -11,6 +11,7 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as LoginImport } from './routes/login'
 import { Route as GalleryImport } from './routes/gallery'
 import { Route as DetailImport } from './routes/detail'
 import { Route as BlogImport } from './routes/blog'
@@ -19,6 +20,12 @@ import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const LoginRoute = LoginImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const GalleryRoute = GalleryImport.update({
   id: '/gallery',
@@ -102,6 +109,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GalleryImport
       parentRoute: typeof rootRoute
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -114,6 +128,7 @@ export interface FileRoutesByFullPath {
   '/blog': typeof BlogRoute
   '/detail': typeof DetailRoute
   '/gallery': typeof GalleryRoute
+  '/login': typeof LoginRoute
 }
 
 export interface FileRoutesByTo {
@@ -123,6 +138,7 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogRoute
   '/detail': typeof DetailRoute
   '/gallery': typeof GalleryRoute
+  '/login': typeof LoginRoute
 }
 
 export interface FileRoutesById {
@@ -133,13 +149,21 @@ export interface FileRoutesById {
   '/blog': typeof BlogRoute
   '/detail': typeof DetailRoute
   '/gallery': typeof GalleryRoute
+  '/login': typeof LoginRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/articles' | '/blog' | '/detail' | '/gallery'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/articles'
+    | '/blog'
+    | '/detail'
+    | '/gallery'
+    | '/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/articles' | '/blog' | '/detail' | '/gallery'
+  to: '/' | '/about' | '/articles' | '/blog' | '/detail' | '/gallery' | '/login'
   id:
     | '__root__'
     | '/'
@@ -148,6 +172,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/detail'
     | '/gallery'
+    | '/login'
   fileRoutesById: FileRoutesById
 }
 
@@ -158,6 +183,7 @@ export interface RootRouteChildren {
   BlogRoute: typeof BlogRoute
   DetailRoute: typeof DetailRoute
   GalleryRoute: typeof GalleryRoute
+  LoginRoute: typeof LoginRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -167,6 +193,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlogRoute: BlogRoute,
   DetailRoute: DetailRoute,
   GalleryRoute: GalleryRoute,
+  LoginRoute: LoginRoute,
 }
 
 export const routeTree = rootRoute
@@ -184,7 +211,8 @@ export const routeTree = rootRoute
         "/articles",
         "/blog",
         "/detail",
-        "/gallery"
+        "/gallery",
+        "/login"
       ]
     },
     "/": {
@@ -204,6 +232,9 @@ export const routeTree = rootRoute
     },
     "/gallery": {
       "filePath": "gallery.tsx"
+    },
+    "/login": {
+      "filePath": "login.tsx"
     }
   }
 }

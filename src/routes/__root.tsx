@@ -1,7 +1,10 @@
 import NavMain from '@/components/app-sidebar'
-import { Outlet, createRootRoute } from '@tanstack/react-router'
+import { Outlet, createRootRoute,createRootRouteWithContext } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
-export const Route = createRootRoute({
+type RouterContext = {
+  // authentication: AuthContext;
+};
+export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootComponent
 })
 

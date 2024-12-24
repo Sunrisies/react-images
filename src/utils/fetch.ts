@@ -18,6 +18,19 @@ class Request {
   constructor(private BaseUrl: string) {
     this.BaseUrl = BaseUrl
   }
+  /**
+   * 发送一个 GET 请求。
+   *
+   * @template U - 请求返回的数据类型。
+   * @template T - 请求的查询参数类型。
+   *
+   * @param {string} url - 请求的 URL。
+   * @param {T} [data] - 可选的查询参数对象。
+   *
+   * @returns {Promise<RequestType<U> | Error>} - 返回一个 Promise，解析为请求的数据或错误信息。
+   *
+   * @throws {Error} - 如果请求失败，抛出错误信息。
+   */
   async get<U>(url: string): Promise<RequestType<U>> // 当没有 data 参数时的重载
   async get<U, T>(url: string, data: T): Promise<RequestType<U>> // 当有 data 参数时的重载
   async get<U, T>(url: string, data?: T): Promise<RequestType<U> | Error> {
@@ -31,29 +44,51 @@ class Request {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
-      },
+      }
     })
     if (response.ok) {
       return (await response.json()) as RequestType<U>
     }
     return Promise.reject(response.statusText)
-    // console.log(response)
-    // return (await fetch(this.BaseUrl + url, {
-    //   method: 'GET',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    // }))
   }
-
-  async post<T, U>(url: string, data: T): Promise<U> {
-    return (await fetch(this.BaseUrl + url, {
+  /**
+   * 发送一个 POST 请求。
+   *
+   * @template T - 请求发送的数据类型。
+   * @template U - 请求返回的数据类型。
+   *
+   * @param {string} url - 请求的 URL。
+   * @param {T} data - 发送的数据对象。
+   *
+   * @returns {Promise<RequestType<U>>} - 返回一个 Promise，解析为请求的数据。
+   *
+   * @throws {Error} - 如果请求失败，抛出错误信息。
+   */
+  async post<T, U>(url: string, data: T): Promise<RequestType<U>> {
+    const response = await fetch(this.BaseUrl + url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
-    })) as U
+    })
+    if (response.ok) {
+      return (await response.json()) as RequestType<U>
+    }
+    return Promise.reject(response.statusText)
+  }
+  /** 上传文件 */
+  async upload(url: string, body: FormData): Promise<any> {
+
+    const response = await fetch(this.BaseUrl + url, {
+      method: 'POST',
+      body,
+      redirect: 'follow'
+    })
+    if (response.ok) {
+      return (await response.json())
+    }
+    return Promise.reject(response.statusText)
   }
 }
-export const request = new Request('https://blog.chaoyang1024.top:2345/api')
+export const request = new Request('https://api.chaoyang1024.top:2345/api')
