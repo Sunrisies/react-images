@@ -1,52 +1,48 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react';
-import '@/assets/styles/LoginForm.css';
-
+import styles from '@/assets/styles/login.module.css'
 export const Route = createFileRoute('/login')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
   const [isSwitched, setIsSwitched] = useState(false);
-
   const handleSwitch = () => {
     setIsSwitched(!isSwitched);
   };
   return (
-    <div className="main">
-      <div className={`container a-container ${isSwitched ? 'is-txl' : ''}`} id="a-container">
-        <form className="form" id="a-form" method="" action="">
-          <h2 className="form_title title">Create Account</h2>
+    <div className={styles.main}>
+      <div className={`${styles.container} ${styles.a_container} ${isSwitched ? styles.is_txl : ''} ${isSwitched ? styles.is_hidden : ''}`} id="a-container">
+        <form className={styles.form} id="a-form" method="" action="">
+          <h2 className={styles.title}>创建账号</h2>
           <div className="form__icons"></div>
-          <span className="form__span">or use email for registration</span>
-          <input className="form__input" type="text" placeholder="Name" />
-          <input className="form__input" type="text" placeholder="Email" />
-          <input className="form__input" type="password" placeholder="Password" />
-          <button className="form__button button submit" >SIGN UP</button>
+          <input className={styles.form__input} type="text" placeholder="请输入用户名账号" />
+          <input className={styles.form__input} type="password" placeholder="请输入密码" />
+          <button className={styles.button} >注册</button>
         </form>
       </div>
-      <div className={`container b-container ${isSwitched ? '' : 'is-txl is-z200'}`} id="b-container">
-        <form className="form" id="b-form" method="" action="">
-          <h2 className="form_title title">Sign in to Website</h2>
+      <div className={`${styles.container} ${styles.b_container} ${isSwitched ? styles.is_txl : ''} ${isSwitched ? '' : styles.is_hidden}`} id="b-container">
+        <form className={styles.form} id="b-form" method="" action="">
+          <h2 className={styles.title}>登录网站</h2>
           <div className="form__icons"></div>
-          <span className="form__span">or use your email account</span>
-          <input className="form__input" type="text" placeholder="Email" />
-          <input className="form__input" type="password" placeholder="Password" /><a className="form__link">Forgot your password?</a>
-          <button className="form__button button submit" >SIGN IN</button>
+          <span className={styles.form__span}>或使用您的电子邮件帐户</span>
+          <input className={styles.form__input} type="text" placeholder="请输入用户名或电子邮件" />
+          <input className={styles.form__input} type="password" placeholder="请输入密码" /><a className="form__link">忘记密码？</a>
+          <button className={styles.button} >登录</button>
         </form>
       </div>
-      <div id="switch-cnt" className={`switch ${isSwitched ? 'is-txl' : ''}`}>
-        <div className="switch__circle"></div>
-        <div className="switch__circle switch__circle--t"></div>
-        <div className="switch__container " id="switch-c1">
-          <h2 className="switch__title title">Welcome Back !</h2>
-          <p className="switch__description description">To keep connected with us please login with your personal info</p>
-          <button className="switch__button button switch-btn" onClick={handleSwitch}>SIGN IN</button>
+      <div id="switch-cnt" className={`${styles.switch} ${isSwitched ? styles.is_txr : styles.is_txl}`}>
+        <div className={styles.switch__circle}></div>
+        <div className={`${styles.switch__circle} ${styles.switch__circle__t}`}></div>
+        <div className={`${styles.switch__container} ${isSwitched ? styles.is_hidden : ''}`} id="switch-c1">
+          <h2 className={styles.title}>欢迎回来 !</h2>
+          <p className={styles.description}>要与我们保持联系，请使用您的个人信息登录</p>
+          <button className={styles.switch__button} onClick={handleSwitch}>登录</button>
         </div>
-        <div className="switch__container is-hidden" id="switch-c2">
-          <h2 className="switch__title title">Hello Friend !</h2>
-          <p className="switch__description description">Enter your personal details and start journey with us</p>
-          <button className="switch__button button switch-btn" onClick={handleSwitch}>SIGN UP</button>
+        <div className={`${styles.switch__container} ${isSwitched ? '' : styles.is_hidden}`} id="switch-c2">
+          <h2 className={styles.title}>你好，朋友!</h2>
+          <p className={styles.description}>输入您的个人信息，与我们一起开始旅程</p>
+          <button className={styles.switch__button} onClick={handleSwitch}>注册</button>
         </div>
       </div>
     </div>
