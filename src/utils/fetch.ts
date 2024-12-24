@@ -1,21 +1,51 @@
-// export const  请求
-// export const request = async (args) => {
-//   return
-//   // return await fetch('http://localhost:3000/api/' + args.url, {
-//   //   method: args.method || 'GET',
-//   //   headers: {
-//   //     'Content-Type': 'application/json'
-//   //   },
-//   //   body: JSON.stringify(args.data)
-//   // })
-// }
 type RequestType<T> = {
   code: number
   message: string
   data: T
 }
+function RequestInterceptor<T, U>(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+  const originalMethod = descriptor.value as (url: string, data: T,config:any) => Promise<RequestType<U>>
+
+  descriptor.value = async function (url: string, data: T): Promise<RequestType<U>> {
+    // 请求拦截器逻辑
+    console.log('请求拦截器：', url, data)
+    const token = sessionStorage.getItem('token')
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token ? `Bearer ${token}` : ''
+      }
+    }
+    // 调用原始方法
+    const response = await originalMethod.apply(this, [url, data,config])
+    console.log(response,'response')
+    return response
+  }
+
+  return descriptor
+}
+
+function ResponseInterceptor(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+  const originalMethod = descriptor.value
+
+  descriptor.value = async function (...args: any[]) {
+    const response = await originalMethod.apply(this, args)
+
+    // 响应拦截器逻辑
+    console.log('响应拦截器：', response)
+
+    // 统一处理响应数据
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+
+    return response.json()
+  }
+
+  return descriptor
+}
 class Request {
-  constructor(private BaseUrl: string) {
+  constructor(private readonly BaseUrl: string) {
     this.BaseUrl = BaseUrl
   }
   /**
@@ -64,29 +94,32 @@ class Request {
    *
    * @throws {Error} - 如果请求失败，抛出错误信息。
    */
-  async post<T, U>(url: string, data: T): Promise<RequestType<U>> {
+  @RequestInterceptor
+  async post<T, U>(url: string, data: T,config:any): Promise<RequestType<U>> {
     const response = await fetch(this.BaseUrl + url, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        
       },
       body: JSON.stringify(data)
     })
+    console.log(config,'config')
     if (response.ok) {
       return (await response.json()) as RequestType<U>
     }
     return Promise.reject(response.statusText)
   }
   /** 上传文件 */
-  async upload(url: string, body: FormData): Promise<any> {
 
+  async upload(url: string, body: FormData): Promise<any> {
     const response = await fetch(this.BaseUrl + url, {
       method: 'POST',
       body,
       redirect: 'follow'
     })
     if (response.ok) {
-      return (await response.json())
+      return await response.json()
     }
     return Promise.reject(response.statusText)
   }

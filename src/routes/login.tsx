@@ -1,35 +1,126 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react';
 import styles from '@/assets/styles/login.module.css'
+import { loginApi, registerApi } from '@/api';
+import { Button, Form, FormProps, Input } from 'antd';
+import { LoginAndRegisterType } from '@/api/login';
 export const Route = createFileRoute('/login')({
   component: RouteComponent,
 })
 
+type FieldType = {
+  user_name?: string;
+  pass_word?: string;
+};
 function RouteComponent() {
   const [isSwitched, setIsSwitched] = useState(false);
   const handleSwitch = () => {
     setIsSwitched(!isSwitched);
   };
+
+  const logon = async (params: LoginAndRegisterType) => {
+    const res = await loginApi(params)
+    console.log(res, 'res登录之后')
+  }
+  const register = async (params: LoginAndRegisterType) => {
+    const res = await registerApi(params)
+    console.log(res, 'res注册之后')
+  }
+  const onFinish: FormProps<LoginAndRegisterType>['onFinish'] = (values) => {
+    console.log('Success:', values);
+    logon({ ...values })
+  };
+
+  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
   return (
     <div className={styles.main}>
       <div className={`${styles.container} ${styles.a_container} ${isSwitched ? styles.is_txl : ''} ${isSwitched ? styles.is_hidden : ''}`} id="a-container">
-        <form className={styles.form} id="a-form" method="" action="">
+        {/* <form  id="a-form" method="" action=""> */}
+        <div className={styles.form}>
+
           <h2 className={styles.title}>创建账号</h2>
           <div className="form__icons"></div>
-          <input className={styles.form__input} type="text" placeholder="请输入用户名账号" />
-          <input className={styles.form__input} type="password" placeholder="请输入密码" />
-          <button className={styles.button} >注册</button>
-        </form>
+          <Form
+            name="register"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+            style={{ maxWidth: 600 }}
+            initialValues={{ remember: true }}
+            onFinish={(values: LoginAndRegisterType) => register({ ...values })}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+          >
+            <Form.Item<FieldType>
+              name="user_name"
+              rules={[{ required: true, message: '请输入用户名账号!' }]}
+            >
+              <Input className={styles.form__input} placeholder="请输入用户名账号" />
+            </Form.Item>
+
+            <Form.Item<FieldType>
+              // label="密码"
+              name="pass_word"
+              rules={[{ required: true, message: '请输入密码!' }]}
+            >
+              <Input.Password className={styles.form__input} placeholder="请输入密码" />
+            </Form.Item>
+            <Form.Item label={null}>
+              <Button type="primary" htmlType="submit">
+                注册
+              </Button>
+            </Form.Item>
+          </Form>
+
+
+        </div>
+
+        {/* <button className={styles.button} onClick={() => register()} >注册</button> */}
+        {/* </form> */}
       </div>
       <div className={`${styles.container} ${styles.b_container} ${isSwitched ? styles.is_txl : ''} ${isSwitched ? '' : styles.is_hidden}`} id="b-container">
-        <form className={styles.form} id="b-form" method="" action="">
+        {/* <form className={styles.form} id="b-form" method="" action=""> */}
+        <div className={styles.form}>
           <h2 className={styles.title}>登录网站</h2>
           <div className="form__icons"></div>
           <span className={styles.form__span}>或使用您的电子邮件帐户</span>
-          <input className={styles.form__input} type="text" placeholder="请输入用户名或电子邮件" />
-          <input className={styles.form__input} type="password" placeholder="请输入密码" /><a className="form__link">忘记密码？</a>
-          <button className={styles.button} >登录</button>
-        </form>
+          <Form
+            name="login"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+            style={{ maxWidth: 600 }}
+            initialValues={{ remember: true }}
+            onFinish={(values: LoginAndRegisterType) => logon({ ...values })}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+          >
+            <Form.Item<FieldType>
+              name="user_name"
+              rules={[{ required: true, message: '请输入用户名账号!' }]}
+            >
+              <Input className={styles.form__input} placeholder="请输入用户名账号" />
+            </Form.Item>
+
+            <Form.Item<FieldType>
+              name="pass_word"
+              rules={[{ required: true, message: '请输入你的密码!' }]}
+            >
+              <Input.Password className={styles.form__input} placeholder="请输入密码" />
+            </Form.Item>
+
+            <Form.Item label={null}>
+              <a className={styles.form__link}>忘记密码？</a>
+
+              <Button type="primary" htmlType="submit">
+                登录
+              </Button>
+            </Form.Item>
+
+          </Form>
+          {/* <button className={styles.button} onClick={() => logon()} >登录</button> */}
+        </div>
+        {/* </form> */}
       </div>
       <div id="switch-cnt" className={`${styles.switch} ${isSwitched ? styles.is_txr : styles.is_txl}`}>
         <div className={styles.switch__circle}></div>
