@@ -6,7 +6,8 @@
 }
 
 /* Generic */
-body {
+.container1 {
+  /* background-color: #ecf0f3; */
   width: 100%;
   height: 100vh;
   display: flex;
@@ -14,8 +15,12 @@ body {
   align-items: center;
   font-family: "Montserrat", sans-serif;
   font-size: 12px;
-  background-color: #ecf0f3;
   color: #a0a5a8;
+  background-image: url("@/assets/images/bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
 }
 
 /**/
