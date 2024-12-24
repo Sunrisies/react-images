@@ -1,43 +1,69 @@
+import { ArticlePublishForm } from '@/components/article-publish-form'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { request } from '@/utils/fetch'
 import { createFileRoute } from '@tanstack/react-router'
+import { message } from 'antd'
 import { MdCatalog, MdEditor } from 'md-editor-rt'
 import 'md-editor-rt/lib/style.css'
+import { ArticleFormValues } from '@/utils/schemas'
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { ArticlePublishForm } from '@/components/article-publish-form'
-import { Select, SelectProps } from 'antd'
+import { uploadImage } from '@/utils/update'
+import { Login } from '@/components/login'
 export const Route = createFileRoute('/detail')({
   component: RouteComponent
 })
-const articleSchema = z.object({
-  category: z.string({
-    required_error: '请选择一个分类'
-  }),
-  tags: z.string().min(1, '请至少添加一个标签'),
-  coverImage: z.string().optional(),
-  summary: z.string().max(100, '摘要不能超过100个字符').optional()
-})
-type ArticleFormValues = z.infer<typeof articleSchema>
-const uploadUrl = 'https://blog.chaoyang1024.top:2345/api/upload/image'
+
 type UpdateType = {
   title: string
   content: string
   status: string
   author: string
-  category_id: string
+  category_id: number | undefined
   tags: number[]
   cover: string
   summary: string
 }
+type addArticleType = {
+  code: number;
+  data: {
+    id: number;
+    title: string;
+    content: string;
+    category_id: number;
+    cover: string;
+    author: string;
+    publish_time: string;
+    update_time: string;
+    views: number;
+    is_top: boolean;
+    is_recommend: boolean;
+    is_delete: boolean;
+    is_publish: boolean;
+    is_hide: boolean;
+    summary: string;
+  }
+
+}
+// 发布文章接口
+const publishArticle = async (from: UpdateType, callback: () => void) => {
+  console.log(from, '上传文件')
+  const { code, data } = await request.post<UpdateType, addArticleType>(`/article`, from)
+  console.log(data, 'code, data')
+  if (code === 200) {
+    message.success('发布成功');
+  } else {
+    message.error('发布失败');
+  }
+  callback()
+  return data
+};
+
 function RouteComponent() {
   const [from, setFrom] = useState<UpdateType>({
     title: '',
-    category_id: '',
+    category_id: undefined,
     tags: [] as number[],
     cover: '',
     summary: '',
@@ -48,81 +74,73 @@ function RouteComponent() {
   const fromSet = (e: string, key: string) => {
     console.log(e, 'key:', key)
     if (key === 'tags') {
-      setFrom(() => ({ ...from, [key]: [+e] }))
+      setFrom((state) => ({ ...state, [key]: [+e] }))
+    } else if (key === 'category_id') {
+      setFrom((state) => ({ ...state, [key]: +e }))
     } else {
-      setFrom(() => ({ ...from, [key]: e }))
+      setFrom((state) => ({
+        ...state, [key]: e
+      })
+      )
     }
   }
   const onUploadImg = async (files: File[], callback: (urls: string[]) => void) => {
-    const res = (await Promise.all(
-      files.map((file) => {
-        return new Promise((rev, rej) => {
-          const form = new FormData()
-          const timestamp = new Date().getTime()
-          const randomNum = Math.floor(Math.random() * 10000)
-          const fileName = `${timestamp}_${randomNum}_${file.name}`
-          form.append('file', file, fileName)
-          fetch(uploadUrl, {
-            method: 'POST',
-            body: form,
-            redirect: 'follow'
-          })
-            .then((res) => rev(res.json()))
-            .catch((error) => rej(error))
-        })
-      })
-    )) as { code: number; url: string }[]
-    console.log(res, 'res')
-    callback(res.map((item) => item.url))
+    const res = await uploadImage(files[0])
+    callback([res])
   }
   const [state] = useState({
     text: '# 标题',
     scrollElement: document.documentElement
   })
-  const formSchema = z.object({
-    username: z.string().min(2, { message: '用户名至少需要2个字符' }).max(50, { message: '用户名最多需要50个字符' })
-  })
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: ''
-    }
-  })
 
-  function handleFormSubmit({ category, tags, coverImage, summary }: ArticleFormValues) {
+
+  const handleFormSubmit = ({ category, tags, coverImage, summary }: ArticleFormValues) => {
     console.log('父组件的数据')
     fromSet(category, 'category_id')
     fromSet(tags, 'tags')
     coverImage && fromSet(coverImage, 'cover')
     summary && fromSet(summary, 'summary')
-    console.log(from, 'from',coverImage)
+    console.log(from, 'from')
+    publishArticle(from, () => {
+      setIsModalOpen(false)
+    })
   }
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
-    <>
-      <div className="flex flex-col gap-3 h-full">
-        <div className="flex gap-3 mb-3">
-          <Input placeholder="输入文章标题..." onChange={(e) => fromSet(e.target.value, 'title')} />
-          <Dialog >
-            <DialogTrigger asChild>
-              <Button>发布</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader >
-                <DialogTitle>发布文章</DialogTitle>
-                <ArticlePublishForm onSubmit={handleFormSubmit}></ArticlePublishForm>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
-        </div>
-        <MdEditor
-          modelValue={from.content}
-          className="flex-1"
-          onChange={(e) => fromSet(e, 'content')}
-          onUploadImg={onUploadImg}
-        />
-        <MdCatalog editorId="my-editor" scrollElement={state.scrollElement} />
+    <div className="flex flex-col gap-3 h-full">
+      <div className="flex gap-3 mb-3">
+        <Input placeholder="输入文章标题..." onChange={(e) => fromSet(e.target.value, 'title')} />
+        <Dialog open={isModalOpen} onOpenChange={(e) => setIsModalOpen(e)}>
+          <DialogTrigger asChild>
+                <Button>发布</Button>
+            {/* <Button onClick={() => setIsModalOpen(true)}>发布</Button> */}
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader >
+              <DialogTitle>发布文章</DialogTitle>
+              <Login></Login>
+              {/* <ArticlePublishForm onSubmit={handleFormSubmit} onCancel={() => setIsModalOpen(false)}></ArticlePublishForm> */}
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+        {/* <Dialog>
+          <DialogTrigger asChild> <Button>预览</Button> </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>
+              </DialogTitle></DialogHeader>
+            <Login></Login>
+          </DialogContent>
+        </Dialog> */}
       </div>
-    </>
+      <MdEditor
+        modelValue={from.content}
+        className="flex-1"
+        onChange={(e) => fromSet(e, 'content')}
+        onUploadImg={onUploadImg}
+      />
+      <MdCatalog editorId="my-editor" scrollElement={state.scrollElement} />
+    </div>
   )
 }

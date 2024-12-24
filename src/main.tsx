@@ -7,9 +7,7 @@ import zhCN from 'antd/locale/zh_CN'
 import { ConfigProvider } from 'antd'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ThemeProvider } from '@/components/theme-provider'
-// for date-picker i18n
 import 'dayjs/locale/zh-cn'
-// Set up a Router instance
 const router = createRouter({
   routeTree,
   defaultPreload: 'intent'

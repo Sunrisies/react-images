@@ -1,18 +1,17 @@
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+import { request } from '@/utils/fetch'
+import { ArticleFormValues, articleSchema } from '@/utils/schemas'
+import { uploadImage } from '@/utils/update'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import * as z from 'zod'
-import { request } from '@/utils/fetch'
-import type { FormProps } from 'antd';
 interface TypeOptions {
   value: number
   label: string
 }
-import { Select,SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
-// import { SelectProps } from 'antd'
 
 const getTags = async (): Promise<TypeOptions[]> => {
   const { data, code } = await request.get<TypeOptions[]>(`/tags`)
@@ -28,35 +27,21 @@ const getCategories = async (): Promise<TypeOptions[]> => {
   }
   return []
 }
-type UpdateType = {
-  title: string
-  content: string
-  status: string
-  author: string
-}
-const articleSchema = z.object({
-  category: z.string({
-    required_error: '请选择一个分类'
-  }),
-  tags: z.string().min(1, '请至少添加一个标签'),
-  coverImage: z.string().optional(),
-  summary: z.string().max(100, '摘要不能超过100个字符').optional()
-})
-type ArticleFormValues = z.infer<typeof articleSchema>
-export function ArticlePublishForm({onSubmit }:{onSubmit : (values: ArticleFormValues) => void}) {
-  const [coverImage, setCoverImage] = useState<string | null>(null)
+
+
+export function ArticlePublishForm({ onSubmit, onCancel }: { onSubmit: (values: ArticleFormValues) => void, onCancel: () => void }) {
 
   const form = useForm<ArticleFormValues>({
     resolver: zodResolver(articleSchema),
     defaultValues: {
       category: undefined,
       tags: '',
-      summary: ''
+      summary: '',
+      coverImage: ''
     }
   })
 
 
-  const [imageUrl, setImageUrl] = useState<string>()
   const [tags, setTags] = useState<TypeOptions[]>([])
   const [categories, setCategories] = useState<TypeOptions[]>([])
   useEffect(() => {
@@ -67,17 +52,14 @@ export function ArticlePublishForm({onSubmit }:{onSubmit : (values: ArticleFormV
       setCategories(data)
     })
   }, [])
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setCoverImage(reader.result as string)
-        form.setValue('coverImage', reader.result as string)
-      }
-      reader.readAsDataURL(file)
+      const url = await uploadImage(file)
+      form.setValue('coverImage', url)
     }
   }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-2xl mx-auto">
@@ -118,7 +100,7 @@ export function ArticlePublishForm({onSubmit }:{onSubmit : (values: ArticleFormV
                 添加标签<span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
-              <Select value={field.value} onValueChange={(e) => { form.setValue('tags', e) }}>
+                <Select value={field.value} onValueChange={(e) => { form.setValue('tags', e) }}>
                   <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="请选择标签" />
                   </SelectTrigger>
@@ -127,7 +109,7 @@ export function ArticlePublishForm({onSubmit }:{onSubmit : (values: ArticleFormV
                       {tags.map((tag) => (
                         <SelectItem key={tag.value} value={tag.value.toString()}>{tag.label}</SelectItem>
                       ))}
-                 
+
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -147,8 +129,8 @@ export function ArticlePublishForm({onSubmit }:{onSubmit : (values: ArticleFormV
                 style={{ width: '192px', height: '128px' }}
                 onClick={() => document.getElementById('coverUpload')?.click()}
               >
-                {coverImage ? (
-                  <img src={coverImage} alt="Cover" className="w-full h-full object-cover" />
+                {form.getValues('coverImage') ? (
+                  <img src={form.getValues('coverImage')} alt="Cover" className="w-full h-full object-cover" />
                 ) : (
                   <div className="flex flex-col items-center justify-center h-full text-gray-400">
                     <span className="text-2xl mb-2">+</span>
@@ -190,63 +172,12 @@ export function ArticlePublishForm({onSubmit }:{onSubmit : (values: ArticleFormV
         />
 
         <div className="flex justify-end gap-4">
-          <Button type="button" variant="outline">
+          <Button type="button" variant="outline" onClick={onCancel}>
             取消
           </Button>
-          <Button type="submit">确定并发布</Button>
+          <Button type="submit" >确定并发布</Button>
         </div>
       </form>
     </Form>
   )
 }
-
-
-// return (
-//   <Form
-//     name="basic"
-//     labelCol={{ span: 8 }}
-//     wrapperCol={{ span: 16 }}
-//     style={{ maxWidth: 600 }}
-//     initialValues={{ remember: true }}
-//     onFinish={onFinish}
-//     onFinishFailed={onFinishFailed}
-//     autoComplete="off"
-//   >
-//     <Form.Item<FieldType> label="分类" name="category" rules={[{ required: true, message: 'Please input your username!' }]}>
-//       <div className="flex flex-wrap gap-2">
-//         {categories.map((category) => (
-//           <Button
-//             key={category.value}
-//             type="button"
-//             className={`${from.category_id === category.value ? 'bg-green-500 text-white' : 'bg-white text-gray-500'
-//               }`}
-//             onClick={() => fromSet(category.value, 'category_id')}
-//           >
-//             {category.label}
-//           </Button>
-//         ))}
-//       </div>
-//     </Form.Item>
-
-//     <Form.Item<FieldType> label="标签" name="tags" rules={[{ required: true, message: 'Please input your password!' }]}>
-//       <Select
-//         mode="multiple"
-//         allowClear
-//         style={{ width: '100%' }}
-//         placeholder="Please select"
-//         // onChange={() => { console.log('change') }}
-//         options={options}
-//       />
-//     </Form.Item>
-
-//     <Form.Item<FieldType> name="remember" valuePropName="checked" label={null}>
-//       <Checkbox>Remember me</Checkbox>
-//     </Form.Item>
-
-//     {/* <Form.Item label={null}>
-//       <Button type="primary" htmlType="submit">
-//         Submit
-//       </Button>
-//     </Form.Item> */}
-//   </Form>
-// )
