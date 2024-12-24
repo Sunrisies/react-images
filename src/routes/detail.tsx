@@ -10,7 +10,6 @@ import 'md-editor-rt/lib/style.css'
 import { ArticleFormValues } from '@/utils/schemas'
 import { useState } from 'react'
 import { uploadImage } from '@/utils/update'
-import { Login } from '@/components/login'
 export const Route = createFileRoute('/detail')({
   component: RouteComponent
 })
@@ -113,26 +112,15 @@ function RouteComponent() {
         <Input placeholder="输入文章标题..." onChange={(e) => fromSet(e.target.value, 'title')} />
         <Dialog open={isModalOpen} onOpenChange={(e) => setIsModalOpen(e)}>
           <DialogTrigger asChild>
-                <Button>发布</Button>
-            {/* <Button onClick={() => setIsModalOpen(true)}>发布</Button> */}
+            <Button onClick={() => setIsModalOpen(true)}>发布</Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader >
               <DialogTitle>发布文章</DialogTitle>
-              <Login></Login>
-              {/* <ArticlePublishForm onSubmit={handleFormSubmit} onCancel={() => setIsModalOpen(false)}></ArticlePublishForm> */}
+              <ArticlePublishForm onSubmit={handleFormSubmit} onCancel={() => setIsModalOpen(false)}></ArticlePublishForm>
             </DialogHeader>
           </DialogContent>
         </Dialog>
-        {/* <Dialog>
-          <DialogTrigger asChild> <Button>预览</Button> </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>
-              </DialogTitle></DialogHeader>
-            <Login></Login>
-          </DialogContent>
-        </Dialog> */}
       </div>
       <MdEditor
         modelValue={from.content}
