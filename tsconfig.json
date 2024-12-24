@@ -6,6 +6,8 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Bundler",
+    "experimentalDecorators": true, // 启用装饰器
+    "emitDecoratorMetadata": true, // 给装饰器加上元数据
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
