@@ -10,20 +10,27 @@
 
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as LoginImport } from './routes/login'
-import { Route as GalleryImport } from './routes/gallery'
-import { Route as DetailImport } from './routes/detail'
-import { Route as BlogImport } from './routes/blog'
-import { Route as ArticlesImport } from './routes/articles'
-import { Route as AboutImport } from './routes/about'
-import { Route as IndexImport } from './routes/index'
+import { Route as rootRoute } from './pages/__root.lazy'
+import { Route as LoginImport } from './pages/login'
+import { Route as Index1Import } from './pages/index1'
+import { Route as GalleryImport } from './pages/gallery'
+import { Route as DetailImport } from './pages/detail'
+import { Route as BlogImport } from './pages/blog'
+import { Route as ArticlesImport } from './pages/articles'
+import { Route as AboutImport } from './pages/about'
+import { Route as RouteImport } from './pages/route'
 
 // Create/Update Routes
 
 const LoginRoute = LoginImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const Index1Route = Index1Import.update({
+  id: '/index1',
+  path: '/index1',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -57,7 +64,7 @@ const AboutRoute = AboutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexRoute = IndexImport.update({
+const RouteRoute = RouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
@@ -71,7 +78,7 @@ declare module '@tanstack/react-router' {
       id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexImport
+      preLoaderRoute: typeof RouteImport
       parentRoute: typeof rootRoute
     }
     '/about': {
@@ -109,6 +116,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GalleryImport
       parentRoute: typeof rootRoute
     }
+    '/index1': {
+      id: '/index1'
+      path: '/index1'
+      fullPath: '/index1'
+      preLoaderRoute: typeof Index1Import
+      parentRoute: typeof rootRoute
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -122,33 +136,36 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof RouteRoute
   '/about': typeof AboutRoute
   '/articles': typeof ArticlesRoute
   '/blog': typeof BlogRoute
   '/detail': typeof DetailRoute
   '/gallery': typeof GalleryRoute
+  '/index1': typeof Index1Route
   '/login': typeof LoginRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/': typeof RouteRoute
   '/about': typeof AboutRoute
   '/articles': typeof ArticlesRoute
   '/blog': typeof BlogRoute
   '/detail': typeof DetailRoute
   '/gallery': typeof GalleryRoute
+  '/index1': typeof Index1Route
   '/login': typeof LoginRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexRoute
+  '/': typeof RouteRoute
   '/about': typeof AboutRoute
   '/articles': typeof ArticlesRoute
   '/blog': typeof BlogRoute
   '/detail': typeof DetailRoute
   '/gallery': typeof GalleryRoute
+  '/index1': typeof Index1Route
   '/login': typeof LoginRoute
 }
 
@@ -161,9 +178,18 @@ export interface FileRouteTypes {
     | '/blog'
     | '/detail'
     | '/gallery'
+    | '/index1'
     | '/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/articles' | '/blog' | '/detail' | '/gallery' | '/login'
+  to:
+    | '/'
+    | '/about'
+    | '/articles'
+    | '/blog'
+    | '/detail'
+    | '/gallery'
+    | '/index1'
+    | '/login'
   id:
     | '__root__'
     | '/'
@@ -172,27 +198,30 @@ export interface FileRouteTypes {
     | '/blog'
     | '/detail'
     | '/gallery'
+    | '/index1'
     | '/login'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  RouteRoute: typeof RouteRoute
   AboutRoute: typeof AboutRoute
   ArticlesRoute: typeof ArticlesRoute
   BlogRoute: typeof BlogRoute
   DetailRoute: typeof DetailRoute
   GalleryRoute: typeof GalleryRoute
+  Index1Route: typeof Index1Route
   LoginRoute: typeof LoginRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  RouteRoute: RouteRoute,
   AboutRoute: AboutRoute,
   ArticlesRoute: ArticlesRoute,
   BlogRoute: BlogRoute,
   DetailRoute: DetailRoute,
   GalleryRoute: GalleryRoute,
+  Index1Route: Index1Route,
   LoginRoute: LoginRoute,
 }
 
@@ -204,7 +233,7 @@ export const routeTree = rootRoute
 {
   "routes": {
     "__root__": {
-      "filePath": "__root.tsx",
+      "filePath": "__root.lazy.tsx",
       "children": [
         "/",
         "/about",
@@ -212,11 +241,12 @@ export const routeTree = rootRoute
         "/blog",
         "/detail",
         "/gallery",
+        "/index1",
         "/login"
       ]
     },
     "/": {
-      "filePath": "index.tsx"
+      "filePath": "route.tsx"
     },
     "/about": {
       "filePath": "about.tsx"
@@ -232,6 +262,9 @@ export const routeTree = rootRoute
     },
     "/gallery": {
       "filePath": "gallery.tsx"
+    },
+    "/index1": {
+      "filePath": "index1.tsx"
     },
     "/login": {
       "filePath": "login.tsx"

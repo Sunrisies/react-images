@@ -1,15 +1,27 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react';
 import styles from '@/assets/styles/login.module.css'
 import { loginApi, registerApi } from '@/api';
 import { Button, Form, FormProps, Input } from 'antd';
 import { LoginAndRegisterType } from '@/api/login';
+import { isLogin } from '@/utils/auth';
 export const Route = createFileRoute('/login')({
   component: RouteComponent,
+  // beforeLoad: async ({ location }) => {
+  //     if (isLogin()) {
+  //     throw redirect({
+  //       to: '/',
+  //       search: {
+  //         redirect: location.href,
+  //       },
+  //     })
+  //     }
+  //   },
 })
 
 
 function RouteComponent() {
+  const navigate = useNavigate()
   const [isSwitched, setIsSwitched] = useState(false);
   const handleSwitch = () => {
     setIsSwitched(!isSwitched);
@@ -17,7 +29,11 @@ function RouteComponent() {
 
   const logon = async (params: LoginAndRegisterType) => {
     const res = await loginApi(params)
+    
     console.log(res, 'res登录之后')
+    navigate({ to: '/' })
+    // 刷新页面
+    window.location.reload()
   }
   const register = async (params: LoginAndRegisterType) => {
     const res = await registerApi(params)

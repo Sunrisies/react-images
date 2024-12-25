@@ -44,3 +44,14 @@ export const registerApi = async (data: LoginAndRegisterType) => {
   }
   throw new Error(message)
  }
+export const logoutApi = async () => {
+  sessionStorage.removeItem('token')
+  sessionStorage.removeItem('user_id')
+  sessionStorage.removeItem('user_name')
+  sessionStorage.removeItem('image')
+  sessionStorage.removeItem('phone')
+  sessionStorage.removeItem('email')
+  sessionStorage.removeItem('create_time')
+  sessionStorage.removeItem('update_time')
+  return true
+}

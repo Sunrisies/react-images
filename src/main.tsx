@@ -1,15 +1,17 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { RouterProvider, createRouter } from '@tanstack/react-router'
-import { routeTree } from './routeTree.gen'
 import '@/assets/styles/global.scss'
-import zhCN from 'antd/locale/zh_CN'
-import { ConfigProvider } from 'antd'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ThemeProvider } from '@/components/theme-provider'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { RouterProvider, createRouter } from '@tanstack/react-router'
+import { ConfigProvider } from 'antd'
+import {routeTree} from './routeTree.gen'
+import zhCN from 'antd/locale/zh_CN'
 import 'dayjs/locale/zh-cn'
+import ReactDOM from 'react-dom/client'
+import { routes } from '../routes'
+
 const router = createRouter({
   routeTree,
+  // routes,
   defaultPreload: 'intent'
 })
 

@@ -6,7 +6,7 @@ import { visualizer } from 'rollup-plugin-visualizer'
 import viteCompression from 'vite-plugin-compression'
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [TanStackRouterVite({}), react()],
+  plugins: [TanStackRouterVite(), react()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

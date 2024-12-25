@@ -45,6 +45,7 @@
     "@tanstack/react-router": "^1.86.1",
     "@tanstack/react-table": "^8.20.5",
     "@tanstack/router-devtools": "^1.86.1",
+    "@tanstack/virtual-file-routes": "^1.87.6",
     "antd": "^5.22.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

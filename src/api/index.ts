@@ -1,6 +1,7 @@
-import { loginApi, registerApi } from './login'
+import { loginApi, registerApi,logoutApi } from './login'
 
 export {
   loginApi,
-  registerApi
+  registerApi,
+  logoutApi
 }
