@@ -1,7 +1,4 @@
 import { useAppAxios } from '@/hooks/useAppAxios'
-import { useMutation } from '@tanstack/react-query'
-import { AxiosError } from 'axios'
-import {message} from 'antd'
 export type LoginAndRegisterType = {
   user_name: string
   pass_word: string
@@ -17,47 +14,43 @@ type LoginReturnType = {
   update_time: string
   accessToken: string
 }
-export const usePostLogin =async (params: LoginAndRegisterType) => {
-  console.log('1231231', params)
-  const { http } = useAppAxios()
-  const {code,data,message: msg} = await http.post('/auth/login',params)
-  console.log(data,code,msg)
-
-      if (code === 200) {
-        // 添加到本地存储中
-        sessionStorage.setItem('token', data.accessToken)
-        sessionStorage.setItem('user_id', data.id.toString())
-        sessionStorage.setItem('user_name', data.user_name)
-        sessionStorage.setItem('image', data.image)
-        sessionStorage.setItem('phone', data.phone)
-        sessionStorage.setItem('email', data.email)
-        sessionStorage.setItem('create_time', data.create_time)
-        sessionStorage.setItem('update_time', data.update_time)
-        return data
-      }
-    }
-// export const usePostRegister = (params: LoginAndRegisterType) => {
-//   const { http } = useAppAxios()
-//   return useQuery<LoginReturnType, AxiosError>({
-//     queryKey: ['repoDa111ta'],
-//     queryFn: async () => {
-//       const { code, data, message } = await http.post('/auth/register', params)
-//       if (code === 200) {
-//         // 添加到本地存储中
-//         sessionStorage.setItem('token', data.accessToken)
-//         sessionStorage.setItem('user_id', data.id.toString())
-//         sessionStorage.setItem('user_name', data.user_name)
-//         sessionStorage.setItem('image', data.image)
-//         sessionStorage.setItem('phone', data.phone)
-//         sessionStorage.setItem('email', data.email)
-//         sessionStorage.setItem('create_time', data.create_time)
-//         sessionStorage.setItem('update_time', data.update_time)
-//         return data
-//       }
-//       throw new Error(message)
-//     }
-//   })
-// }
+/**
+ * 登录接口
+ * @param {LoginAndRegisterType} data - 登录参数
+ * @returns {Promise<string>} - 返回登录后的token
+ */
+export const usePostLogin = async (params: LoginAndRegisterType) => {
+  const { post } = useAppAxios()
+  const { code, data } = await post<LoginReturnType>('/auth/login', params)
+  if (code === 200) {
+    // 添加到本地存储中
+    sessionStorage.setItem('token', data.accessToken)
+    sessionStorage.setItem('user_id', data.id.toString())
+    sessionStorage.setItem('user_name', data.user_name)
+    sessionStorage.setItem('image', data.image)
+    sessionStorage.setItem('phone', data.phone)
+    sessionStorage.setItem('email', data.email)
+    sessionStorage.setItem('create_time', data.create_time)
+    sessionStorage.setItem('update_time', data.update_time)
+    return data
+  }
+}
+export const usePostRegister = async (params: LoginAndRegisterType) => {
+  const { post } = useAppAxios()
+  const { code, data } = await post<LoginReturnType>('/auth/register', params)
+  if (code === 200) {
+    // 添加到本地存储中
+    sessionStorage.setItem('token', data.accessToken)
+    sessionStorage.setItem('user_id', data.id.toString())
+    sessionStorage.setItem('user_name', data.user_name)
+    sessionStorage.setItem('image', data.image)
+    sessionStorage.setItem('phone', data.phone)
+    sessionStorage.setItem('email', data.email)
+    sessionStorage.setItem('create_time', data.create_time)
+    sessionStorage.setItem('update_time', data.update_time)
+    return data
+  }
+}
 
 export const logoutApi = async () => {
   sessionStorage.removeItem('token')
@@ -70,44 +63,3 @@ export const logoutApi = async () => {
   sessionStorage.removeItem('update_time')
   return true
 }
-
-/**
- * 登录接口
- * @param {LoginParams} data - 登录参数
- * @returns {Promise<string>} - 返回登录后的token
- */
-
-// export const loginApi = async (params: LoginAndRegisterType) => {
-//   const { code, message, data } = await request.post<LoginAndRegisterType, LoginReturnType>('/auth/login', params)
-//   if (code === 200) {
-//     // 添加到本地存储中
-//     sessionStorage.setItem('token', data.accessToken)
-//     sessionStorage.setItem('user_id', data.id.toString())
-//     sessionStorage.setItem('user_name', data.user_name)
-//     sessionStorage.setItem('image', data.image)
-//     sessionStorage.setItem('phone', data.phone)
-//     sessionStorage.setItem('email', data.email)
-//     sessionStorage.setItem('create_time', data.create_time)
-//     sessionStorage.setItem('update_time', data.update_time)
-//     return data
-//   }
-//   throw new Error(message)
-// }
-// export const registerApi = async (data: LoginAndRegisterType) => {
-//   const { code, message } = await request.post('/auth/register', data)
-//   if (code === 200) {
-//     // return data
-//   }
-//   throw new Error(message)
-// }
-// export const logoutApi = async () => {
-//   sessionStorage.removeItem('token')
-//   sessionStorage.removeItem('user_id')
-//   sessionStorage.removeItem('user_name')
-//   sessionStorage.removeItem('image')
-//   sessionStorage.removeItem('phone')
-//   sessionStorage.removeItem('email')
-//   sessionStorage.removeItem('create_time')
-//   sessionStorage.removeItem('update_time')
-//   return true
-// }

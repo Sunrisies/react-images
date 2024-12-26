@@ -10,7 +10,10 @@
     "emitDecoratorMetadata": true, // 给装饰器加上元数据
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
-    }
-  }
+      "@/*": ["src/*"]
+    },
+    "outDir": "./dist",
+  },
+  "include": ["src/**/*","./declarations.d.ts"],
+  "exclude": ["node_modules", "dist","**/node_modules/**"]
 }

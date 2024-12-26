@@ -1,5 +1,10 @@
-import axios from 'axios'
-import {message} from 'antd'
+import axios, { AxiosResponse } from 'axios'
+import { message } from 'antd'
+interface Result<T> {
+  code: number;
+  message: string;
+  data: T;
+}
 export const useAppAxios = () => {
   const http = axios.create({
     baseURL: 'https://api.chaoyang1024.top:2345/api',
@@ -20,22 +25,23 @@ export const useAppAxios = () => {
 
   // 添加响应拦截器
   http.interceptors.response.use(
-    function (response) {
-      console.log(response.data,'====')
+    (response) => {
+      console.log(response.data, '====')
       // 2xx 范围内的状态码都会触发该函数。
       // // 对响应数据做点什么
-      if (response.data.code === 200) {
-        return response.data
-      }else {
+      if (response.data.code !== 200) {
         message.info(response.data.message)
       }
-      return response
+      return response.data
     },
-    function (error) {
+     (error) =>{
       // 超出 2xx 范围的状态码都会触发该函数。
       // 对响应错误做点什么
       return Promise.reject(error)
     }
   )
-  return { http }
+  const post =async <T>(url: string, data?: any,config?:any): Promise<AxiosResponse<Result<T>>> => { 
+    return await http.post<Result<T>>(url, data,config)
+  }
+  return { http,post }
 }

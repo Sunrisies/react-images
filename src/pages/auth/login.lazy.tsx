@@ -1,11 +1,8 @@
-import { createLazyFileRoute, redirect, useNavigate } from '@tanstack/react-router'
-import { useState } from 'react'
 import styles from '@/assets/styles/login.module.css'
-import { usePostLogin } from '@/services/login'
-import { Button, Form, FormProps, Input } from 'antd'
-import { isLogin } from '@/utils/auth'
-import { LoginAndRegisterType } from '@/services/login'
-import { useGetArticle } from '@/services/article'
+import { LoginAndRegisterType, usePostLogin } from '@/services/login'
+import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
+import { Button, Form, Input } from 'antd'
+import { useState } from 'react'
 export const Route = createLazyFileRoute('/auth/login')({
   component: RouteComponent
 })
