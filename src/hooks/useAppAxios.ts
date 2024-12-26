@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {message} from 'antd'
 export const useAppAxios = () => {
   const http = axios.create({
     baseURL: 'https://api.chaoyang1024.top:2345/api',
@@ -25,6 +26,8 @@ export const useAppAxios = () => {
       // // 对响应数据做点什么
       if (response.data.code === 200) {
         return response.data
+      }else {
+        message.info(response.data.message)
       }
       return response
     },

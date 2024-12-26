@@ -1,22 +1,13 @@
 import { createLazyFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import styles from '@/assets/styles/login.module.css'
-import { loginApi, registerApi } from '@/api'
+import { usePostLogin } from '@/services/login'
 import { Button, Form, FormProps, Input } from 'antd'
-import { LoginAndRegisterType } from '@/api/login'
 import { isLogin } from '@/utils/auth'
+import { LoginAndRegisterType } from '@/services/login'
+import { useGetArticle } from '@/services/article'
 export const Route = createLazyFileRoute('/auth/login')({
   component: RouteComponent
-  // beforeLoad: async ({ location }) => {
-  //     if (isLogin()) {
-  //     throw redirect({
-  //       to: '/',
-  //       search: {
-  //         redirect: location.href,
-  //       },
-  //     })
-  //     }
-  //   },
 })
 
 function RouteComponent() {
@@ -25,14 +16,14 @@ function RouteComponent() {
   const handleSwitch = () => {
     setIsSwitched(!isSwitched)
   }
-
   const logon = async (params: LoginAndRegisterType) => {
-    const res = await loginApi(params)
+    console.log(params, '==1=21=12=')
+    const res = await usePostLogin(params)
     navigate({ to: '/' })
   }
   const register = async (params: LoginAndRegisterType) => {
-    const res = await registerApi(params)
-    console.log(res, 'res注册之后')
+    // const res = await usePostRegister(params)
+    // console.log(res, 'res注册之后')
   }
   return (
     <div className={styles.container1}>

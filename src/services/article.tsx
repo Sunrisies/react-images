@@ -9,7 +9,6 @@ export const useGetArticle = () => {
     queryKey: ['repoData'],
     queryFn: async () => {
       const response = await http.get(`/article/admin`)
-      console.log(response.data,'============')
       return response.data
     },
   })

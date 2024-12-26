@@ -19,7 +19,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { logoutApi } from '@/api'
+import { logoutApi } from '@/services/login'
 import { useNavigate } from '@tanstack/react-router'
 
 export default function NavMain({ children }: any) {

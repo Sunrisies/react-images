@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { request } from '@/utils/fetch'
-import { createFileRoute } from '@tanstack/react-router'
+import { createLazyFileRoute } from '@tanstack/react-router'
 import { message } from 'antd'
 import { MdCatalog, MdEditor } from 'md-editor-rt'
 import 'md-editor-rt/lib/style.css'
@@ -17,7 +17,7 @@ import { ArticleFormValues } from '@/utils/schemas'
 import { useState } from 'react'
 import { uploadImage } from '@/utils/update'
 import { Layout } from '@/layout'
-export const Route = createFileRoute('/admin/edit')({
+export const Route = createLazyFileRoute('/admin/edit')({
   component: RouteComponent,
 })
 
@@ -124,36 +124,35 @@ function RouteComponent() {
 
   return (
     <Layout>
-    <div className="flex flex-col gap-3 h-full">
-      <div className="flex gap-3 mb-3">
-        <Input
-          placeholder="输入文章标题..."
-          onChange={(e) => fromSet(e.target.value, 'title')}
+      <div className="flex flex-col gap-3 h-full">
+        <div className="flex gap-3 mb-3">
+          <Input
+            placeholder="输入文章标题..."
+            onChange={(e) => fromSet(e.target.value, 'title')}
+          />
+          <Dialog open={isModalOpen} onOpenChange={(e) => setIsModalOpen(e)}>
+            <DialogTrigger asChild>
+              <Button onClick={() => setIsModalOpen(true)}>发布</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>发布文章</DialogTitle>
+                <ArticlePublishForm
+                  onSubmit={handleFormSubmit}
+                  onCancel={() => setIsModalOpen(false)}
+                ></ArticlePublishForm>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+        </div>
+        <MdEditor
+          modelValue={from.content}
+          className="flex-1"
+          onChange={(e) => fromSet(e, 'content')}
+          onUploadImg={onUploadImg}
         />
-        <Dialog open={isModalOpen} onOpenChange={(e) => setIsModalOpen(e)}>
-          <DialogTrigger asChild>
-            <Button onClick={() => setIsModalOpen(true)}>发布</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>发布文章</DialogTitle>
-              <ArticlePublishForm
-                onSubmit={handleFormSubmit}
-                onCancel={() => setIsModalOpen(false)}
-              ></ArticlePublishForm>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
+        <MdCatalog editorId="my-editor" scrollElement={state.scrollElement} />
       </div>
-      <MdEditor
-        modelValue={from.content}
-        className="flex-1"
-        onChange={(e) => fromSet(e, 'content')}
-        onUploadImg={onUploadImg}
-      />
-      <MdCatalog editorId="my-editor" scrollElement={state.scrollElement} />
-    </div>
     </Layout>
-
   )
 }
