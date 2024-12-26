@@ -1,6 +1,12 @@
 import { ArticlePublishForm } from '@/components/article-publish-form'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { request } from '@/utils/fetch'
 import { createFileRoute } from '@tanstack/react-router'
@@ -10,8 +16,9 @@ import 'md-editor-rt/lib/style.css'
 import { ArticleFormValues } from '@/utils/schemas'
 import { useState } from 'react'
 import { uploadImage } from '@/utils/update'
-export const Route = createFileRoute('/detail')({
-  component: RouteComponent
+import { Layout } from '@/layout'
+export const Route = createFileRoute('/admin/edit')({
+  component: RouteComponent,
 })
 
 type UpdateType = {
@@ -25,39 +32,41 @@ type UpdateType = {
   summary: string
 }
 type addArticleType = {
-  code: number;
+  code: number
   data: {
-    id: number;
-    title: string;
-    content: string;
-    category_id: number;
-    cover: string;
-    author: string;
-    publish_time: string;
-    update_time: string;
-    views: number;
-    is_top: boolean;
-    is_recommend: boolean;
-    is_delete: boolean;
-    is_publish: boolean;
-    is_hide: boolean;
-    summary: string;
+    id: number
+    title: string
+    content: string
+    category_id: number
+    cover: string
+    author: string
+    publish_time: string
+    update_time: string
+    views: number
+    is_top: boolean
+    is_recommend: boolean
+    is_delete: boolean
+    is_publish: boolean
+    is_hide: boolean
+    summary: string
   }
-
 }
 // 发布文章接口
 const publishArticle = async (from: UpdateType, callback: () => void) => {
   console.log(from, '上传文件')
-  const { code, data } = await request.post<UpdateType, addArticleType>(`/article`, from)
+  const { code, data } = await request.post<UpdateType, addArticleType>(
+    `/article`,
+    from,
+  )
   console.log(data, 'code, data')
   if (code === 200) {
-    message.success('发布成功');
+    message.success('发布成功')
   } else {
-    message.error('发布失败');
+    message.error('发布失败')
   }
   callback()
   return data
-};
+}
 
 function RouteComponent() {
   const [from, setFrom] = useState<UpdateType>({
@@ -68,7 +77,7 @@ function RouteComponent() {
     summary: '',
     content: '',
     status: '发布',
-    author: '朝阳'
+    author: '朝阳',
   })
   const fromSet = (e: string, key: string) => {
     console.log(e, 'key:', key)
@@ -78,22 +87,29 @@ function RouteComponent() {
       setFrom((state) => ({ ...state, [key]: +e }))
     } else {
       setFrom((state) => ({
-        ...state, [key]: e
-      })
-      )
+        ...state,
+        [key]: e,
+      }))
     }
   }
-  const onUploadImg = async (files: File[], callback: (urls: string[]) => void) => {
+  const onUploadImg = async (
+    files: File[],
+    callback: (urls: string[]) => void,
+  ) => {
     const res = await uploadImage(files[0])
     callback([res])
   }
   const [state] = useState({
     text: '# 标题',
-    scrollElement: document.documentElement
+    scrollElement: document.documentElement,
   })
 
-
-  const handleFormSubmit = ({ category, tags, coverImage, summary }: ArticleFormValues) => {
+  const handleFormSubmit = ({
+    category,
+    tags,
+    coverImage,
+    summary,
+  }: ArticleFormValues) => {
     console.log('父组件的数据')
     fromSet(category, 'category_id')
     fromSet(tags, 'tags')
@@ -107,17 +123,24 @@ function RouteComponent() {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
+    <Layout>
     <div className="flex flex-col gap-3 h-full">
       <div className="flex gap-3 mb-3">
-        <Input placeholder="输入文章标题..." onChange={(e) => fromSet(e.target.value, 'title')} />
+        <Input
+          placeholder="输入文章标题..."
+          onChange={(e) => fromSet(e.target.value, 'title')}
+        />
         <Dialog open={isModalOpen} onOpenChange={(e) => setIsModalOpen(e)}>
           <DialogTrigger asChild>
             <Button onClick={() => setIsModalOpen(true)}>发布</Button>
           </DialogTrigger>
           <DialogContent>
-            <DialogHeader >
+            <DialogHeader>
               <DialogTitle>发布文章</DialogTitle>
-              <ArticlePublishForm onSubmit={handleFormSubmit} onCancel={() => setIsModalOpen(false)}></ArticlePublishForm>
+              <ArticlePublishForm
+                onSubmit={handleFormSubmit}
+                onCancel={() => setIsModalOpen(false)}
+              ></ArticlePublishForm>
             </DialogHeader>
           </DialogContent>
         </Dialog>
@@ -130,5 +153,7 @@ function RouteComponent() {
       />
       <MdCatalog editorId="my-editor" scrollElement={state.scrollElement} />
     </div>
+    </Layout>
+
   )
 }

@@ -51,8 +51,8 @@ export default function NavMain({ children }: any) {
     if (name === 'logout') {
       logoutApi()
       // 跳转到登录页面
-      navigate({to:'/login'})
-      window.location.reload()
+      navigate({to:'/auth/login'})
+      // window.location.reload()
     }
   }
   return (

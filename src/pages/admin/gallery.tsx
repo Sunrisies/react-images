@@ -3,8 +3,8 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import { request } from '@/utils/fetch'
 import { GalleryItem } from '@/types/gallery.types'
-export const Route = createFileRoute('/gallery')({
-  component: RouteComponent
+export const Route = createFileRoute('/admin/gallery')({
+  component: RouteComponent,
 })
 
 function RouteComponent() {
@@ -14,7 +14,7 @@ function RouteComponent() {
       const response = await request.get<GalleryItem[]>('/upload/multiple')
       console.log(response, 'response')
       return response.data
-    }
+    },
   })
   if (isPending) return 'Loading...'
 

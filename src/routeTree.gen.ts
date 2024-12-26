@@ -8,65 +8,70 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './pages/__root.lazy'
-import { Route as LoginImport } from './pages/login'
-import { Route as Index1Import } from './pages/index1'
-import { Route as GalleryImport } from './pages/gallery'
-import { Route as DetailImport } from './pages/detail'
-import { Route as BlogImport } from './pages/blog'
-import { Route as ArticlesImport } from './pages/articles'
-import { Route as AboutImport } from './pages/about'
-import { Route as RouteImport } from './pages/route'
+import { Route as AdminGalleryImport } from './pages/admin/gallery'
+import { Route as AdminEditImport } from './pages/admin/edit'
+import { Route as AdminBlogImport } from './pages/admin/blog'
+
+// Create Virtual Routes
+
+const IndexLazyImport = createFileRoute('/')()
+const AdminIndexLazyImport = createFileRoute('/admin/')()
+const AuthLoginLazyImport = createFileRoute('/auth/login')()
+const AdminArticlesLazyImport = createFileRoute('/admin/articles')()
+const AdminAboutLazyImport = createFileRoute('/admin/about')()
 
 // Create/Update Routes
 
-const LoginRoute = LoginImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const Index1Route = Index1Import.update({
-  id: '/index1',
-  path: '/index1',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const GalleryRoute = GalleryImport.update({
-  id: '/gallery',
-  path: '/gallery',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const DetailRoute = DetailImport.update({
-  id: '/detail',
-  path: '/detail',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const BlogRoute = BlogImport.update({
-  id: '/blog',
-  path: '/blog',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ArticlesRoute = ArticlesImport.update({
-  id: '/articles',
-  path: '/articles',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const AboutRoute = AboutImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const RouteRoute = RouteImport.update({
+const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./pages/index.lazy').then((d) => d.Route))
+
+const AdminIndexLazyRoute = AdminIndexLazyImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./pages/admin/index.lazy').then((d) => d.Route))
+
+const AuthLoginLazyRoute = AuthLoginLazyImport.update({
+  id: '/auth/login',
+  path: '/auth/login',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./pages/auth/login.lazy').then((d) => d.Route))
+
+const AdminArticlesLazyRoute = AdminArticlesLazyImport.update({
+  id: '/admin/articles',
+  path: '/admin/articles',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./pages/admin/articles.lazy').then((d) => d.Route))
+
+const AdminAboutLazyRoute = AdminAboutLazyImport.update({
+  id: '/admin/about',
+  path: '/admin/about',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./pages/admin/about.lazy').then((d) => d.Route))
+
+const AdminGalleryRoute = AdminGalleryImport.update({
+  id: '/admin/gallery',
+  path: '/admin/gallery',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminEditRoute = AdminEditImport.update({
+  id: '/admin/edit',
+  path: '/admin/edit',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminBlogRoute = AdminBlogImport.update({
+  id: '/admin/blog',
+  path: '/admin/blog',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -78,56 +83,56 @@ declare module '@tanstack/react-router' {
       id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof RouteImport
+      preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutImport
+    '/admin/blog': {
+      id: '/admin/blog'
+      path: '/admin/blog'
+      fullPath: '/admin/blog'
+      preLoaderRoute: typeof AdminBlogImport
       parentRoute: typeof rootRoute
     }
-    '/articles': {
-      id: '/articles'
-      path: '/articles'
-      fullPath: '/articles'
-      preLoaderRoute: typeof ArticlesImport
+    '/admin/edit': {
+      id: '/admin/edit'
+      path: '/admin/edit'
+      fullPath: '/admin/edit'
+      preLoaderRoute: typeof AdminEditImport
       parentRoute: typeof rootRoute
     }
-    '/blog': {
-      id: '/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof BlogImport
+    '/admin/gallery': {
+      id: '/admin/gallery'
+      path: '/admin/gallery'
+      fullPath: '/admin/gallery'
+      preLoaderRoute: typeof AdminGalleryImport
       parentRoute: typeof rootRoute
     }
-    '/detail': {
-      id: '/detail'
-      path: '/detail'
-      fullPath: '/detail'
-      preLoaderRoute: typeof DetailImport
+    '/admin/about': {
+      id: '/admin/about'
+      path: '/admin/about'
+      fullPath: '/admin/about'
+      preLoaderRoute: typeof AdminAboutLazyImport
       parentRoute: typeof rootRoute
     }
-    '/gallery': {
-      id: '/gallery'
-      path: '/gallery'
-      fullPath: '/gallery'
-      preLoaderRoute: typeof GalleryImport
+    '/admin/articles': {
+      id: '/admin/articles'
+      path: '/admin/articles'
+      fullPath: '/admin/articles'
+      preLoaderRoute: typeof AdminArticlesLazyImport
       parentRoute: typeof rootRoute
     }
-    '/index1': {
-      id: '/index1'
-      path: '/index1'
-      fullPath: '/index1'
-      preLoaderRoute: typeof Index1Import
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/auth/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginLazyImport
       parentRoute: typeof rootRoute
     }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginImport
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminIndexLazyImport
       parentRoute: typeof rootRoute
     }
   }
@@ -136,93 +141,93 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  '/': typeof RouteRoute
-  '/about': typeof AboutRoute
-  '/articles': typeof ArticlesRoute
-  '/blog': typeof BlogRoute
-  '/detail': typeof DetailRoute
-  '/gallery': typeof GalleryRoute
-  '/index1': typeof Index1Route
-  '/login': typeof LoginRoute
+  '/': typeof IndexLazyRoute
+  '/admin/blog': typeof AdminBlogRoute
+  '/admin/edit': typeof AdminEditRoute
+  '/admin/gallery': typeof AdminGalleryRoute
+  '/admin/about': typeof AdminAboutLazyRoute
+  '/admin/articles': typeof AdminArticlesLazyRoute
+  '/auth/login': typeof AuthLoginLazyRoute
+  '/admin': typeof AdminIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof RouteRoute
-  '/about': typeof AboutRoute
-  '/articles': typeof ArticlesRoute
-  '/blog': typeof BlogRoute
-  '/detail': typeof DetailRoute
-  '/gallery': typeof GalleryRoute
-  '/index1': typeof Index1Route
-  '/login': typeof LoginRoute
+  '/': typeof IndexLazyRoute
+  '/admin/blog': typeof AdminBlogRoute
+  '/admin/edit': typeof AdminEditRoute
+  '/admin/gallery': typeof AdminGalleryRoute
+  '/admin/about': typeof AdminAboutLazyRoute
+  '/admin/articles': typeof AdminArticlesLazyRoute
+  '/auth/login': typeof AuthLoginLazyRoute
+  '/admin': typeof AdminIndexLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof RouteRoute
-  '/about': typeof AboutRoute
-  '/articles': typeof ArticlesRoute
-  '/blog': typeof BlogRoute
-  '/detail': typeof DetailRoute
-  '/gallery': typeof GalleryRoute
-  '/index1': typeof Index1Route
-  '/login': typeof LoginRoute
+  '/': typeof IndexLazyRoute
+  '/admin/blog': typeof AdminBlogRoute
+  '/admin/edit': typeof AdminEditRoute
+  '/admin/gallery': typeof AdminGalleryRoute
+  '/admin/about': typeof AdminAboutLazyRoute
+  '/admin/articles': typeof AdminArticlesLazyRoute
+  '/auth/login': typeof AuthLoginLazyRoute
+  '/admin/': typeof AdminIndexLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/about'
-    | '/articles'
-    | '/blog'
-    | '/detail'
-    | '/gallery'
-    | '/index1'
-    | '/login'
+    | '/admin/blog'
+    | '/admin/edit'
+    | '/admin/gallery'
+    | '/admin/about'
+    | '/admin/articles'
+    | '/auth/login'
+    | '/admin'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
-    | '/articles'
-    | '/blog'
-    | '/detail'
-    | '/gallery'
-    | '/index1'
-    | '/login'
+    | '/admin/blog'
+    | '/admin/edit'
+    | '/admin/gallery'
+    | '/admin/about'
+    | '/admin/articles'
+    | '/auth/login'
+    | '/admin'
   id:
     | '__root__'
     | '/'
-    | '/about'
-    | '/articles'
-    | '/blog'
-    | '/detail'
-    | '/gallery'
-    | '/index1'
-    | '/login'
+    | '/admin/blog'
+    | '/admin/edit'
+    | '/admin/gallery'
+    | '/admin/about'
+    | '/admin/articles'
+    | '/auth/login'
+    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  RouteRoute: typeof RouteRoute
-  AboutRoute: typeof AboutRoute
-  ArticlesRoute: typeof ArticlesRoute
-  BlogRoute: typeof BlogRoute
-  DetailRoute: typeof DetailRoute
-  GalleryRoute: typeof GalleryRoute
-  Index1Route: typeof Index1Route
-  LoginRoute: typeof LoginRoute
+  IndexLazyRoute: typeof IndexLazyRoute
+  AdminBlogRoute: typeof AdminBlogRoute
+  AdminEditRoute: typeof AdminEditRoute
+  AdminGalleryRoute: typeof AdminGalleryRoute
+  AdminAboutLazyRoute: typeof AdminAboutLazyRoute
+  AdminArticlesLazyRoute: typeof AdminArticlesLazyRoute
+  AuthLoginLazyRoute: typeof AuthLoginLazyRoute
+  AdminIndexLazyRoute: typeof AdminIndexLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  RouteRoute: RouteRoute,
-  AboutRoute: AboutRoute,
-  ArticlesRoute: ArticlesRoute,
-  BlogRoute: BlogRoute,
-  DetailRoute: DetailRoute,
-  GalleryRoute: GalleryRoute,
-  Index1Route: Index1Route,
-  LoginRoute: LoginRoute,
+  IndexLazyRoute: IndexLazyRoute,
+  AdminBlogRoute: AdminBlogRoute,
+  AdminEditRoute: AdminEditRoute,
+  AdminGalleryRoute: AdminGalleryRoute,
+  AdminAboutLazyRoute: AdminAboutLazyRoute,
+  AdminArticlesLazyRoute: AdminArticlesLazyRoute,
+  AuthLoginLazyRoute: AuthLoginLazyRoute,
+  AdminIndexLazyRoute: AdminIndexLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -236,38 +241,38 @@ export const routeTree = rootRoute
       "filePath": "__root.lazy.tsx",
       "children": [
         "/",
-        "/about",
-        "/articles",
-        "/blog",
-        "/detail",
-        "/gallery",
-        "/index1",
-        "/login"
+        "/admin/blog",
+        "/admin/edit",
+        "/admin/gallery",
+        "/admin/about",
+        "/admin/articles",
+        "/auth/login",
+        "/admin/"
       ]
     },
     "/": {
-      "filePath": "route.tsx"
+      "filePath": "index.lazy.tsx"
     },
-    "/about": {
-      "filePath": "about.tsx"
+    "/admin/blog": {
+      "filePath": "admin/blog.tsx"
     },
-    "/articles": {
-      "filePath": "articles.tsx"
+    "/admin/edit": {
+      "filePath": "admin/edit.tsx"
     },
-    "/blog": {
-      "filePath": "blog.tsx"
+    "/admin/gallery": {
+      "filePath": "admin/gallery.tsx"
     },
-    "/detail": {
-      "filePath": "detail.tsx"
+    "/admin/about": {
+      "filePath": "admin/about.lazy.tsx"
     },
-    "/gallery": {
-      "filePath": "gallery.tsx"
+    "/admin/articles": {
+      "filePath": "admin/articles.lazy.tsx"
     },
-    "/index1": {
-      "filePath": "index1.tsx"
+    "/auth/login": {
+      "filePath": "auth/login.lazy.tsx"
     },
-    "/login": {
-      "filePath": "login.tsx"
+    "/admin/": {
+      "filePath": "admin/index.lazy.tsx"
     }
   }
 }
