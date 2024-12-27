@@ -1,18 +1,31 @@
 import { ArticlePublishForm } from '@/components/article-publish-form'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Layout } from '@/layout'
 import { usePostEdit } from '@/services/edit'
 import { UpdateType } from '@/types/edit.types'
+import { isLogin } from '@/utils/auth'
 import { ArticleFormValues } from '@/utils/schemas'
 import { uploadImage } from '@/utils/update'
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 import { MdCatalog, MdEditor } from 'md-editor-rt'
 import 'md-editor-rt/lib/style.css'
 import { useState } from 'react'
-export const Route = createLazyFileRoute('/admin/edit')({
-  component: RouteComponent
+export const Route = createFileRoute('/admin/edit')({
+  component: RouteComponent,
+  beforeLoad: () => {
+    // 判断是否登录
+    if (!isLogin()) {
+      return redirect({ to: '/auth/login' })
+    }
+  },
 })
 
 function RouteComponent() {
@@ -24,7 +37,7 @@ function RouteComponent() {
     summary: '',
     content: '',
     status: '发布',
-    author: '朝阳'
+    author: '朝阳',
   })
   const fromSet = (e: string, key: string) => {
     console.log(e, 'key:', key)
@@ -35,21 +48,29 @@ function RouteComponent() {
     } else {
       setFrom((state) => ({
         ...state,
-        [key]: e
+        [key]: e,
       }))
     }
   }
-  const onUploadImg = async (files: File[], callback: (urls: string[]) => void) => {
+  const onUploadImg = async (
+    files: File[],
+    callback: (urls: string[]) => void,
+  ) => {
     const res = await uploadImage(files[0])
     callback([res])
   }
   const [state] = useState({
     text: '# 标题',
-    scrollElement: document.documentElement
+    scrollElement: document.documentElement,
   })
 
   const { mutate } = usePostEdit()
-  const handleFormSubmit = async ({ category, tags, coverImage, summary }: ArticleFormValues) => {
+  const handleFormSubmit = async ({
+    category,
+    tags,
+    coverImage,
+    summary,
+  }: ArticleFormValues) => {
     console.log('父组件的数据')
     fromSet(category, 'category_id')
     fromSet(tags, 'tags')
@@ -67,7 +88,10 @@ function RouteComponent() {
       <div className="flex flex-col gap-3 h-full">
         {/* <Button onClick={() => handleFormSubmit(21)}>123</Button> */}
         <div className="flex gap-3 mb-3">
-          <Input placeholder="输入文章标题..." onChange={(e) => fromSet(e.target.value, 'title')} />
+          <Input
+            placeholder="输入文章标题..."
+            onChange={(e) => fromSet(e.target.value, 'title')}
+          />
           <Dialog open={isModalOpen} onOpenChange={(e) => setIsModalOpen(e)}>
             <DialogTrigger asChild>
               <Button onClick={() => setIsModalOpen(true)}>发布</Button>
@@ -75,7 +99,10 @@ function RouteComponent() {
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>发布文章</DialogTitle>
-                <ArticlePublishForm onSubmit={handleFormSubmit} onCancel={() => setIsModalOpen(false)}></ArticlePublishForm>
+                <ArticlePublishForm
+                  onSubmit={handleFormSubmit}
+                  onCancel={() => setIsModalOpen(false)}
+                ></ArticlePublishForm>
               </DialogHeader>
             </DialogContent>
           </Dialog>

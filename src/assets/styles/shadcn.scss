@@ -53,6 +53,22 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%
   }
+  ::view-transition-new(root),
+  ::view-transition-old(root) {
+    animation: none;
+  }
+
+  ::view-transition-group(root) {
+    animation: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    ::view-transition-group(*),
+    ::view-transition-old(*),
+    ::view-transition-new(*) {
+      animation: none !important;
+    }
+  }
 }
 @layer base {
   * {

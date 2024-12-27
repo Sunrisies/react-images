@@ -19,14 +19,4 @@ export const usePostEdit = () => {
       return data
     }
   })
-  // return mutate
-  // const { code, data } = await post<addArticleType>('/article', params)
-  // console.log(data, 'code, data')
-  // if (code === 200) {
-  //   message.success('发布成功')
-  // } else {
-  //   message.error('发布失败')
-  // }
-  // callback()
-  // return data
 }

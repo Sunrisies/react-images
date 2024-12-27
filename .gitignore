@@ -11,9 +11,10 @@ dist/
 .vercel
 .netlify
 .wrangler
-
+.zip
 # IDE
 .vscode/*
 !.vscode/extensions.json
 .idea
 .history
+stats.html

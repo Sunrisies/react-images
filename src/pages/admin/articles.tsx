@@ -2,10 +2,17 @@ import Loading from '@/components/loading'
 import { Table } from '@/components/table'
 import { Layout } from '@/layout'
 import { useGetArticle } from '@/services/article'
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { isLogin } from '@/utils/auth'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 
-export const Route = createLazyFileRoute('/admin/articles')({
-  component: RouteComponent
+export const Route = createFileRoute('/admin/articles')({
+  component: RouteComponent,
+  beforeLoad: () => {
+    // 判断是否登录
+    if (!isLogin()) {
+      return redirect({to:'/auth/login'})
+    }
+  }
 })
 
 function RouteComponent() {
