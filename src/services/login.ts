@@ -22,6 +22,7 @@ type LoginReturnType = {
 export const usePostLogin = async (params: LoginAndRegisterType) => {
   const { post } = useAppAxios()
   const { code, data } = await post<LoginReturnType>('/auth/login', params)
+  console.log(data,code)
   if (code === 200) {
     // 添加到本地存储中
     sessionStorage.setItem('token', data.accessToken)

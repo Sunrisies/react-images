@@ -4,12 +4,13 @@ import { useQuery } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 
 export const useGetArticle = () => {
-  const { http } = useAppAxios()
+  const { get } = useAppAxios()
   return  useQuery<ArticleType[],AxiosError>({
     queryKey: ['repoData'],
     queryFn: async () => {
-      const response = await http.get(`/article/admin`)
-      return response.data
+      const {data} = await get<ArticleType[]>(`/article/admin`)
+      console.log(data,'================')
+      return data
     },
   })
 }
