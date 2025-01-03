@@ -1,153 +1,163 @@
-import * as React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { Pagination, PaginationProps, Tag } from 'antd'
-import { Button } from './ui/button'
+// import { Button } from './ui/button'
+import { Button } from 'antd'
 import { ArticleType } from '@/types/article.types'
 import dayjs from 'dayjs'
-
-
-
-const defaultData: ArticleType[] = [
-  {
-    id: 1,
-    title: 'React 入门教程',
-    cover: 'https://i.pravatar.cc/300',
-    category: '教程',
-    publish_time: '2021-01-01',
-    is_delete: false,
-    is_hide: false,
-    views: 1000,
-    is_top: false,
-    is_recommend: false
-  },
-  {
-    id: 2,
-    title: 'Vue 入门教程',
-    cover: 'https://i.pravatar.cc/300',
-    category: '教程',
-    publish_time: '2021-01-01',
-    is_delete: false,
-    is_hide: false,
-    views: 1000,
-    is_top: false,
-    is_recommend: false
-  },
-  {
-    id: 3,
-    title: 'Angular 入门教程',
-    cover: 'https://i.pravatar.cc/300',
-    category: '教程',
-    publish_time: '2021-01-01',
-    is_delete: false,
-    is_hide: false,
-    views: 1000,
-    is_top: false,
-    is_recommend: false
-  }
-]
+import { useDeleteArticle, useUpdateArticle } from '@/services/article'
 
 const columnHelper = createColumnHelper<ArticleType>()
+const ActionButton = ({
+  label,
+  activeLabel,
+  isActive,
+  onClick
+}: {
+  label: string
+  activeLabel: string
+  isActive: boolean
+  onClick: () => void
+}) => (
+  <Button
+    type={isActive ? 'primary' : 'dashed'}
+    style={{
+      backgroundColor: isActive ? 'var(--success-color)' : 'var(--error-color)',
+      color: 'var(--text-color)',
+      borderColor: isActive ? 'var(--success-color)' : 'var(--error-color)'
+    }}
+    onClick={onClick}
+  >
+    {isActive ? activeLabel : label}
+  </Button>
+)
 
-const columns = [
-  columnHelper.accessor('id', {
-    id: 'id',
-    header: '序号',
-    footer: (info) => console.log(info, 'info')
-  }),
-  columnHelper.accessor('title', {
-    id: 'title',
-    header: '标题',
-    footer: (info) => console.log(info, 'info')
-  }),
-  columnHelper.accessor('cover', {
-    id: 'cover',
-    header: '头像',
-    cell: ({ row }) => <img src={row.original.cover} alt={row.original.title} width="50" height="50" />,
-    footer: (info) => console.log(info, 'info')
-  }),
-  columnHelper.accessor('category', {
-    id: 'category',
-    header: '标签',
-    footer: (info) => console.log(info, 'info')
-  }),
-  columnHelper.accessor('publish_time', {
-    id: 'publish_time',
-    header: '发布时间',
-    cell: ({ row }) => <span>{dayjs(row.original.publish_time).format('YYYY-MM-DD HH:mm:ss')}</span>,
-    footer: (info) => console.log(info, 'info')
-  }),
-  columnHelper.accessor('is_delete', {
-    id: 'is_delete',
-    header: '是否删除',
-    cell: ({ row }) => {
-      return <Tag color={row.original.is_recommend ? 'purple' : 'green'}>{row.original.is_delete ? '删除' : '正常'}</Tag>
-    },
-    footer: (info) => <Tag color="purple">1231231 {info.column.id}</Tag>
-  }),
-  columnHelper.accessor('is_hide', {
-    id: 'is_hide',
-    header: '是否显示',
-    cell: ({ row }) => {
-      return <Tag color={row.original.is_recommend ? 'purple' : 'green'}>{row.original.is_hide ? '隐藏' : '显示'}</Tag>
-    },
-    footer: (info) => console.log(info, 'info')
-  }),
-  columnHelper.accessor('views', {
-    id: 'views',
-    header: '浏览量',
-    footer: (info) => console.log(info, 'info')
-  }),
-  columnHelper.accessor('is_top', {
-    id: 'is_top',
-    header: '是否置顶',
-    cell: ({ row }) => {
-      return <Tag color={row.original.is_recommend ? 'purple' : 'green'}>{row.original.is_top ? '置顶' : '不置顶'}</Tag>
-    },
-    footer: (info) => console.log(info, 'info')
-  }),
-  columnHelper.accessor('is_recommend', {
-    id: 'is_recommend',
-    header: '是否推荐',
-    cell: ({ row }) => {
-      return <Tag color={row.original.is_recommend ? 'purple' : 'green'}>{row.original.is_recommend ? '推荐' : '不推荐'}</Tag>
-    },
-    footer: (info) => console.log(info, 'info')
-  }),
-  columnHelper.group({
-    header: '操作',
-    cell: ({ row }) => {
-      return (
-        <div className="flex justify-center items-center space-x-2">
-          <Button
-            variant="destructive"
-            onClick={() => {
-              console.log(row.original)
-            }}
-          >
-            删除
-          </Button>
-          <Button
-            onClick={() => {
-              console.log(row.original)
-            }}
-          >
-            编辑
-          </Button>
-          <Button>{row.original.is_hide ? '显示' : '隐藏'}</Button>
-          <Button>{row.original.is_top ? '取消置顶' : '置顶'}</Button>
-          <Button>{row.original.is_recommend ? '取消推荐' : '推荐'}</Button>
-        </div>
-      )
-    }
-  })
-]
+export const Table: React.FC<{ list: ArticleType[],total: number,onChangePage: (page: number) => void }> = ({ list,total,onChangePage }) => {
+  const { mutate } = useDeleteArticle()
+  const { mutate: updateArticle, isIdle } = useUpdateArticle()
+  const columns = [
+    columnHelper.accessor('id', {
+      id: 'id',
+      header: '序号',
+      footer: (info) => console.log(info, 'info')
+    }),
+    columnHelper.accessor('title', {
+      id: 'title',
+      header: '标题',
+      footer: (info) => console.log(info, 'info')
+    }),
+    columnHelper.accessor('cover', {
+      id: 'cover',
+      header: '头像',
+      cell: ({ row }) => <img src={row.original.cover} alt={row.original.title} width="50" height="50" />,
+      footer: (info) => console.log(info, 'info')
+    }),
+    columnHelper.accessor('category', {
+      id: 'category',
+      header: '标签',
+      cell: ({ row }) => <Tag color="blue">{row.original.category.name}</Tag>,
+      footer: (info) => console.log(info, 'info')
+    }),
+    columnHelper.accessor('publish_time', {
+      id: 'publish_time',
+      header: '发布时间',
+      cell: ({ row }) => <span>{dayjs(row.original.publish_time).format('YYYY-MM-DD HH:mm:ss')}</span>,
+      footer: (info) => console.log(info, 'info')
+    }),
+    columnHelper.accessor('is_delete', {
+      id: 'is_delete',
+      header: '是否删除',
+      cell: ({ row }) => {
+        return <Tag color={row.original.is_delete ? 'red' : 'green'}>{row.original.is_delete ? '删除' : '正常'}</Tag>
+      },
+      footer: (info) => <Tag color="purple">1231231 {info.column.id}</Tag>
+    }),
+    columnHelper.accessor('is_hide', {
+      id: 'is_hide',
+      header: '是否显示',
+      cell: ({ row }) => {
+        return <Tag color={row.original.is_recommend ? 'purple' : 'green'}>{row.original.is_hide ? '隐藏' : '显示'}</Tag>
+      },
+      footer: (info) => console.log(info, 'info')
+    }),
+    columnHelper.accessor('views', {
+      id: 'views',
+      header: '浏览量',
+      footer: (info) => console.log(info, 'info')
+    }),
+    columnHelper.accessor('is_top', {
+      id: 'is_top',
+      header: '是否置顶',
+      cell: ({ row }) => {
+        return <Tag color={row.original.is_recommend ? 'purple' : 'green'}>{row.original.is_top ? '置顶' : '不置顶'}</Tag>
+      },
+      footer: (info) => console.log(info, 'info')
+    }),
+    columnHelper.accessor('is_recommend', {
+      id: 'is_recommend',
+      header: '是否推荐',
+      cell: ({ row }) => {
+        return <Tag color={row.original.is_recommend ? 'purple' : 'green'}>{row.original.is_recommend ? '推荐' : '不推荐'}</Tag>
+      },
+      footer: (info) => console.log(info, 'info')
+    }),
+    columnHelper.group({
+      header: '操作',
+      cell: ({ row }) => {
+        return (
+          <div className="flex justify-center items-center space-x-2 gap-1">
+            {row.original.is_delete ? null : (
+              <Button
+                variant="destructive"
+                onClick={() => {
+                  mutate(row.original.id)
+                  console.log(row.original)
+                }}
+              >
+                删除
+              </Button>
+            )}
+            <Button
+              onClick={() => {
+                console.log(row.original)
+              }}
+            >
+              编辑
+            </Button>
+            <ActionButton
+              label="隐藏"
+              activeLabel="显示"
+              isActive={row.original.is_hide}
+              onClick={() => updateArticle({ id: row.original.id, is_hide: !row.original.is_hide })}
+            />
 
-export const  Table:React.FC<{list: ArticleType[]}> =({list}) => {
-  const [data, _setData] = React.useState(() => [...list])
+            <ActionButton
+              label="置顶"
+              activeLabel="取消置顶"
+              isActive={row.original.is_top}
+              onClick={() => updateArticle({ id: row.original.id, is_top: !row.original.is_top })}
+            />
+
+            <ActionButton
+              label="推荐"
+              activeLabel="取消推荐"
+              isActive={row.original.is_recommend}
+              onClick={() => updateArticle({ id: row.original.id, is_recommend: !row.original.is_recommend })}
+            />
+          </div>
+        )
+      }
+    })
+  ]
+  const [data, setData] = useState(() => [...list])
+  useEffect(() => {
+    setData([...list])
+  }, [list])
+  
   const onChange: PaginationProps['onChange'] = (pageNumber) => {
-    console.log('Page: ', pageNumber);
-  };
+    console.log('Page: ', pageNumber)
+  }
   const table = useReactTable({
     data,
     columns,
@@ -180,7 +190,7 @@ export const  Table:React.FC<{list: ArticleType[]}> =({list}) => {
           ))}
         </tbody>
       </table>
-      <Pagination showQuickJumper defaultCurrent={2} total={500} onChange={onChange} />
+      <Pagination showQuickJumper defaultCurrent={1} total={total} onChange={onChangePage} />
     </div>
   )
 }
