@@ -14,6 +14,7 @@ type ActionButtonProps = {
   onClick: () => void
 }
 const ActionButton = ({ label, activeLabel, isActive, onClick }: ActionButtonProps) => (
+
   <Button
     type={isActive ? 'primary' : 'dashed'}
     style={{
@@ -142,7 +143,6 @@ export const Table: FC<TableProps> = ({ list, total, onChangePage }) => {
   useEffect(() => {
     setData([...list])
   }, [list])
-
   const table = useReactTable({
     data,
     columns,

@@ -3,7 +3,7 @@ import { Table } from '@/components/table'
 import { Layout } from '@/layout'
 import { useGetArticle } from '@/services/article'
 import { isLogin } from '@/utils/auth'
-import { createFileRoute, redirect } from '@tanstack/react-router'
+import { createFileRoute, redirect, useNavigate, useSearch } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/admin/articles')({
   component: RouteComponent,
@@ -20,6 +20,7 @@ export const Route = createFileRoute('/admin/articles')({
 function RouteComponent() {
   const navigate = Route.useNavigate()
   const { page } = Route.useSearch()
+
   const { data, isPending, error } = useGetArticle({ page: page, limit: 10 })
   if (isPending) return Loading()
   if (error) return <div>Error: {error.message}</div>
