@@ -4,6 +4,7 @@ interface Result<T> {
   code: number;
   message: string;
   data: T;
+  total?: number
 }
 export const useAppAxios = () => {
   const http = axios.create({

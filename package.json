@@ -48,6 +48,7 @@
     "@tanstack/router-devtools": "^1.86.1",
     "@tanstack/virtual-file-routes": "^1.87.6",
     "@vitejs/plugin-react-swc": "^3.7.2",
+    "ahooks": "^3.8.4",
     "antd": "^5.22.3",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
@@ -59,8 +60,10 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.54.0",
+    "react-select": "^5.9.0",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
+    "use-immer": "^0.11.0",
     "zod": "^3.23.8"
   },
   "config": {

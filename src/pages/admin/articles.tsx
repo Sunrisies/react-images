@@ -8,20 +8,28 @@ import { createFileRoute, redirect } from '@tanstack/react-router'
 export const Route = createFileRoute('/admin/articles')({
   component: RouteComponent,
   beforeLoad: () => {
-    // 判断是否登录
     if (!isLogin()) {
-      return redirect({to:'/auth/login'})
+      return redirect({ to: '/auth/login' })
     }
-  }
+  },
+  validateSearch: (search: { page: string }) => ({
+    page: search.page ? Number(search.page) : 1
+  })
 })
 
 function RouteComponent() {
-  const { data, isPending, error } = useGetArticle()
+  const navigate = Route.useNavigate()
+  const { page } = Route.useSearch()
+  const { data, isPending, error } = useGetArticle({ page: page, limit: 10 })
   if (isPending) return Loading()
   if (error) return <div>Error: {error.message}</div>
   return (
     <Layout>
-      <Table list={data}></Table>
+      <Table
+        list={data.data}
+        total={data.total!}
+        onChangePage={(currenPage) => navigate({ search: { page: currenPage } })}
+      ></Table>
     </Layout>
   )
 }

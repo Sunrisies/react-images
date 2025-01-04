@@ -5,7 +5,7 @@ export type UpdateType = {
   author: string
   category_id: number | undefined
   tags: number[]
-  cover: string
+  cover?: string
   summary: string
 }
 export type addArticleType = {

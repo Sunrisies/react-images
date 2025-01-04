@@ -1,57 +1,58 @@
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { request } from '@/utils/fetch'
 import { ArticleFormValues, articleSchema } from '@/utils/schemas'
 import { uploadImage } from '@/utils/update'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
-interface TypeOptions {
+import Select, { MultiValue } from 'react-select'
+type TypeOptions = {
   value: number
   label: string
 }
 
 const getTags = async (): Promise<TypeOptions[]> => {
   const { data, code } = await request.get<TypeOptions[]>(`/tags`)
-  if (code === 200) {
-    return data
-  }
-  return []
+  return code === 200 ? data : []
 }
 const getCategories = async (): Promise<TypeOptions[]> => {
   const { data, code } = await request.get<TypeOptions[]>(`/categories`)
-  if (code === 200) {
-    return data
-  }
-  return []
+  return code === 200 ? data : []
 }
-
-
-export function ArticlePublishForm({ onSubmit, onCancel }: { onSubmit: (values: ArticleFormValues) => void, onCancel: () => void }) {
-
+type ArticlePublishProps = {
+  readonly onSubmit: (values: ArticleFormValues) => void
+  readonly onCancel: () => void
+}
+export function ArticlePublishForm({ onSubmit, onCancel }: ArticlePublishProps) {
   const form = useForm<ArticleFormValues>({
     resolver: zodResolver(articleSchema),
     defaultValues: {
       category: undefined,
-      tags: '',
+      tags: [],
       summary: '',
       coverImage: ''
     }
   })
 
+  const {
+    data: tags,
+    isLoading: isTagsLoading,
+    isError: isTagsError
+  } = useQuery<TypeOptions[]>({
+    queryKey: ['tags'], // 查询的唯一标识
+    queryFn: getTags // 查询函数
+  })
 
-  const [tags, setTags] = useState<TypeOptions[]>([])
-  const [categories, setCategories] = useState<TypeOptions[]>([])
-  useEffect(() => {
-    getTags().then((data) => {
-      setTags(data)
-    })
-    getCategories().then((data) => {
-      setCategories(data)
-    })
-  }, [])
+  const {
+    data: categories,
+    isLoading: isCategoriesLoading,
+    isError: isCategoriesError
+  } = useQuery<TypeOptions[]>({
+    queryKey: ['categories'], // 查询的唯一标识
+    queryFn: getCategories // 查询函数
+  })
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
@@ -62,31 +63,42 @@ export function ArticlePublishForm({ onSubmit, onCancel }: { onSubmit: (values: 
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-2xl mx-auto">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 max-w-2xl">
         <FormField
           control={form.control}
           name="category"
           render={({ field }) => (
-            <FormItem className="flex ">
-              <FormLabel className="w-20 leading-10">
+            <FormItem className="flex items-center">
+              <FormLabel className="w-20">
                 分类<span className="text-red-500">*</span>
               </FormLabel>
-              <FormControl>
-                <div className="flex flex-wrap gap-2">
-                  {categories.map((category) => (
-                    <Button
-                      key={category.value}
-                      type="button"
-                      className={`${form.getValues('category') === category.value.toString() ? 'bg-green-500 text-white' : 'bg-white text-gray-500'
-                        }`}
-                      onClick={() => form.setValue('category', category.value.toString())}
-                    >
-                      {category.label}
-                    </Button>
-                  ))}
-                </div>
-              </FormControl>
-              <FormMessage />
+              <div className="flex flex-col gap-2 justify-center items-center">
+                <FormControl>
+                  <div className="flex flex-wrap gap-2">
+                    {isCategoriesLoading ? (
+                      <p>加载中...</p>
+                    ) : isCategoriesError ? (
+                      <p>加载分类失败</p>
+                    ) : (
+                      categories?.map((category) => (
+                        <Button
+                          key={category.value}
+                          type="button"
+                          className={`${
+                            form.getValues('category') === category.value.toString()
+                              ? 'bg-green-500 text-white'
+                              : 'bg-white text-gray-500'
+                          }`}
+                          onClick={() => form.setValue('category', category.value.toString())}
+                        >
+                          {category.label}
+                        </Button>
+                      ))
+                    )}
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </div>
             </FormItem>
           )}
         />
@@ -95,33 +107,41 @@ export function ArticlePublishForm({ onSubmit, onCancel }: { onSubmit: (values: 
           control={form.control}
           name="tags"
           render={({ field }) => (
-            <FormItem className="flex items-center">
-              <FormLabel className="w-20 ">
+            <FormItem className="flex items-center !mt-2">
+              <FormLabel className="w-20">
                 添加标签<span className="text-red-500">*</span>
               </FormLabel>
-              <FormControl>
-                <Select value={field.value} onValueChange={(e) => { form.setValue('tags', e) }}>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="请选择标签" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {tags.map((tag) => (
-                        <SelectItem key={tag.value} value={tag.value.toString()}>{tag.label}</SelectItem>
-                      ))}
-
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-
-              </FormControl>
-              <FormMessage />
+              <div className="flex flex-col flex-1 max-w-full">
+                <FormControl>
+                  {isTagsLoading ? (
+                    <p>加载中...</p>
+                  ) : isTagsError ? (
+                    <p>加载标签失败</p>
+                  ) : (
+                    <Select
+                      onChange={(e: MultiValue<TypeOptions>) => {
+                        const selectedTags = e.map((option) => ({
+                          value: option.value,
+                          label: option.label
+                        }))
+                        form.setValue('tags', selectedTags)
+                      }}
+                      isMulti
+                      name="tags"
+                      options={tags}
+                      className="flex-1"
+                      classNamePrefix="select"
+                    />
+                  )}
+                </FormControl>
+                <FormMessage className="mt-2 ml-4" />
+              </div>
             </FormItem>
           )}
         />
 
-        <FormItem className="flex">
-          <FormLabel className="w-20 leading-10">文章封面</FormLabel>
+        <FormItem className="flex !mt-2">
+          <FormLabel className="w-20 leading-10 ">文章封面</FormLabel>
           <div>
             <FormControl>
               <div
@@ -147,26 +167,28 @@ export function ArticlePublishForm({ onSubmit, onCancel }: { onSubmit: (values: 
           control={form.control}
           name="summary"
           render={({ field }) => (
-            <FormItem className="flex">
+            <FormItem className="flex !mt-2">
               <FormLabel className="w-20 leading-10">
                 编辑摘要<span className="text-red-500">*</span>
               </FormLabel>
-              <FormControl className="flex-1">
-                <div className="relative">
-                  <Textarea
-                    {...field}
-                    placeholder="请输入文章摘要"
-                    className="min-h-[100px]"
-                    onChange={(e) => {
-                      if (e.target.value.length <= 100) {
-                        field.onChange(e)
-                      }
-                    }}
-                  />
-                  <span className="absolute bottom-2 right-2 text-gray-400">{field.value?.length || 0}/100</span>
-                </div>
-              </FormControl>
-              <FormMessage />
+              <div className="flex flex-col gap-2 flex-1">
+                <FormControl className="flex-1">
+                  <div className="relative">
+                    <Textarea
+                      {...field}
+                      placeholder="请输入文章摘要"
+                      className="min-h-[100px]"
+                      onChange={(e) => {
+                        if (e.target.value.length <= 100) {
+                          field.onChange(e)
+                        }
+                      }}
+                    />
+                    <span className="absolute bottom-2 right-2 text-gray-400">{field.value?.length || 0}/100</span>
+                  </div>
+                </FormControl>
+                <FormMessage className="ml-4" />
+              </div>
             </FormItem>
           )}
         />
@@ -175,7 +197,7 @@ export function ArticlePublishForm({ onSubmit, onCancel }: { onSubmit: (values: 
           <Button type="button" variant="outline" onClick={onCancel}>
             取消
           </Button>
-          <Button type="submit" >确定并发布</Button>
+          <Button type="submit">确定并发布</Button>
         </div>
       </form>
     </Form>
