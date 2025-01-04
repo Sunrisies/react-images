@@ -3,7 +3,7 @@ import { Table } from '@/components/table'
 import { Layout } from '@/layout'
 import { useGetArticle } from '@/services/article'
 import { isLogin } from '@/utils/auth'
-import { createFileRoute, redirect, useNavigate, useSearch } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/admin/articles')({
   component: RouteComponent,
