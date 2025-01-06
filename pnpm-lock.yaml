@@ -81,8 +81,8 @@ importers:
         specifier: ^0.468.0
         version: 0.468.0(react@18.3.1)
       md-editor-rt:
-        specifier: ^5.0.2
-        version: 5.0.2(@codemirror/view@6.35.2)(@lezer/common@1.2.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.1.1
+        version: 5.1.1(@codemirror/view@6.35.2)(@lezer/common@1.2.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -2596,8 +2596,8 @@ packages:
     resolution: {integrity: sha512-a54IwgWPaeBCAAsv13YgmALOF1elABB08FxO9i+r4VFk5Vl4pKokRPeX8u5TCgSsPi6ec1otfLjdOpVcgbpshg==}
     hasBin: true
 
-  md-editor-rt@5.0.2:
-    resolution: {integrity: sha512-0jrU1wxvWPVTMjUJEeBL/cmnuzDfWxYaLSHCJ6tnEqyOuP1FSdxj5MoZ5ALQFwDa2GsYDIaPePZGL2UBiWCvDA==}
+  md-editor-rt@5.1.1:
+    resolution: {integrity: sha512-SyzFu4inPjfEcl/FV7BNVnetyesYHYaUEFnDzhsRtCIRRzKGS0wPEN6zdTZgjSMWFFtbvDVP727Tx4tFZY3Msw==}
     peerDependencies:
       react: '>=18.0.0'
       react-dom: '>=18.0.0'
@@ -6374,7 +6374,7 @@ snapshots:
       punycode.js: 2.3.1
       uc.micro: 2.1.0
 
-  md-editor-rt@5.0.2(@codemirror/view@6.35.2)(@lezer/common@1.2.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  md-editor-rt@5.1.1(@codemirror/view@6.35.2)(@lezer/common@1.2.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@codemirror/lang-markdown': 6.3.1
       '@codemirror/language-data': 6.5.1(@codemirror/view@6.35.2)

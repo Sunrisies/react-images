@@ -28,7 +28,6 @@ const DEFAULT_ARTICLE = {
 
 const useArticleForm = () => {
   const [form, setForm] = useImmer<UpdateType>(DEFAULT_ARTICLE)
-
   const updateField = <K extends keyof UpdateType>(value: UpdateType[K], key: K) => {
     setForm((draft) => {
       draft[key] = value
@@ -83,7 +82,7 @@ function RouteComponent() {
     const updatedForm = {
       ...form,
       category_id: +category,
-      tags: [+tags],
+      tags: tags.map((item) => item.value),
       cover: coverImage,
       summary: summary!
     }

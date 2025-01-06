@@ -1,19 +1,20 @@
 {
   "compilerOptions": {
-    "strict": true,
-    "esModuleInterop": true,
-    "jsx": "react-jsx",
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "strict": true, // 启用严格模式
+    "esModuleInterop": true, // 允许模块和命名空间导入
+    "jsx": "react-jsx", // 使用React的jsx语法
+    "target": "ESNext", // 编译目标
+    "module": "ESNext", // 模块类型
+    "moduleResolution": "Bundler", // 模块解析策略
     "experimentalDecorators": true, // 启用装饰器
     "emitDecoratorMetadata": true, // 给装饰器加上元数据
-    "baseUrl": ".",
+    "baseUrl": ".", // 根目录
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"] // 路径别名
     },
-    "outDir": "./dist",
+    "outDir": "./dist", // 输出目录
+    "skipLibCheck": true // 跳过库检查
   },
-  "include": ["src/**/*","./declarations.d.ts"],
-  "exclude": ["node_modules", "dist","**/node_modules/**"]
+  "include": ["src/**/*","./declarations.d.ts"], // 包含的文件
+  "exclude": ["node_modules/*", "dist","**/node_modules/**"] // 排除的文件
 }
