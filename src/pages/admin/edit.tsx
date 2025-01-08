@@ -10,10 +10,11 @@ import { ArticleFormValues } from '@/utils/schemas'
 import { uploadImage } from '@/utils/update'
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { message } from 'antd'
-import { MdCatalog, MdEditor } from 'md-editor-rt'
+import { MdEditor } from 'md-editor-rt'
 import 'md-editor-rt/lib/style.css'
 import { useState } from 'react'
 import { useImmer } from 'use-immer'
+import styles from '@/assets/styles/edit.module.css'
 
 const DEFAULT_ARTICLE = {
   title: '',
@@ -23,7 +24,9 @@ const DEFAULT_ARTICLE = {
   summary: '',
   content: '',
   status: '发布',
-  author: '朝阳'
+  author: '朝阳',
+  description: '',
+  size: 0
 }
 
 const useArticleForm = () => {
@@ -46,16 +49,16 @@ interface ArticleEditorProps {
   onUploadImg: (files: File[], callback: (urls: string[]) => void) => void // 图片上传回调
 }
 const ArticleEditor = ({ content, onContentChange, onUploadImg }: ArticleEditorProps) => {
-  const [state] = useState({
-    text: '',
-    scrollElement: document.documentElement
-  })
-
   return (
-    <>
-      <MdEditor modelValue={content} className="flex-1" onChange={onContentChange} onUploadImg={onUploadImg} />
-      <MdCatalog editorId="my-editor" scrollElement={state.scrollElement} />
-    </>
+    <MdEditor
+      value={content}
+      style={{ height: 'calc(100vh - 160px)', maxWidth: 'calc(100vw - 300px)' }}
+      onChange={onContentChange}
+      onUploadImg={onUploadImg}
+      className={styles.mdEditor}
+      autoDetectCode={true}
+      showToolbarName={true}
+    />
   )
 }
 
@@ -84,7 +87,9 @@ function RouteComponent() {
       category_id: +category,
       tags: tags.map((item) => item.value),
       cover: coverImage,
-      summary: summary!
+      summary: summary!,
+      description: form.content.slice(0, 200),
+      size: form.content.length
     }
 
     try {
@@ -103,7 +108,7 @@ function RouteComponent() {
 
   return (
     <Layout>
-      <div className="flex flex-col gap-3 h-full">
+      <div className="flex flex-col gap-3 h-full ">
         <div className="flex gap-3 mb-3">
           <Input placeholder="输入文章标题..." value={form.title} onChange={(e) => updateField(e.target.value, 'title')} />
           <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>

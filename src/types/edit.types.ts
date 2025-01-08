@@ -7,6 +7,8 @@ export type UpdateType = {
   tags: number[]
   cover?: string
   summary: string
+  description:string
+  size:number
 }
 export type addArticleType = {
   code: number

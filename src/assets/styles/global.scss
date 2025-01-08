@@ -1,6 +1,6 @@
 @import url('./shadcn.scss');
 @import url('./tailwind.scss');
-@import url('./loading.scss');
+// @import url('./loading.scss');
 :root {
   --purple-primary: #727cf5;
   --purple-primary-active: #575dcf;
@@ -33,6 +33,12 @@
 ::-webkit-scrollbar-corner {
   background-color: #f1f1f1; /* 角落的颜色 */
 }
-input,button{
+input,
+button {
   margin: 0 !important;
+}
+.md-editor-toolbar-item {
+  svg {
+    box-sizing: content-box !important;
+  }
 }
