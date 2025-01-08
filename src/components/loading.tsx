@@ -1,17 +1,23 @@
-export default function Loading() {
+import '@/assets/styles/loading.scss'
+
+export default () => {
   return (
-    <div className="preloader_box">
-      <div className="preloader_left"></div>
-      <div className="preloader_right"></div>
-      <div className="preloader">
-        <span className="inner">C</span>
-        <span className="inner">H</span>
-        <span className="inner">A</span>
-        <span className="inner">O</span>
-        <span className="inner">Y</span>
-        <span className="inner">A</span>
-        <span className="inner">N</span>
-        <span className="inner">G</span>
+    <div className="loader-container">
+      <div className="main">
+        <div className="up">
+          <div className="loaders">
+            {[...Array(10)].map((_, index) => (
+              <div key={index} className={`loader`}></div>
+            ))}
+          </div>
+          <div className="loadersB">
+            {[...Array(9)].map((_, index) => (
+              <div key={index} className={`loaderA`}>
+                <div className={`ball ball${index}`}></div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )

@@ -1,200 +1,106 @@
-@import url("https://fonts.googleapis.com/css?family=Baloo+Bhaijaan&display=swap");
-.preloader_box {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: 9999;
-  transition: opacity 0.65s;
+.loader-container {
   display: flex;
-  height: 100vh;
   justify-content: center;
   align-items: center;
-  text-align: center;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
 }
-
-.preloader_box_none{
-  animation: none 0.3s ease-out;
-  animation-fill-mode: forwards; 
-}
-
-.preloader_left{
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 51%;
-  height: 100%;
-  background: var(--purple-primary);
-}
-
-.preloader_left_up{
-  animation: fadeIn1 0.3s ease-out;
-  animation-fill-mode: forwards; 
-}
-
-.preloader_left_down{
-  animation: fadeUp1 0.3s ease-out;
-  animation-fill-mode: forwards; 
-}
-
-.preloader_right{
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 51%;
-  height: 100%;
-  background: var(--purple-primary);
-}
-
-.preloader_right_up{
-  animation: fadeIn2 0.3s ease-out;
-  animation-fill-mode: forwards; 
-}
-
-.preloader_right_down{
-  animation: fadeUp2 0.3s ease-out;
-  animation-fill-mode: forwards; 
-}
-
-.preloader {
+.main {
   display: flex;
-  color: white;
-  font-size: 5em;
-  font-family: "Baloo Bhaijaan", "initial"; /* text-transform: uppercase; */
+  align-items: center;
+  justify-content: center;
 }
 
-.preloader_up{
-  animation: amplify 0.3s ease-out;
-  animation-fill-mode: forwards; 
+.loaders,
+.loadersB {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.preloader_down{
-  animation: reduce 0.3s ease-out;
-  animation-fill-mode: forwards; 
-}
+.loader {
+  position: absolute;
+  width: 1.15em;
+  height: 13em;
+  border-radius: 50px;
+  background: #e0e0e0;
 
-.preloader .inner {
-  text-shadow: 0 1px #bbb, 0 2px #bbb, 0 3px #bbb, 0 4px #bbb, 0 5px #bbb,
-    0 6px transparent, 0 7px transparent, 0 8px transparent, 0 9px transparent,
-    0 10px 10px rgba(0, 0, 0, 0.4);
-  transform: translateY(20px);
-  margin-left: 2px;
-  margin-right: 2px;
-}
-.preloader .inner:nth-child(1) {
-  animation: prebounce 0.4s infinite alternate;
-}
-.preloader .inner:nth-child(2) {
-  animation: prebounce 0.4s 0.1s infinite alternate;
-}
-.preloader .inner:nth-child(3) {
-  animation: prebounce 0.4s 0.2s infinite alternate;
-}
-.preloader .inner:nth-child(4) {
-  animation: prebounce 0.4s 0.3s infinite alternate;
-}
-.preloader .inner:nth-child(5) {
-  animation: prebounce 0.4s 0.4s infinite alternate;
-}
-.preloader .inner:nth-child(6) {
-  animation: prebounce 0.4s 0.5s infinite alternate;
-}
-.preloader .inner:nth-child(7) {
-  animation: prebounce 0.4s 0.6s infinite alternate;
-}
-.preloader .inner:nth-child(8) {
-  animation: prebounce 0.4s 0.6s infinite alternate;
-}
-@keyframes prebounce {
-  to {
-    text-shadow: 0 1px #bbb, 0 2px #bbb, 0 3px #bbb, 0 4px #bbb, 0 5px #bbb,
-      0 6px #bbb, 0 7px #bbb, 0 8px #bbb, 0 9px #bbb,
-      0 50px 25px rgba(0, 0, 0, 0.2);
-    transform: translateY(-20px);
+  &:after,
+  &:before {
+    content: '';
+    position: absolute;
+    width: 1.15em;
+    height: 5em;
+    background: #e0e0e0;
+    border-radius: 50px;
+    border: 1px solid #e2e2e2;
+    box-shadow:
+      inset 5px 5px 15px #d3d2d2ab,
+      inset -5px -5px 15px #e9e9e9ab;
+  }
+
+  &:after {
+    top: 0;
+    mask-image: linear-gradient(to bottom, black calc(100% - 48px), transparent 100%);
+  }
+
+  &:before {
+    bottom: 0;
+    right: 0;
+    mask-image: linear-gradient(to top, black calc(100% - 48px), transparent 100%);
   }
 }
 
-@media screen and (max-width: 800px) {
-  .preloader {
-    font-size: 3em;
+.loaderA {
+  position: absolute;
+  width: 1.15em;
+  height: 13em;
+  border-radius: 50px;
+  background: transparent;
+}
+
+.ball {
+  width: 1.15em;
+  height: 1.15em;
+  box-shadow:
+    rgba(0, 0, 0, 0.17) 0px -10px 10px 0px inset,
+    rgba(0, 0, 0, 0.15) 0px -15px 15px 0px inset,
+    rgba(0, 0, 0, 0.1) 0px -40px 20px 0px inset,
+    rgba(0, 0, 0, 0.06) 0px 2px 1px,
+    rgba(0, 0, 0, 0.09) 0px 4px 2px,
+    rgba(0, 0, 0, 0.09) 0px 8px 4px,
+    rgba(0, 0, 0, 0.09) 0px 16px 8px,
+    rgba(0, 0, 0, 0.09) 0px 32px 16px,
+    0px -1px 15px -8px rgba(0, 0, 0, 0.09);
+  border-radius: 50%;
+  transition: transform 800ms cubic-bezier(1, -0.4, 0, 1.4);
+  background-color: rgb(232, 232, 232, 1);
+  animation: 3.63s move ease-in-out infinite;
+}
+
+@for $i from 1 through 9 {
+  .ball#{$i} {
+    animation-delay: ($i) * 0.2s;
+  }
+
+  .loaderA:nth-child(#{$i}) {
+    transform: rotate($i * 20deg);
+  }
+  .loader:nth-child(#{$i}) {
+    transform: rotate($i * 20deg);
   }
 }
 
-@keyframes fadeIn1 {
+@keyframes move {
   0% {
-    opacity: 0;
-    transform: translateX(-100%);
+    transform: translateY(0rem);
+  }
+  50% {
+    transform: translateY(12rem);
   }
   100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes fadeIn2 {
-  0% {
-    opacity: 0;
-    transform: translateX(100%); 
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes fadeUp1 {
-  0% {
-    opacity: 1;
-    transform: translateX(0); 
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(-100%);
-  }
-}
-
-@keyframes fadeUp2 {
-  0% {
-    opacity: 1;
-    transform: translateX(0); 
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-}
-
-@keyframes reduce {
-  0% {
-    opacity: 1;
-    transform: scale(1,1); 
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0.8,0.8); 
-  }
-}
-
-@keyframes amplify {
-  0% {
-    opacity: 0;
-    transform: scale(0.8,0.8); 
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1,1); 
-  }
-}
-
-@keyframes none {
-  0% {
-    display: block;
-  }
-  100% {
-    display: none;
-    z-index: -1;
-    visibility: hidden;
+    transform: translateY(0rem);
   }
 }
