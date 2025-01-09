@@ -1,5 +1,5 @@
 import styles from '@/assets/styles/login.module.css'
-import { LoginAndRegisterType, usePostLogin } from '@/services/login'
+import { LoginAndRegisterType, usePostLogin, usePostRegister } from '@/services/login'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { Button, Form, Input } from 'antd'
 import { useState } from 'react'
@@ -9,17 +9,18 @@ export const Route = createLazyFileRoute('/auth/login')({
 
 function RouteComponent() {
   const navigate = useNavigate()
-  const [isSwitched, setIsSwitched] = useState(false)
+  const [isSwitched, setIsSwitched] = useState(true)
   const handleSwitch = () => {
     setIsSwitched(!isSwitched)
   }
   const logon = async (params: LoginAndRegisterType) => {
     console.log(params, '==1=21=12=')
-    const res = await usePostLogin(params)
+    await usePostLogin(params)
     navigate({ to: '/' })
   }
   const register = async (params: LoginAndRegisterType) => {
-    // const res = await usePostRegister(params)
+    await usePostRegister(params)
+    navigate({ to: '/' })
     // console.log(res, 'res注册之后')
   }
   return (
@@ -47,7 +48,6 @@ function RouteComponent() {
               </Form.Item>
 
               <Form.Item<LoginAndRegisterType>
-                // label="密码"
                 name="pass_word"
                 rules={[{ required: true, message: '请输入密码!' }]}
               >
