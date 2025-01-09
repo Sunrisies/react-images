@@ -15,6 +15,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './pages/__root.lazy'
 import { Route as IndexImport } from './pages/index'
 import { Route as AdminIndexImport } from './pages/admin/index'
+import { Route as AdminQrcodeImport } from './pages/admin/qrcode'
 import { Route as AdminPersonalInfoImport } from './pages/admin/personalInfo'
 import { Route as AdminGalleryImport } from './pages/admin/gallery'
 import { Route as AdminEditImport } from './pages/admin/edit'
@@ -51,6 +52,12 @@ const AdminAboutLazyRoute = AdminAboutLazyImport.update({
   path: '/admin/about',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./pages/admin/about.lazy').then((d) => d.Route))
+
+const AdminQrcodeRoute = AdminQrcodeImport.update({
+  id: '/admin/qrcode',
+  path: '/admin/qrcode',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const AdminPersonalInfoRoute = AdminPersonalInfoImport.update({
   id: '/admin/personalInfo',
@@ -128,6 +135,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPersonalInfoImport
       parentRoute: typeof rootRoute
     }
+    '/admin/qrcode': {
+      id: '/admin/qrcode'
+      path: '/admin/qrcode'
+      fullPath: '/admin/qrcode'
+      preLoaderRoute: typeof AdminQrcodeImport
+      parentRoute: typeof rootRoute
+    }
     '/admin/about': {
       id: '/admin/about'
       path: '/admin/about'
@@ -161,6 +175,7 @@ export interface FileRoutesByFullPath {
   '/admin/edit': typeof AdminEditRoute
   '/admin/gallery': typeof AdminGalleryRoute
   '/admin/personalInfo': typeof AdminPersonalInfoRoute
+  '/admin/qrcode': typeof AdminQrcodeRoute
   '/admin/about': typeof AdminAboutLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
   '/admin': typeof AdminIndexRoute
@@ -173,6 +188,7 @@ export interface FileRoutesByTo {
   '/admin/edit': typeof AdminEditRoute
   '/admin/gallery': typeof AdminGalleryRoute
   '/admin/personalInfo': typeof AdminPersonalInfoRoute
+  '/admin/qrcode': typeof AdminQrcodeRoute
   '/admin/about': typeof AdminAboutLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
   '/admin': typeof AdminIndexRoute
@@ -186,6 +202,7 @@ export interface FileRoutesById {
   '/admin/edit': typeof AdminEditRoute
   '/admin/gallery': typeof AdminGalleryRoute
   '/admin/personalInfo': typeof AdminPersonalInfoRoute
+  '/admin/qrcode': typeof AdminQrcodeRoute
   '/admin/about': typeof AdminAboutLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
   '/admin/': typeof AdminIndexRoute
@@ -200,6 +217,7 @@ export interface FileRouteTypes {
     | '/admin/edit'
     | '/admin/gallery'
     | '/admin/personalInfo'
+    | '/admin/qrcode'
     | '/admin/about'
     | '/auth/login'
     | '/admin'
@@ -211,6 +229,7 @@ export interface FileRouteTypes {
     | '/admin/edit'
     | '/admin/gallery'
     | '/admin/personalInfo'
+    | '/admin/qrcode'
     | '/admin/about'
     | '/auth/login'
     | '/admin'
@@ -222,6 +241,7 @@ export interface FileRouteTypes {
     | '/admin/edit'
     | '/admin/gallery'
     | '/admin/personalInfo'
+    | '/admin/qrcode'
     | '/admin/about'
     | '/auth/login'
     | '/admin/'
@@ -235,6 +255,7 @@ export interface RootRouteChildren {
   AdminEditRoute: typeof AdminEditRoute
   AdminGalleryRoute: typeof AdminGalleryRoute
   AdminPersonalInfoRoute: typeof AdminPersonalInfoRoute
+  AdminQrcodeRoute: typeof AdminQrcodeRoute
   AdminAboutLazyRoute: typeof AdminAboutLazyRoute
   AuthLoginLazyRoute: typeof AuthLoginLazyRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -247,6 +268,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminEditRoute: AdminEditRoute,
   AdminGalleryRoute: AdminGalleryRoute,
   AdminPersonalInfoRoute: AdminPersonalInfoRoute,
+  AdminQrcodeRoute: AdminQrcodeRoute,
   AdminAboutLazyRoute: AdminAboutLazyRoute,
   AuthLoginLazyRoute: AuthLoginLazyRoute,
   AdminIndexRoute: AdminIndexRoute,
@@ -268,6 +290,7 @@ export const routeTree = rootRoute
         "/admin/edit",
         "/admin/gallery",
         "/admin/personalInfo",
+        "/admin/qrcode",
         "/admin/about",
         "/auth/login",
         "/admin/"
@@ -290,6 +313,9 @@ export const routeTree = rootRoute
     },
     "/admin/personalInfo": {
       "filePath": "admin/personalInfo.tsx"
+    },
+    "/admin/qrcode": {
+      "filePath": "admin/qrcode.tsx"
     },
     "/admin/about": {
       "filePath": "admin/about.lazy.tsx"
