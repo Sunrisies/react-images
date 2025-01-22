@@ -28,7 +28,7 @@
     "tailwindcss": "^3.4.16",
     "terser": "^5.37.0",
     "typescript": "^5.7.2",
-    "vite": "^5.4.6",
+    "vite": "^5.4.12",
     "vite-plugin-compression": "^0.5.1"
   },
   "dependencies": {
