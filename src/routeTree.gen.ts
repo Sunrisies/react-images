@@ -14,18 +14,26 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './pages/__root.lazy'
 import { Route as IndexImport } from './pages/index'
-import { Route as AdminIndexImport } from './pages/admin/index'
-import { Route as AdminQrcodeImport } from './pages/admin/qrcode'
-import { Route as AdminPersonalInfoImport } from './pages/admin/personalInfo'
-import { Route as AdminGalleryImport } from './pages/admin/gallery'
-import { Route as AdminEditImport } from './pages/admin/edit'
-import { Route as AdminBlogImport } from './pages/admin/blog'
-import { Route as AdminArticlesImport } from './pages/admin/articles'
+import { Route as DashboardIndexImport } from './pages/dashboard/index'
+import { Route as DashboardQrcodeImport } from './pages/dashboard/qrcode'
+import { Route as DashboardPersonalInfoImport } from './pages/dashboard/personalInfo'
+import { Route as DashboardGalleryImport } from './pages/dashboard/gallery'
+import { Route as DashboardEditImport } from './pages/dashboard/edit'
+import { Route as DashboardBlogImport } from './pages/dashboard/blog'
+import { Route as DashboardArticlesImport } from './pages/dashboard/articles'
+import { Route as AuthForgotPasswordImport } from './pages/auth/forgot-password'
 
 // Create Virtual Routes
 
+const DashboardUsersLazyImport = createFileRoute('/dashboard/users')()
+const DashboardSettingsLazyImport = createFileRoute('/dashboard/settings')()
+const DashboardPostsLazyImport = createFileRoute('/dashboard/posts')()
+const DashboardMediaLazyImport = createFileRoute('/dashboard/media')()
+const DashboardEditorLazyImport = createFileRoute('/dashboard/editor')()
+const DashboardCommentsLazyImport = createFileRoute('/dashboard/comments')()
+const DashboardAnalyticsLazyImport = createFileRoute('/dashboard/analytics')()
+const DashboardAboutLazyImport = createFileRoute('/dashboard/about')()
 const AuthLoginLazyImport = createFileRoute('/auth/login')()
-const AdminAboutLazyImport = createFileRoute('/admin/about')()
 
 // Create/Update Routes
 
@@ -35,11 +43,75 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AdminIndexRoute = AdminIndexImport.update({
-  id: '/admin/',
-  path: '/admin/',
+const DashboardIndexRoute = DashboardIndexImport.update({
+  id: '/dashboard/',
+  path: '/dashboard/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const DashboardUsersLazyRoute = DashboardUsersLazyImport.update({
+  id: '/dashboard/users',
+  path: '/dashboard/users',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./pages/dashboard/users.lazy').then((d) => d.Route),
+)
+
+const DashboardSettingsLazyRoute = DashboardSettingsLazyImport.update({
+  id: '/dashboard/settings',
+  path: '/dashboard/settings',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./pages/dashboard/settings.lazy').then((d) => d.Route),
+)
+
+const DashboardPostsLazyRoute = DashboardPostsLazyImport.update({
+  id: '/dashboard/posts',
+  path: '/dashboard/posts',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./pages/dashboard/posts.lazy').then((d) => d.Route),
+)
+
+const DashboardMediaLazyRoute = DashboardMediaLazyImport.update({
+  id: '/dashboard/media',
+  path: '/dashboard/media',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./pages/dashboard/media.lazy').then((d) => d.Route),
+)
+
+const DashboardEditorLazyRoute = DashboardEditorLazyImport.update({
+  id: '/dashboard/editor',
+  path: '/dashboard/editor',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./pages/dashboard/editor.lazy').then((d) => d.Route),
+)
+
+const DashboardCommentsLazyRoute = DashboardCommentsLazyImport.update({
+  id: '/dashboard/comments',
+  path: '/dashboard/comments',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./pages/dashboard/comments.lazy').then((d) => d.Route),
+)
+
+const DashboardAnalyticsLazyRoute = DashboardAnalyticsLazyImport.update({
+  id: '/dashboard/analytics',
+  path: '/dashboard/analytics',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./pages/dashboard/analytics.lazy').then((d) => d.Route),
+)
+
+const DashboardAboutLazyRoute = DashboardAboutLazyImport.update({
+  id: '/dashboard/about',
+  path: '/dashboard/about',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./pages/dashboard/about.lazy').then((d) => d.Route),
+)
 
 const AuthLoginLazyRoute = AuthLoginLazyImport.update({
   id: '/auth/login',
@@ -47,45 +119,45 @@ const AuthLoginLazyRoute = AuthLoginLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./pages/auth/login.lazy').then((d) => d.Route))
 
-const AdminAboutLazyRoute = AdminAboutLazyImport.update({
-  id: '/admin/about',
-  path: '/admin/about',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./pages/admin/about.lazy').then((d) => d.Route))
-
-const AdminQrcodeRoute = AdminQrcodeImport.update({
-  id: '/admin/qrcode',
-  path: '/admin/qrcode',
+const DashboardQrcodeRoute = DashboardQrcodeImport.update({
+  id: '/dashboard/qrcode',
+  path: '/dashboard/qrcode',
   getParentRoute: () => rootRoute,
 } as any)
 
-const AdminPersonalInfoRoute = AdminPersonalInfoImport.update({
-  id: '/admin/personalInfo',
-  path: '/admin/personalInfo',
+const DashboardPersonalInfoRoute = DashboardPersonalInfoImport.update({
+  id: '/dashboard/personalInfo',
+  path: '/dashboard/personalInfo',
   getParentRoute: () => rootRoute,
 } as any)
 
-const AdminGalleryRoute = AdminGalleryImport.update({
-  id: '/admin/gallery',
-  path: '/admin/gallery',
+const DashboardGalleryRoute = DashboardGalleryImport.update({
+  id: '/dashboard/gallery',
+  path: '/dashboard/gallery',
   getParentRoute: () => rootRoute,
 } as any)
 
-const AdminEditRoute = AdminEditImport.update({
-  id: '/admin/edit',
-  path: '/admin/edit',
+const DashboardEditRoute = DashboardEditImport.update({
+  id: '/dashboard/edit',
+  path: '/dashboard/edit',
   getParentRoute: () => rootRoute,
 } as any)
 
-const AdminBlogRoute = AdminBlogImport.update({
-  id: '/admin/blog',
-  path: '/admin/blog',
+const DashboardBlogRoute = DashboardBlogImport.update({
+  id: '/dashboard/blog',
+  path: '/dashboard/blog',
   getParentRoute: () => rootRoute,
 } as any)
 
-const AdminArticlesRoute = AdminArticlesImport.update({
-  id: '/admin/articles',
-  path: '/admin/articles',
+const DashboardArticlesRoute = DashboardArticlesImport.update({
+  id: '/dashboard/articles',
+  path: '/dashboard/articles',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthForgotPasswordRoute = AuthForgotPasswordImport.update({
+  id: '/auth/forgot-password',
+  path: '/auth/forgot-password',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -100,53 +172,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/admin/articles': {
-      id: '/admin/articles'
-      path: '/admin/articles'
-      fullPath: '/admin/articles'
-      preLoaderRoute: typeof AdminArticlesImport
+    '/auth/forgot-password': {
+      id: '/auth/forgot-password'
+      path: '/auth/forgot-password'
+      fullPath: '/auth/forgot-password'
+      preLoaderRoute: typeof AuthForgotPasswordImport
       parentRoute: typeof rootRoute
     }
-    '/admin/blog': {
-      id: '/admin/blog'
-      path: '/admin/blog'
-      fullPath: '/admin/blog'
-      preLoaderRoute: typeof AdminBlogImport
+    '/dashboard/articles': {
+      id: '/dashboard/articles'
+      path: '/dashboard/articles'
+      fullPath: '/dashboard/articles'
+      preLoaderRoute: typeof DashboardArticlesImport
       parentRoute: typeof rootRoute
     }
-    '/admin/edit': {
-      id: '/admin/edit'
-      path: '/admin/edit'
-      fullPath: '/admin/edit'
-      preLoaderRoute: typeof AdminEditImport
+    '/dashboard/blog': {
+      id: '/dashboard/blog'
+      path: '/dashboard/blog'
+      fullPath: '/dashboard/blog'
+      preLoaderRoute: typeof DashboardBlogImport
       parentRoute: typeof rootRoute
     }
-    '/admin/gallery': {
-      id: '/admin/gallery'
-      path: '/admin/gallery'
-      fullPath: '/admin/gallery'
-      preLoaderRoute: typeof AdminGalleryImport
+    '/dashboard/edit': {
+      id: '/dashboard/edit'
+      path: '/dashboard/edit'
+      fullPath: '/dashboard/edit'
+      preLoaderRoute: typeof DashboardEditImport
       parentRoute: typeof rootRoute
     }
-    '/admin/personalInfo': {
-      id: '/admin/personalInfo'
-      path: '/admin/personalInfo'
-      fullPath: '/admin/personalInfo'
-      preLoaderRoute: typeof AdminPersonalInfoImport
+    '/dashboard/gallery': {
+      id: '/dashboard/gallery'
+      path: '/dashboard/gallery'
+      fullPath: '/dashboard/gallery'
+      preLoaderRoute: typeof DashboardGalleryImport
       parentRoute: typeof rootRoute
     }
-    '/admin/qrcode': {
-      id: '/admin/qrcode'
-      path: '/admin/qrcode'
-      fullPath: '/admin/qrcode'
-      preLoaderRoute: typeof AdminQrcodeImport
+    '/dashboard/personalInfo': {
+      id: '/dashboard/personalInfo'
+      path: '/dashboard/personalInfo'
+      fullPath: '/dashboard/personalInfo'
+      preLoaderRoute: typeof DashboardPersonalInfoImport
       parentRoute: typeof rootRoute
     }
-    '/admin/about': {
-      id: '/admin/about'
-      path: '/admin/about'
-      fullPath: '/admin/about'
-      preLoaderRoute: typeof AdminAboutLazyImport
+    '/dashboard/qrcode': {
+      id: '/dashboard/qrcode'
+      path: '/dashboard/qrcode'
+      fullPath: '/dashboard/qrcode'
+      preLoaderRoute: typeof DashboardQrcodeImport
       parentRoute: typeof rootRoute
     }
     '/auth/login': {
@@ -156,11 +228,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginLazyImport
       parentRoute: typeof rootRoute
     }
-    '/admin/': {
-      id: '/admin/'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminIndexImport
+    '/dashboard/about': {
+      id: '/dashboard/about'
+      path: '/dashboard/about'
+      fullPath: '/dashboard/about'
+      preLoaderRoute: typeof DashboardAboutLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard/analytics': {
+      id: '/dashboard/analytics'
+      path: '/dashboard/analytics'
+      fullPath: '/dashboard/analytics'
+      preLoaderRoute: typeof DashboardAnalyticsLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard/comments': {
+      id: '/dashboard/comments'
+      path: '/dashboard/comments'
+      fullPath: '/dashboard/comments'
+      preLoaderRoute: typeof DashboardCommentsLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard/editor': {
+      id: '/dashboard/editor'
+      path: '/dashboard/editor'
+      fullPath: '/dashboard/editor'
+      preLoaderRoute: typeof DashboardEditorLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard/media': {
+      id: '/dashboard/media'
+      path: '/dashboard/media'
+      fullPath: '/dashboard/media'
+      preLoaderRoute: typeof DashboardMediaLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard/posts': {
+      id: '/dashboard/posts'
+      path: '/dashboard/posts'
+      fullPath: '/dashboard/posts'
+      preLoaderRoute: typeof DashboardPostsLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard/settings': {
+      id: '/dashboard/settings'
+      path: '/dashboard/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof DashboardSettingsLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard/users': {
+      id: '/dashboard/users'
+      path: '/dashboard/users'
+      fullPath: '/dashboard/users'
+      preLoaderRoute: typeof DashboardUsersLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardIndexImport
       parentRoute: typeof rootRoute
     }
   }
@@ -170,108 +298,172 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin/articles': typeof AdminArticlesRoute
-  '/admin/blog': typeof AdminBlogRoute
-  '/admin/edit': typeof AdminEditRoute
-  '/admin/gallery': typeof AdminGalleryRoute
-  '/admin/personalInfo': typeof AdminPersonalInfoRoute
-  '/admin/qrcode': typeof AdminQrcodeRoute
-  '/admin/about': typeof AdminAboutLazyRoute
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/dashboard/articles': typeof DashboardArticlesRoute
+  '/dashboard/blog': typeof DashboardBlogRoute
+  '/dashboard/edit': typeof DashboardEditRoute
+  '/dashboard/gallery': typeof DashboardGalleryRoute
+  '/dashboard/personalInfo': typeof DashboardPersonalInfoRoute
+  '/dashboard/qrcode': typeof DashboardQrcodeRoute
   '/auth/login': typeof AuthLoginLazyRoute
-  '/admin': typeof AdminIndexRoute
+  '/dashboard/about': typeof DashboardAboutLazyRoute
+  '/dashboard/analytics': typeof DashboardAnalyticsLazyRoute
+  '/dashboard/comments': typeof DashboardCommentsLazyRoute
+  '/dashboard/editor': typeof DashboardEditorLazyRoute
+  '/dashboard/media': typeof DashboardMediaLazyRoute
+  '/dashboard/posts': typeof DashboardPostsLazyRoute
+  '/dashboard/settings': typeof DashboardSettingsLazyRoute
+  '/dashboard/users': typeof DashboardUsersLazyRoute
+  '/dashboard': typeof DashboardIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin/articles': typeof AdminArticlesRoute
-  '/admin/blog': typeof AdminBlogRoute
-  '/admin/edit': typeof AdminEditRoute
-  '/admin/gallery': typeof AdminGalleryRoute
-  '/admin/personalInfo': typeof AdminPersonalInfoRoute
-  '/admin/qrcode': typeof AdminQrcodeRoute
-  '/admin/about': typeof AdminAboutLazyRoute
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/dashboard/articles': typeof DashboardArticlesRoute
+  '/dashboard/blog': typeof DashboardBlogRoute
+  '/dashboard/edit': typeof DashboardEditRoute
+  '/dashboard/gallery': typeof DashboardGalleryRoute
+  '/dashboard/personalInfo': typeof DashboardPersonalInfoRoute
+  '/dashboard/qrcode': typeof DashboardQrcodeRoute
   '/auth/login': typeof AuthLoginLazyRoute
-  '/admin': typeof AdminIndexRoute
+  '/dashboard/about': typeof DashboardAboutLazyRoute
+  '/dashboard/analytics': typeof DashboardAnalyticsLazyRoute
+  '/dashboard/comments': typeof DashboardCommentsLazyRoute
+  '/dashboard/editor': typeof DashboardEditorLazyRoute
+  '/dashboard/media': typeof DashboardMediaLazyRoute
+  '/dashboard/posts': typeof DashboardPostsLazyRoute
+  '/dashboard/settings': typeof DashboardSettingsLazyRoute
+  '/dashboard/users': typeof DashboardUsersLazyRoute
+  '/dashboard': typeof DashboardIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/admin/articles': typeof AdminArticlesRoute
-  '/admin/blog': typeof AdminBlogRoute
-  '/admin/edit': typeof AdminEditRoute
-  '/admin/gallery': typeof AdminGalleryRoute
-  '/admin/personalInfo': typeof AdminPersonalInfoRoute
-  '/admin/qrcode': typeof AdminQrcodeRoute
-  '/admin/about': typeof AdminAboutLazyRoute
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/dashboard/articles': typeof DashboardArticlesRoute
+  '/dashboard/blog': typeof DashboardBlogRoute
+  '/dashboard/edit': typeof DashboardEditRoute
+  '/dashboard/gallery': typeof DashboardGalleryRoute
+  '/dashboard/personalInfo': typeof DashboardPersonalInfoRoute
+  '/dashboard/qrcode': typeof DashboardQrcodeRoute
   '/auth/login': typeof AuthLoginLazyRoute
-  '/admin/': typeof AdminIndexRoute
+  '/dashboard/about': typeof DashboardAboutLazyRoute
+  '/dashboard/analytics': typeof DashboardAnalyticsLazyRoute
+  '/dashboard/comments': typeof DashboardCommentsLazyRoute
+  '/dashboard/editor': typeof DashboardEditorLazyRoute
+  '/dashboard/media': typeof DashboardMediaLazyRoute
+  '/dashboard/posts': typeof DashboardPostsLazyRoute
+  '/dashboard/settings': typeof DashboardSettingsLazyRoute
+  '/dashboard/users': typeof DashboardUsersLazyRoute
+  '/dashboard/': typeof DashboardIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/admin/articles'
-    | '/admin/blog'
-    | '/admin/edit'
-    | '/admin/gallery'
-    | '/admin/personalInfo'
-    | '/admin/qrcode'
-    | '/admin/about'
+    | '/auth/forgot-password'
+    | '/dashboard/articles'
+    | '/dashboard/blog'
+    | '/dashboard/edit'
+    | '/dashboard/gallery'
+    | '/dashboard/personalInfo'
+    | '/dashboard/qrcode'
     | '/auth/login'
-    | '/admin'
+    | '/dashboard/about'
+    | '/dashboard/analytics'
+    | '/dashboard/comments'
+    | '/dashboard/editor'
+    | '/dashboard/media'
+    | '/dashboard/posts'
+    | '/dashboard/settings'
+    | '/dashboard/users'
+    | '/dashboard'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin/articles'
-    | '/admin/blog'
-    | '/admin/edit'
-    | '/admin/gallery'
-    | '/admin/personalInfo'
-    | '/admin/qrcode'
-    | '/admin/about'
+    | '/auth/forgot-password'
+    | '/dashboard/articles'
+    | '/dashboard/blog'
+    | '/dashboard/edit'
+    | '/dashboard/gallery'
+    | '/dashboard/personalInfo'
+    | '/dashboard/qrcode'
     | '/auth/login'
-    | '/admin'
+    | '/dashboard/about'
+    | '/dashboard/analytics'
+    | '/dashboard/comments'
+    | '/dashboard/editor'
+    | '/dashboard/media'
+    | '/dashboard/posts'
+    | '/dashboard/settings'
+    | '/dashboard/users'
+    | '/dashboard'
   id:
     | '__root__'
     | '/'
-    | '/admin/articles'
-    | '/admin/blog'
-    | '/admin/edit'
-    | '/admin/gallery'
-    | '/admin/personalInfo'
-    | '/admin/qrcode'
-    | '/admin/about'
+    | '/auth/forgot-password'
+    | '/dashboard/articles'
+    | '/dashboard/blog'
+    | '/dashboard/edit'
+    | '/dashboard/gallery'
+    | '/dashboard/personalInfo'
+    | '/dashboard/qrcode'
     | '/auth/login'
-    | '/admin/'
+    | '/dashboard/about'
+    | '/dashboard/analytics'
+    | '/dashboard/comments'
+    | '/dashboard/editor'
+    | '/dashboard/media'
+    | '/dashboard/posts'
+    | '/dashboard/settings'
+    | '/dashboard/users'
+    | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminArticlesRoute: typeof AdminArticlesRoute
-  AdminBlogRoute: typeof AdminBlogRoute
-  AdminEditRoute: typeof AdminEditRoute
-  AdminGalleryRoute: typeof AdminGalleryRoute
-  AdminPersonalInfoRoute: typeof AdminPersonalInfoRoute
-  AdminQrcodeRoute: typeof AdminQrcodeRoute
-  AdminAboutLazyRoute: typeof AdminAboutLazyRoute
+  AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
+  DashboardArticlesRoute: typeof DashboardArticlesRoute
+  DashboardBlogRoute: typeof DashboardBlogRoute
+  DashboardEditRoute: typeof DashboardEditRoute
+  DashboardGalleryRoute: typeof DashboardGalleryRoute
+  DashboardPersonalInfoRoute: typeof DashboardPersonalInfoRoute
+  DashboardQrcodeRoute: typeof DashboardQrcodeRoute
   AuthLoginLazyRoute: typeof AuthLoginLazyRoute
-  AdminIndexRoute: typeof AdminIndexRoute
+  DashboardAboutLazyRoute: typeof DashboardAboutLazyRoute
+  DashboardAnalyticsLazyRoute: typeof DashboardAnalyticsLazyRoute
+  DashboardCommentsLazyRoute: typeof DashboardCommentsLazyRoute
+  DashboardEditorLazyRoute: typeof DashboardEditorLazyRoute
+  DashboardMediaLazyRoute: typeof DashboardMediaLazyRoute
+  DashboardPostsLazyRoute: typeof DashboardPostsLazyRoute
+  DashboardSettingsLazyRoute: typeof DashboardSettingsLazyRoute
+  DashboardUsersLazyRoute: typeof DashboardUsersLazyRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminArticlesRoute: AdminArticlesRoute,
-  AdminBlogRoute: AdminBlogRoute,
-  AdminEditRoute: AdminEditRoute,
-  AdminGalleryRoute: AdminGalleryRoute,
-  AdminPersonalInfoRoute: AdminPersonalInfoRoute,
-  AdminQrcodeRoute: AdminQrcodeRoute,
-  AdminAboutLazyRoute: AdminAboutLazyRoute,
+  AuthForgotPasswordRoute: AuthForgotPasswordRoute,
+  DashboardArticlesRoute: DashboardArticlesRoute,
+  DashboardBlogRoute: DashboardBlogRoute,
+  DashboardEditRoute: DashboardEditRoute,
+  DashboardGalleryRoute: DashboardGalleryRoute,
+  DashboardPersonalInfoRoute: DashboardPersonalInfoRoute,
+  DashboardQrcodeRoute: DashboardQrcodeRoute,
   AuthLoginLazyRoute: AuthLoginLazyRoute,
-  AdminIndexRoute: AdminIndexRoute,
+  DashboardAboutLazyRoute: DashboardAboutLazyRoute,
+  DashboardAnalyticsLazyRoute: DashboardAnalyticsLazyRoute,
+  DashboardCommentsLazyRoute: DashboardCommentsLazyRoute,
+  DashboardEditorLazyRoute: DashboardEditorLazyRoute,
+  DashboardMediaLazyRoute: DashboardMediaLazyRoute,
+  DashboardPostsLazyRoute: DashboardPostsLazyRoute,
+  DashboardSettingsLazyRoute: DashboardSettingsLazyRoute,
+  DashboardUsersLazyRoute: DashboardUsersLazyRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -285,46 +477,78 @@ export const routeTree = rootRoute
       "filePath": "__root.lazy.tsx",
       "children": [
         "/",
-        "/admin/articles",
-        "/admin/blog",
-        "/admin/edit",
-        "/admin/gallery",
-        "/admin/personalInfo",
-        "/admin/qrcode",
-        "/admin/about",
+        "/auth/forgot-password",
+        "/dashboard/articles",
+        "/dashboard/blog",
+        "/dashboard/edit",
+        "/dashboard/gallery",
+        "/dashboard/personalInfo",
+        "/dashboard/qrcode",
         "/auth/login",
-        "/admin/"
+        "/dashboard/about",
+        "/dashboard/analytics",
+        "/dashboard/comments",
+        "/dashboard/editor",
+        "/dashboard/media",
+        "/dashboard/posts",
+        "/dashboard/settings",
+        "/dashboard/users",
+        "/dashboard/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/admin/articles": {
-      "filePath": "admin/articles.tsx"
+    "/auth/forgot-password": {
+      "filePath": "auth/forgot-password.tsx"
     },
-    "/admin/blog": {
-      "filePath": "admin/blog.tsx"
+    "/dashboard/articles": {
+      "filePath": "dashboard/articles.tsx"
     },
-    "/admin/edit": {
-      "filePath": "admin/edit.tsx"
+    "/dashboard/blog": {
+      "filePath": "dashboard/blog.tsx"
     },
-    "/admin/gallery": {
-      "filePath": "admin/gallery.tsx"
+    "/dashboard/edit": {
+      "filePath": "dashboard/edit.tsx"
     },
-    "/admin/personalInfo": {
-      "filePath": "admin/personalInfo.tsx"
+    "/dashboard/gallery": {
+      "filePath": "dashboard/gallery.tsx"
     },
-    "/admin/qrcode": {
-      "filePath": "admin/qrcode.tsx"
+    "/dashboard/personalInfo": {
+      "filePath": "dashboard/personalInfo.tsx"
     },
-    "/admin/about": {
-      "filePath": "admin/about.lazy.tsx"
+    "/dashboard/qrcode": {
+      "filePath": "dashboard/qrcode.tsx"
     },
     "/auth/login": {
       "filePath": "auth/login.lazy.tsx"
     },
-    "/admin/": {
-      "filePath": "admin/index.tsx"
+    "/dashboard/about": {
+      "filePath": "dashboard/about.lazy.tsx"
+    },
+    "/dashboard/analytics": {
+      "filePath": "dashboard/analytics.lazy.tsx"
+    },
+    "/dashboard/comments": {
+      "filePath": "dashboard/comments.lazy.tsx"
+    },
+    "/dashboard/editor": {
+      "filePath": "dashboard/editor.lazy.tsx"
+    },
+    "/dashboard/media": {
+      "filePath": "dashboard/media.lazy.tsx"
+    },
+    "/dashboard/posts": {
+      "filePath": "dashboard/posts.lazy.tsx"
+    },
+    "/dashboard/settings": {
+      "filePath": "dashboard/settings.lazy.tsx"
+    },
+    "/dashboard/users": {
+      "filePath": "dashboard/users.lazy.tsx"
+    },
+    "/dashboard/": {
+      "filePath": "dashboard/index.tsx"
     }
   }
 }

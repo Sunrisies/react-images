@@ -97,16 +97,16 @@ export const Table: FC<TableProps> = ({ list, total, onChangePage }) => {
       cell: ({ row }) => {
         return (
           <div className="flex justify-center items-center space-x-2 gap-1">
-            {row.original.is_delete ? null : (
-              <Button
-                onClick={() => {
-                  mutate(row.original.id)
-                  console.log(row.original)
-                }}
-              >
-                删除
-              </Button>
-            )}
+            {/*{row.original.is_delete ? null : (*/}
+            {/*  <Button*/}
+            {/*    onClick={() => {*/}
+            {/*      mutate(row.original.id)*/}
+            {/*      console.log(row.original)*/}
+            {/*    }}*/}
+            {/*  >*/}
+            {/*    删除*/}
+            {/*  </Button>*/}
+            {/*)}*/}
             <Button
               onClick={() => {
                 console.log(row.original)

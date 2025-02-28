@@ -5,16 +5,16 @@ import { useGetArticle } from '@/services/article'
 import { isLogin } from '@/utils/auth'
 import { createFileRoute, redirect } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/admin/articles')({
+export const Route = createFileRoute('/dashboard/articles')({
   component: RouteComponent,
   beforeLoad: () => {
-    if (!isLogin()) {
-      return redirect({ to: '/auth/login' })
-    }
+    // if (!isLogin()) {
+    //   return redirect({ to: '/auth/login' })
+    // }
   },
   validateSearch: (search: { page: string }) => ({
-    page: search.page ? Number(search.page) : 1
-  })
+    page: search.page ? Number(search.page) : 1,
+  }),
 })
 
 function RouteComponent() {
@@ -29,7 +29,9 @@ function RouteComponent() {
       <Table
         list={data.data}
         total={data.total!}
-        onChangePage={(currenPage) => navigate({ search: { page: currenPage } })}
+        onChangePage={(currenPage) =>
+          navigate({ search: { page: currenPage } })
+        }
       ></Table>
     </Layout>
   )

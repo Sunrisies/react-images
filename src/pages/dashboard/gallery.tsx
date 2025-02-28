@@ -3,7 +3,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import { request } from '@/utils/fetch'
 import { GalleryItem } from '@/types/gallery.types'
-export const Route = createFileRoute('/admin/gallery')({
+export const Route = createFileRoute('/dashboard/gallery')({
   component: RouteComponent,
 })
 

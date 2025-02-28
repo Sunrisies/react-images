@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { createLazyFileRoute } from '@tanstack/react-router'
 
-export const Route = createLazyFileRoute('/admin/about')({
+export const Route = createLazyFileRoute('/dashboard/about')({
   component: AboutComponent,
 })
 

@@ -65,6 +65,7 @@ class Request {
   async get<U, T>(url: string, data: T): Promise<RequestType<U>> // 当有 data 参数时的重载
   async get<U, T>(url: string, data?: T): Promise<RequestType<U> | Error> {
     console.log(this.BaseUrl + url)
+
     // 如果 data 存在，将其转换为查询参数
     if (data) {
       const queryParams = new URLSearchParams(data).toString()
@@ -95,7 +96,8 @@ class Request {
    * @throws {Error} - 如果请求失败，抛出错误信息。
    */
   @RequestInterceptor
-  async post<T, U>(url: string, data: T,config:any): Promise<RequestType<U>> {
+  @ResponseInterceptor
+  async post<T, U>(url: string, data: T,config?:any): Promise<RequestType<U>> {
     const response = await fetch(this.BaseUrl + url, {
       method: 'POST',
       headers: {

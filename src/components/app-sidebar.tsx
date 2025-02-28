@@ -1,4 +1,4 @@
-import { AppSidebar } from '@/components/dashboard-sidebar'
+import { AppSidebar } from '@/components/dashboard-sidebar1'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
@@ -117,8 +117,8 @@ export default function NavMain({ children }: any) {
                 </p>
               </div>
             </div>
-            <Button 
-              variant="link" 
+            <Button
+              variant="link"
               className="text-blue-500"
               onClick={() => handleBinding('qq')}
             >
@@ -139,8 +139,8 @@ export default function NavMain({ children }: any) {
                 </p>
               </div>
             </div>
-            <Button 
-              variant="link" 
+            <Button
+              variant="link"
               className="text-blue-500"
               onClick={() => handleBinding('wechat')}
             >
@@ -161,8 +161,8 @@ export default function NavMain({ children }: any) {
                 </p>
               </div>
             </div>
-            <Button 
-              variant="link" 
+            <Button
+              variant="link"
               className="text-blue-500"
               onClick={() => handleBinding('email')}
             >
@@ -183,8 +183,8 @@ export default function NavMain({ children }: any) {
                 </p>
               </div>
             </div>
-            <Button 
-              variant="link" 
+            <Button
+              variant="link"
               className="text-blue-500"
               onClick={() => handleBinding('phone')}
             >

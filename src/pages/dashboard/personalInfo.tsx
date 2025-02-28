@@ -1,8 +1,8 @@
 import { Layout } from '@/layout'
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/admin/personalInfo')({
-  component: RouteComponent
+export const Route = createFileRoute('/dashboard/personalInfo')({
+  component: RouteComponent,
 })
 
 // 用户信息类型定义
@@ -19,7 +19,7 @@ function RouteComponent() {
     username: '张三',
     email: 'zhangsan@example.com', // 模拟邮箱已绑定
     // phone: '13800138000', // 模拟手机号未绑定
-    avatar: 'https://example.com/avatar.jpg' // 模拟用户头像
+    avatar: 'https://example.com/avatar.jpg', // 模拟用户头像
   }
 
   return (
@@ -30,19 +30,27 @@ function RouteComponent() {
         {/* 头像显示 */}
         {user.avatar && (
           <div className="mb-4">
-            <img src={user.avatar} alt="用户头像" className="w-24 h-24 rounded-full" />
+            <img
+              src={user.avatar}
+              alt="用户头像"
+              className="w-24 h-24 rounded-full"
+            />
           </div>
         )}
 
         {/* 用户名 */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">用户名</label>
+          <label className="block text-sm font-medium text-gray-700">
+            用户名
+          </label>
           <p className="mt-1 text-lg">{user.username}</p>
         </div>
 
         {/* 邮箱地址 */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">邮箱地址</label>
+          <label className="block text-sm font-medium text-gray-700">
+            邮箱地址
+          </label>
           {user.email ? (
             <p className="mt-1 text-lg">{user.email}</p>
           ) : (
@@ -63,7 +71,9 @@ function RouteComponent() {
 
         {/* 手机号 */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">手机号</label>
+          <label className="block text-sm font-medium text-gray-700">
+            手机号
+          </label>
           {user.phone ? (
             <p className="mt-1 text-lg">{user.phone}</p>
           ) : (

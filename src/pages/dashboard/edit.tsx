@@ -1,6 +1,12 @@
 import { ArticlePublishForm } from '@/components/article-publish-form'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Layout } from '@/layout'
 import { usePostEdit } from '@/services/edit'
@@ -26,12 +32,15 @@ const DEFAULT_ARTICLE = {
   status: '发布',
   author: '朝阳',
   description: '',
-  size: 0
+  size: 0,
 }
 
 const useArticleForm = () => {
   const [form, setForm] = useImmer<UpdateType>(DEFAULT_ARTICLE)
-  const updateField = <K extends keyof UpdateType>(value: UpdateType[K], key: K) => {
+  const updateField = <K extends keyof UpdateType>(
+    value: UpdateType[K],
+    key: K,
+  ) => {
     setForm((draft) => {
       draft[key] = value
     })
@@ -48,7 +57,11 @@ interface ArticleEditorProps {
   onContentChange: (content: string) => void // 内容变化回调
   onUploadImg: (files: File[], callback: (urls: string[]) => void) => void // 图片上传回调
 }
-const ArticleEditor = ({ content, onContentChange, onUploadImg }: ArticleEditorProps) => {
+const ArticleEditor = ({
+  content,
+  onContentChange,
+  onUploadImg,
+}: ArticleEditorProps) => {
   return (
     <MdEditor
       value={content}
@@ -62,13 +75,13 @@ const ArticleEditor = ({ content, onContentChange, onUploadImg }: ArticleEditorP
   )
 }
 
-export const Route = createFileRoute('/admin/edit')({
+export const Route = createFileRoute('/dashboard/edit')({
   component: RouteComponent,
   beforeLoad: () => {
     if (!isLogin()) {
       return redirect({ to: '/auth/login' })
     }
-  }
+  },
 })
 
 function RouteComponent() {
@@ -76,12 +89,20 @@ function RouteComponent() {
   const { form, updateField, resetForm } = useArticleForm()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const onUploadImg = async (files: File[], callback: (urls: string[]) => void) => {
+  const onUploadImg = async (
+    files: File[],
+    callback: (urls: string[]) => void,
+  ) => {
     const res = await uploadImage(files[0])
     callback([res])
   }
 
-  const formSubmit = async ({ category, tags, coverImage, summary }: ArticleFormValues) => {
+  const formSubmit = async ({
+    category,
+    tags,
+    coverImage,
+    summary,
+  }: ArticleFormValues) => {
     const updatedForm = {
       ...form,
       category_id: +category,
@@ -89,7 +110,7 @@ function RouteComponent() {
       cover: coverImage,
       summary: summary!,
       description: form.content.slice(0, 200),
-      size: form.content.length
+      size: form.content.length,
     }
 
     try {
@@ -110,7 +131,11 @@ function RouteComponent() {
     <Layout>
       <div className="flex flex-col gap-3 h-full ">
         <div className="flex gap-3 mb-3">
-          <Input placeholder="输入文章标题..." value={form.title} onChange={(e) => updateField(e.target.value, 'title')} />
+          <Input
+            placeholder="输入文章标题..."
+            value={form.title}
+            onChange={(e) => updateField(e.target.value, 'title')}
+          />
           <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
             <DialogTrigger asChild>
               <Button onClick={() => setIsModalOpen(true)}>发布</Button>
@@ -118,12 +143,19 @@ function RouteComponent() {
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>发布文章</DialogTitle>
-                <ArticlePublishForm onSubmit={formSubmit} onCancel={() => setIsModalOpen(false)} />
+                <ArticlePublishForm
+                  onSubmit={formSubmit}
+                  onCancel={() => setIsModalOpen(false)}
+                />
               </DialogHeader>
             </DialogContent>
           </Dialog>
         </div>
-        <ArticleEditor content={form.content} onContentChange={(e) => updateField(e, 'content')} onUploadImg={onUploadImg} />
+        <ArticleEditor
+          content={form.content}
+          onContentChange={(e) => updateField(e, 'content')}
+          onUploadImg={onUploadImg}
+        />
       </div>
     </Layout>
   )
