@@ -501,6 +501,5 @@ function RouteComponent() {
                 </Tabs>
             </div>
         </Layout>
-
     )
 }

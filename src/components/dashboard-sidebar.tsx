@@ -18,8 +18,6 @@ import {ModeToggle} from "@/components/mode-toggle"
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar"
 import {BarChart3, FileText, Home, Image, LogOut, MessageSquare, Settings, Users} from "lucide-react"
 import {Link, useLocation} from '@tanstack/react-router'
-// import Link from "next/link"
-// import { usePathname } from "next/navigation"
 
 export function DashboardSidebar() {
     const pathname = useLocation({
@@ -32,7 +30,7 @@ export function DashboardSidebar() {
     return (
         <Sidebar>
             <SidebarHeader className="flex items-center justify-between">
-                <Link href="/dashboard" className="flex items-center gap-2 px-2">
+                <Link className="flex items-center gap-2 px-2" to="/dashboard">
                     <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary">
                         <span className="text-xl font-bold text-primary-foreground">博</span>
                     </div>
@@ -47,7 +45,7 @@ export function DashboardSidebar() {
                         <SidebarMenu>
                             <SidebarMenuItem>
                                 <SidebarMenuButton asChild isActive={isActive("/dashboard")}>
-                                    <Link href="/dashboard">
+                                    <Link href="/dashboard" to={"/dashboard"}>
                                         <Home/>
                                         <span>仪表盘</span>
                                     </Link>
@@ -55,23 +53,23 @@ export function DashboardSidebar() {
                             </SidebarMenuItem>
                             <SidebarMenuItem>
                                 <SidebarMenuButton asChild isActive={isActive("/dashboard/posts")}>
-                                    <Link href="/dashboard/posts">
+                                    <Link href="/dashboard/posts" to={"/dashboard/posts"}>
                                         <FileText/>
                                         <span>文章管理</span>
                                     </Link>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>
                             <SidebarMenuItem>
-                                <SidebarMenuButton asChild isActive={isActive("/dashboard/media")}>
-                                    <Link href="/dashboard/editor">
+                                <SidebarMenuButton asChild isActive={isActive("/dashboard/editor")}>
+                                    <Link href="/dashboard/editor" to={"/dashboard/editor"}>
                                         <Image/>
                                         <span>添加文件</span>
                                     </Link>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>
                             <SidebarMenuItem>
-                                <SidebarMenuButton asChild isActive={isActive("/dashboard/media")}>
-                                    <Link href="/dashboard/articles">
+                                <SidebarMenuButton asChild isActive={isActive("/dashboard/articles")}>
+                                    <Link href="/dashboard/articles" to={"/dashboard/articles"}>
                                         <Image/>
                                         <span>历史数据</span>
                                     </Link>
@@ -79,7 +77,7 @@ export function DashboardSidebar() {
                             </SidebarMenuItem>
                             <SidebarMenuItem>
                                 <SidebarMenuButton asChild isActive={isActive("/dashboard/comments")}>
-                                    <Link href="/dashboard/comments">
+                                    <Link href="/dashboard/comments" to={"/dashboard/comments"}>
                                         <MessageSquare/>
                                         <span>评论管理</span>
                                     </Link>
@@ -87,7 +85,7 @@ export function DashboardSidebar() {
                             </SidebarMenuItem>
                             <SidebarMenuItem>
                                 <SidebarMenuButton asChild isActive={isActive("/dashboard/media")}>
-                                    <Link href="/dashboard/media">
+                                    <Link href="/dashboard/media" to={"/dashboard/media"}>
                                         <Image/>
                                         <span>媒体库</span>
                                     </Link>
@@ -95,7 +93,7 @@ export function DashboardSidebar() {
                             </SidebarMenuItem>
                             <SidebarMenuItem>
                                 <SidebarMenuButton asChild isActive={isActive("/dashboard/analytics")}>
-                                    <Link href="/dashboard/analytics">
+                                    <Link href="/dashboard/analytics" to={"/dashboard/analytics"}>
                                         <BarChart3/>
                                         <span>数据分析</span>
                                     </Link>
@@ -110,7 +108,7 @@ export function DashboardSidebar() {
                         <SidebarMenu>
                             <SidebarMenuItem>
                                 <SidebarMenuButton asChild isActive={isActive("/dashboard/users")}>
-                                    <Link href="/dashboard/users">
+                                    <Link href="/dashboard/users" to={"/dashboard/users"}>
                                         <Users/>
                                         <span>用户管理</span>
                                     </Link>
@@ -118,7 +116,7 @@ export function DashboardSidebar() {
                             </SidebarMenuItem>
                             <SidebarMenuItem>
                                 <SidebarMenuButton asChild isActive={isActive("/dashboard/settings")}>
-                                    <Link href="/dashboard/settings">
+                                    <Link href="/dashboard/settings" to={"/dashboard/settings"}>
                                         <Settings/>
                                         <span>系统设置</span>
                                     </Link>
