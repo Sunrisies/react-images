@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Layout } from "@/layout";
 import { MediaItem } from "@/types/media.type";
-import { getFileListApi } from "@/services/media";
+import { deleteFileApi, getFileListApi } from "@/services/media";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   ChevronDown,
@@ -33,11 +33,14 @@ export const Route = createFileRoute("/dashboard/media")({
 });
 
 function RouteComponent() {
+  const { mutateAsync } = deleteFileApi();
+  const [search, setSearch] = useState("");
+
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [showUploadDialog, setShowUploadDialog] = useState(false);
   const [showDetailsDialog, setShowDetailsDialog] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null);
-  const { data, isLoading, isError } = getFileListApi();
+  const { data, isLoading, isError } = getFileListApi({ search });
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error...</div>;
   const mediaItems: MediaItem[] = data?.data || [];
@@ -64,7 +67,13 @@ function RouteComponent() {
       return <FileText className="h-12 w-12 text-muted-foreground" />;
     }
   };
-
+  const deleteMedia = async (id: number) => {
+    const data = await mutateAsync(id);
+  };
+  const handleSearch = async (search: string) => {
+    setSearch(search);
+    // await getFileListApi({ search });
+  };
   return (
     <Layout>
       <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
@@ -87,6 +96,13 @@ function RouteComponent() {
                 type="search"
                 placeholder="搜索媒体文件..."
                 className="w-full pl-8"
+                //   回车事件
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    const searchValue = (e.target as HTMLInputElement).value;
+                    handleSearch(searchValue);
+                  }
+                }}
               />
             </div>
             <DropdownMenu>
@@ -191,7 +207,10 @@ function RouteComponent() {
                           查看详情
                         </DropdownMenuItem>
                         <DropdownMenuItem>下载</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600 dark:text-red-400">
+                        <DropdownMenuItem
+                          className="text-red-600 dark:text-red-400"
+                          onClick={() => deleteMedia(item.id)}
+                        >
                           <Trash className="mr-2 h-4 w-4" />
                           删除
                         </DropdownMenuItem>
@@ -266,7 +285,10 @@ function RouteComponent() {
                               查看详情
                             </DropdownMenuItem>
                             <DropdownMenuItem>下载</DropdownMenuItem>
-                            <DropdownMenuItem className="text-red-600 dark:text-red-400">
+                            <DropdownMenuItem
+                              className="text-red-600 dark:text-red-400"
+                              onClick={() => deleteMedia(item.id)}
+                            >
                               <Trash className="mr-2 h-4 w-4" />
                               删除
                             </DropdownMenuItem>
