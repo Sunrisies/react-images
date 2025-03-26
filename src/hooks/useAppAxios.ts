@@ -8,7 +8,8 @@ interface Result<T> {
 }
 export const useAppAxios = () => {
   const http = axios.create({
-    baseURL: 'https://api.chaoyang1024.top:2345/api',
+    // baseURL: 'https://api.chaoyang1024.top:2345/api',
+    baseURL: 'http://localhost:2345/api',
     timeout: 1000,
     headers: { 'X-Custom-Header': 'foobar' }
   })
@@ -29,7 +30,7 @@ export const useAppAxios = () => {
     (response) => response,
     (error: AxiosError) => {
       let msg = "";
-      console.log(error.response!.status,'error')
+      console.log(error.response!.status, 'error')
       switch (error.response!.status) {
         case 400:
           msg = "请求错误(400)";
@@ -66,7 +67,7 @@ export const useAppAxios = () => {
           msg = "HTTP版本不受支持(505)";
           break;
         default:
-        msg = `连接出错(${error.response!.status})!`;
+          msg = `连接出错(${error.response!.status})!`;
       }
       console.log(msg)
       message.error(msg)
@@ -81,6 +82,7 @@ export const useAppAxios = () => {
   }
   const get = async <T>(url: string, params?: any, config?: any): Promise<Result<T>> => {
     const { data } = await http.get<Result<T>>(url, config)
+    console.log(data, 'data', url)
     return data
   }
   const put = async <T>(url: string, params?: any, config?: any): Promise<Result<T>> => {

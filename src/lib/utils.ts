@@ -1,22 +1,10 @@
-import {clsx, type ClassValue} from "clsx"
-import {twMerge} from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
 }
 
-export interface Comment {
-    id: string
-    postId: string
-    author: {
-        name: string
-        email: string
-        avatar?: string
-    }
-    content: string
-    status: "pending" | "approved" | "spam"
-    createdAt: string
-}
 
 export type Role = "admin" | "editor" | "author"
 
@@ -44,17 +32,30 @@ export interface Post {
     comments: number
 }
 
+// export interface Comment {
+//     id: string
+//     postId: string
+//     author: {
+//         name: string
+//         email: string
+//         avatar?: string
+//     }
+//     content: string
+//     status: "pending" | "approved" | "spam"
+//     createdAt: string
+// }
 export interface Comment {
-    id: string
-    postId: string
-    author: {
-        name: string
-        email: string
-        avatar?: string
-    }
+    id: number
     content: string
-    status: "pending" | "approved" | "spam"
-    createdAt: string
+    nickname: string
+    email: string
+    created_at: string
+    article: {
+        title: string
+    }
+    parentId?: number
+    isDeleted: boolean
+    children?: Comment[]
 }
 
 export interface MediaItem {

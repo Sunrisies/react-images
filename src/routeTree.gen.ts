@@ -19,6 +19,7 @@ import { Route as DashboardQrcodeImport } from './pages/dashboard/qrcode'
 import { Route as DashboardPersonalInfoImport } from './pages/dashboard/personalInfo'
 import { Route as DashboardGalleryImport } from './pages/dashboard/gallery'
 import { Route as DashboardEditImport } from './pages/dashboard/edit'
+import { Route as DashboardCommentsImport } from './pages/dashboard/comments'
 import { Route as DashboardBlogImport } from './pages/dashboard/blog'
 import { Route as DashboardArticlesImport } from './pages/dashboard/articles'
 import { Route as AuthForgotPasswordImport } from './pages/auth/forgot-password'
@@ -30,7 +31,6 @@ const DashboardSettingsLazyImport = createFileRoute('/dashboard/settings')()
 const DashboardPostsLazyImport = createFileRoute('/dashboard/posts')()
 const DashboardMediaLazyImport = createFileRoute('/dashboard/media')()
 const DashboardEditorLazyImport = createFileRoute('/dashboard/editor')()
-const DashboardCommentsLazyImport = createFileRoute('/dashboard/comments')()
 const DashboardAnalyticsLazyImport = createFileRoute('/dashboard/analytics')()
 const DashboardAboutLazyImport = createFileRoute('/dashboard/about')()
 const AuthLoginLazyImport = createFileRoute('/auth/login')()
@@ -89,14 +89,6 @@ const DashboardEditorLazyRoute = DashboardEditorLazyImport.update({
   import('./pages/dashboard/editor.lazy').then((d) => d.Route),
 )
 
-const DashboardCommentsLazyRoute = DashboardCommentsLazyImport.update({
-  id: '/dashboard/comments',
-  path: '/dashboard/comments',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./pages/dashboard/comments.lazy').then((d) => d.Route),
-)
-
 const DashboardAnalyticsLazyRoute = DashboardAnalyticsLazyImport.update({
   id: '/dashboard/analytics',
   path: '/dashboard/analytics',
@@ -140,6 +132,12 @@ const DashboardGalleryRoute = DashboardGalleryImport.update({
 const DashboardEditRoute = DashboardEditImport.update({
   id: '/dashboard/edit',
   path: '/dashboard/edit',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DashboardCommentsRoute = DashboardCommentsImport.update({
+  id: '/dashboard/comments',
+  path: '/dashboard/comments',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -193,6 +191,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardBlogImport
       parentRoute: typeof rootRoute
     }
+    '/dashboard/comments': {
+      id: '/dashboard/comments'
+      path: '/dashboard/comments'
+      fullPath: '/dashboard/comments'
+      preLoaderRoute: typeof DashboardCommentsImport
+      parentRoute: typeof rootRoute
+    }
     '/dashboard/edit': {
       id: '/dashboard/edit'
       path: '/dashboard/edit'
@@ -240,13 +245,6 @@ declare module '@tanstack/react-router' {
       path: '/dashboard/analytics'
       fullPath: '/dashboard/analytics'
       preLoaderRoute: typeof DashboardAnalyticsLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard/comments': {
-      id: '/dashboard/comments'
-      path: '/dashboard/comments'
-      fullPath: '/dashboard/comments'
-      preLoaderRoute: typeof DashboardCommentsLazyImport
       parentRoute: typeof rootRoute
     }
     '/dashboard/editor': {
@@ -301,6 +299,7 @@ export interface FileRoutesByFullPath {
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/dashboard/articles': typeof DashboardArticlesRoute
   '/dashboard/blog': typeof DashboardBlogRoute
+  '/dashboard/comments': typeof DashboardCommentsRoute
   '/dashboard/edit': typeof DashboardEditRoute
   '/dashboard/gallery': typeof DashboardGalleryRoute
   '/dashboard/personalInfo': typeof DashboardPersonalInfoRoute
@@ -308,7 +307,6 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginLazyRoute
   '/dashboard/about': typeof DashboardAboutLazyRoute
   '/dashboard/analytics': typeof DashboardAnalyticsLazyRoute
-  '/dashboard/comments': typeof DashboardCommentsLazyRoute
   '/dashboard/editor': typeof DashboardEditorLazyRoute
   '/dashboard/media': typeof DashboardMediaLazyRoute
   '/dashboard/posts': typeof DashboardPostsLazyRoute
@@ -322,6 +320,7 @@ export interface FileRoutesByTo {
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/dashboard/articles': typeof DashboardArticlesRoute
   '/dashboard/blog': typeof DashboardBlogRoute
+  '/dashboard/comments': typeof DashboardCommentsRoute
   '/dashboard/edit': typeof DashboardEditRoute
   '/dashboard/gallery': typeof DashboardGalleryRoute
   '/dashboard/personalInfo': typeof DashboardPersonalInfoRoute
@@ -329,7 +328,6 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginLazyRoute
   '/dashboard/about': typeof DashboardAboutLazyRoute
   '/dashboard/analytics': typeof DashboardAnalyticsLazyRoute
-  '/dashboard/comments': typeof DashboardCommentsLazyRoute
   '/dashboard/editor': typeof DashboardEditorLazyRoute
   '/dashboard/media': typeof DashboardMediaLazyRoute
   '/dashboard/posts': typeof DashboardPostsLazyRoute
@@ -344,6 +342,7 @@ export interface FileRoutesById {
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/dashboard/articles': typeof DashboardArticlesRoute
   '/dashboard/blog': typeof DashboardBlogRoute
+  '/dashboard/comments': typeof DashboardCommentsRoute
   '/dashboard/edit': typeof DashboardEditRoute
   '/dashboard/gallery': typeof DashboardGalleryRoute
   '/dashboard/personalInfo': typeof DashboardPersonalInfoRoute
@@ -351,7 +350,6 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginLazyRoute
   '/dashboard/about': typeof DashboardAboutLazyRoute
   '/dashboard/analytics': typeof DashboardAnalyticsLazyRoute
-  '/dashboard/comments': typeof DashboardCommentsLazyRoute
   '/dashboard/editor': typeof DashboardEditorLazyRoute
   '/dashboard/media': typeof DashboardMediaLazyRoute
   '/dashboard/posts': typeof DashboardPostsLazyRoute
@@ -367,6 +365,7 @@ export interface FileRouteTypes {
     | '/auth/forgot-password'
     | '/dashboard/articles'
     | '/dashboard/blog'
+    | '/dashboard/comments'
     | '/dashboard/edit'
     | '/dashboard/gallery'
     | '/dashboard/personalInfo'
@@ -374,7 +373,6 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/dashboard/about'
     | '/dashboard/analytics'
-    | '/dashboard/comments'
     | '/dashboard/editor'
     | '/dashboard/media'
     | '/dashboard/posts'
@@ -387,6 +385,7 @@ export interface FileRouteTypes {
     | '/auth/forgot-password'
     | '/dashboard/articles'
     | '/dashboard/blog'
+    | '/dashboard/comments'
     | '/dashboard/edit'
     | '/dashboard/gallery'
     | '/dashboard/personalInfo'
@@ -394,7 +393,6 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/dashboard/about'
     | '/dashboard/analytics'
-    | '/dashboard/comments'
     | '/dashboard/editor'
     | '/dashboard/media'
     | '/dashboard/posts'
@@ -407,6 +405,7 @@ export interface FileRouteTypes {
     | '/auth/forgot-password'
     | '/dashboard/articles'
     | '/dashboard/blog'
+    | '/dashboard/comments'
     | '/dashboard/edit'
     | '/dashboard/gallery'
     | '/dashboard/personalInfo'
@@ -414,7 +413,6 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/dashboard/about'
     | '/dashboard/analytics'
-    | '/dashboard/comments'
     | '/dashboard/editor'
     | '/dashboard/media'
     | '/dashboard/posts'
@@ -429,6 +427,7 @@ export interface RootRouteChildren {
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   DashboardArticlesRoute: typeof DashboardArticlesRoute
   DashboardBlogRoute: typeof DashboardBlogRoute
+  DashboardCommentsRoute: typeof DashboardCommentsRoute
   DashboardEditRoute: typeof DashboardEditRoute
   DashboardGalleryRoute: typeof DashboardGalleryRoute
   DashboardPersonalInfoRoute: typeof DashboardPersonalInfoRoute
@@ -436,7 +435,6 @@ export interface RootRouteChildren {
   AuthLoginLazyRoute: typeof AuthLoginLazyRoute
   DashboardAboutLazyRoute: typeof DashboardAboutLazyRoute
   DashboardAnalyticsLazyRoute: typeof DashboardAnalyticsLazyRoute
-  DashboardCommentsLazyRoute: typeof DashboardCommentsLazyRoute
   DashboardEditorLazyRoute: typeof DashboardEditorLazyRoute
   DashboardMediaLazyRoute: typeof DashboardMediaLazyRoute
   DashboardPostsLazyRoute: typeof DashboardPostsLazyRoute
@@ -450,6 +448,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   DashboardArticlesRoute: DashboardArticlesRoute,
   DashboardBlogRoute: DashboardBlogRoute,
+  DashboardCommentsRoute: DashboardCommentsRoute,
   DashboardEditRoute: DashboardEditRoute,
   DashboardGalleryRoute: DashboardGalleryRoute,
   DashboardPersonalInfoRoute: DashboardPersonalInfoRoute,
@@ -457,7 +456,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLoginLazyRoute: AuthLoginLazyRoute,
   DashboardAboutLazyRoute: DashboardAboutLazyRoute,
   DashboardAnalyticsLazyRoute: DashboardAnalyticsLazyRoute,
-  DashboardCommentsLazyRoute: DashboardCommentsLazyRoute,
   DashboardEditorLazyRoute: DashboardEditorLazyRoute,
   DashboardMediaLazyRoute: DashboardMediaLazyRoute,
   DashboardPostsLazyRoute: DashboardPostsLazyRoute,
@@ -480,6 +478,7 @@ export const routeTree = rootRoute
         "/auth/forgot-password",
         "/dashboard/articles",
         "/dashboard/blog",
+        "/dashboard/comments",
         "/dashboard/edit",
         "/dashboard/gallery",
         "/dashboard/personalInfo",
@@ -487,7 +486,6 @@ export const routeTree = rootRoute
         "/auth/login",
         "/dashboard/about",
         "/dashboard/analytics",
-        "/dashboard/comments",
         "/dashboard/editor",
         "/dashboard/media",
         "/dashboard/posts",
@@ -507,6 +505,9 @@ export const routeTree = rootRoute
     },
     "/dashboard/blog": {
       "filePath": "dashboard/blog.tsx"
+    },
+    "/dashboard/comments": {
+      "filePath": "dashboard/comments.tsx"
     },
     "/dashboard/edit": {
       "filePath": "dashboard/edit.tsx"
@@ -528,9 +529,6 @@ export const routeTree = rootRoute
     },
     "/dashboard/analytics": {
       "filePath": "dashboard/analytics.lazy.tsx"
-    },
-    "/dashboard/comments": {
-      "filePath": "dashboard/comments.lazy.tsx"
     },
     "/dashboard/editor": {
       "filePath": "dashboard/editor.lazy.tsx"
