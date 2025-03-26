@@ -17,6 +17,7 @@ import { Route as IndexImport } from './pages/index'
 import { Route as DashboardIndexImport } from './pages/dashboard/index'
 import { Route as DashboardQrcodeImport } from './pages/dashboard/qrcode'
 import { Route as DashboardPersonalInfoImport } from './pages/dashboard/personalInfo'
+import { Route as DashboardMediaImport } from './pages/dashboard/media'
 import { Route as DashboardGalleryImport } from './pages/dashboard/gallery'
 import { Route as DashboardEditImport } from './pages/dashboard/edit'
 import { Route as DashboardCommentsImport } from './pages/dashboard/comments'
@@ -29,7 +30,6 @@ import { Route as AuthForgotPasswordImport } from './pages/auth/forgot-password'
 const DashboardUsersLazyImport = createFileRoute('/dashboard/users')()
 const DashboardSettingsLazyImport = createFileRoute('/dashboard/settings')()
 const DashboardPostsLazyImport = createFileRoute('/dashboard/posts')()
-const DashboardMediaLazyImport = createFileRoute('/dashboard/media')()
 const DashboardEditorLazyImport = createFileRoute('/dashboard/editor')()
 const DashboardAnalyticsLazyImport = createFileRoute('/dashboard/analytics')()
 const DashboardAboutLazyImport = createFileRoute('/dashboard/about')()
@@ -73,14 +73,6 @@ const DashboardPostsLazyRoute = DashboardPostsLazyImport.update({
   import('./pages/dashboard/posts.lazy').then((d) => d.Route),
 )
 
-const DashboardMediaLazyRoute = DashboardMediaLazyImport.update({
-  id: '/dashboard/media',
-  path: '/dashboard/media',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./pages/dashboard/media.lazy').then((d) => d.Route),
-)
-
 const DashboardEditorLazyRoute = DashboardEditorLazyImport.update({
   id: '/dashboard/editor',
   path: '/dashboard/editor',
@@ -120,6 +112,12 @@ const DashboardQrcodeRoute = DashboardQrcodeImport.update({
 const DashboardPersonalInfoRoute = DashboardPersonalInfoImport.update({
   id: '/dashboard/personalInfo',
   path: '/dashboard/personalInfo',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DashboardMediaRoute = DashboardMediaImport.update({
+  id: '/dashboard/media',
+  path: '/dashboard/media',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -212,6 +210,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardGalleryImport
       parentRoute: typeof rootRoute
     }
+    '/dashboard/media': {
+      id: '/dashboard/media'
+      path: '/dashboard/media'
+      fullPath: '/dashboard/media'
+      preLoaderRoute: typeof DashboardMediaImport
+      parentRoute: typeof rootRoute
+    }
     '/dashboard/personalInfo': {
       id: '/dashboard/personalInfo'
       path: '/dashboard/personalInfo'
@@ -252,13 +257,6 @@ declare module '@tanstack/react-router' {
       path: '/dashboard/editor'
       fullPath: '/dashboard/editor'
       preLoaderRoute: typeof DashboardEditorLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard/media': {
-      id: '/dashboard/media'
-      path: '/dashboard/media'
-      fullPath: '/dashboard/media'
-      preLoaderRoute: typeof DashboardMediaLazyImport
       parentRoute: typeof rootRoute
     }
     '/dashboard/posts': {
@@ -302,13 +300,13 @@ export interface FileRoutesByFullPath {
   '/dashboard/comments': typeof DashboardCommentsRoute
   '/dashboard/edit': typeof DashboardEditRoute
   '/dashboard/gallery': typeof DashboardGalleryRoute
+  '/dashboard/media': typeof DashboardMediaRoute
   '/dashboard/personalInfo': typeof DashboardPersonalInfoRoute
   '/dashboard/qrcode': typeof DashboardQrcodeRoute
   '/auth/login': typeof AuthLoginLazyRoute
   '/dashboard/about': typeof DashboardAboutLazyRoute
   '/dashboard/analytics': typeof DashboardAnalyticsLazyRoute
   '/dashboard/editor': typeof DashboardEditorLazyRoute
-  '/dashboard/media': typeof DashboardMediaLazyRoute
   '/dashboard/posts': typeof DashboardPostsLazyRoute
   '/dashboard/settings': typeof DashboardSettingsLazyRoute
   '/dashboard/users': typeof DashboardUsersLazyRoute
@@ -323,13 +321,13 @@ export interface FileRoutesByTo {
   '/dashboard/comments': typeof DashboardCommentsRoute
   '/dashboard/edit': typeof DashboardEditRoute
   '/dashboard/gallery': typeof DashboardGalleryRoute
+  '/dashboard/media': typeof DashboardMediaRoute
   '/dashboard/personalInfo': typeof DashboardPersonalInfoRoute
   '/dashboard/qrcode': typeof DashboardQrcodeRoute
   '/auth/login': typeof AuthLoginLazyRoute
   '/dashboard/about': typeof DashboardAboutLazyRoute
   '/dashboard/analytics': typeof DashboardAnalyticsLazyRoute
   '/dashboard/editor': typeof DashboardEditorLazyRoute
-  '/dashboard/media': typeof DashboardMediaLazyRoute
   '/dashboard/posts': typeof DashboardPostsLazyRoute
   '/dashboard/settings': typeof DashboardSettingsLazyRoute
   '/dashboard/users': typeof DashboardUsersLazyRoute
@@ -345,13 +343,13 @@ export interface FileRoutesById {
   '/dashboard/comments': typeof DashboardCommentsRoute
   '/dashboard/edit': typeof DashboardEditRoute
   '/dashboard/gallery': typeof DashboardGalleryRoute
+  '/dashboard/media': typeof DashboardMediaRoute
   '/dashboard/personalInfo': typeof DashboardPersonalInfoRoute
   '/dashboard/qrcode': typeof DashboardQrcodeRoute
   '/auth/login': typeof AuthLoginLazyRoute
   '/dashboard/about': typeof DashboardAboutLazyRoute
   '/dashboard/analytics': typeof DashboardAnalyticsLazyRoute
   '/dashboard/editor': typeof DashboardEditorLazyRoute
-  '/dashboard/media': typeof DashboardMediaLazyRoute
   '/dashboard/posts': typeof DashboardPostsLazyRoute
   '/dashboard/settings': typeof DashboardSettingsLazyRoute
   '/dashboard/users': typeof DashboardUsersLazyRoute
@@ -368,13 +366,13 @@ export interface FileRouteTypes {
     | '/dashboard/comments'
     | '/dashboard/edit'
     | '/dashboard/gallery'
+    | '/dashboard/media'
     | '/dashboard/personalInfo'
     | '/dashboard/qrcode'
     | '/auth/login'
     | '/dashboard/about'
     | '/dashboard/analytics'
     | '/dashboard/editor'
-    | '/dashboard/media'
     | '/dashboard/posts'
     | '/dashboard/settings'
     | '/dashboard/users'
@@ -388,13 +386,13 @@ export interface FileRouteTypes {
     | '/dashboard/comments'
     | '/dashboard/edit'
     | '/dashboard/gallery'
+    | '/dashboard/media'
     | '/dashboard/personalInfo'
     | '/dashboard/qrcode'
     | '/auth/login'
     | '/dashboard/about'
     | '/dashboard/analytics'
     | '/dashboard/editor'
-    | '/dashboard/media'
     | '/dashboard/posts'
     | '/dashboard/settings'
     | '/dashboard/users'
@@ -408,13 +406,13 @@ export interface FileRouteTypes {
     | '/dashboard/comments'
     | '/dashboard/edit'
     | '/dashboard/gallery'
+    | '/dashboard/media'
     | '/dashboard/personalInfo'
     | '/dashboard/qrcode'
     | '/auth/login'
     | '/dashboard/about'
     | '/dashboard/analytics'
     | '/dashboard/editor'
-    | '/dashboard/media'
     | '/dashboard/posts'
     | '/dashboard/settings'
     | '/dashboard/users'
@@ -430,13 +428,13 @@ export interface RootRouteChildren {
   DashboardCommentsRoute: typeof DashboardCommentsRoute
   DashboardEditRoute: typeof DashboardEditRoute
   DashboardGalleryRoute: typeof DashboardGalleryRoute
+  DashboardMediaRoute: typeof DashboardMediaRoute
   DashboardPersonalInfoRoute: typeof DashboardPersonalInfoRoute
   DashboardQrcodeRoute: typeof DashboardQrcodeRoute
   AuthLoginLazyRoute: typeof AuthLoginLazyRoute
   DashboardAboutLazyRoute: typeof DashboardAboutLazyRoute
   DashboardAnalyticsLazyRoute: typeof DashboardAnalyticsLazyRoute
   DashboardEditorLazyRoute: typeof DashboardEditorLazyRoute
-  DashboardMediaLazyRoute: typeof DashboardMediaLazyRoute
   DashboardPostsLazyRoute: typeof DashboardPostsLazyRoute
   DashboardSettingsLazyRoute: typeof DashboardSettingsLazyRoute
   DashboardUsersLazyRoute: typeof DashboardUsersLazyRoute
@@ -451,13 +449,13 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardCommentsRoute: DashboardCommentsRoute,
   DashboardEditRoute: DashboardEditRoute,
   DashboardGalleryRoute: DashboardGalleryRoute,
+  DashboardMediaRoute: DashboardMediaRoute,
   DashboardPersonalInfoRoute: DashboardPersonalInfoRoute,
   DashboardQrcodeRoute: DashboardQrcodeRoute,
   AuthLoginLazyRoute: AuthLoginLazyRoute,
   DashboardAboutLazyRoute: DashboardAboutLazyRoute,
   DashboardAnalyticsLazyRoute: DashboardAnalyticsLazyRoute,
   DashboardEditorLazyRoute: DashboardEditorLazyRoute,
-  DashboardMediaLazyRoute: DashboardMediaLazyRoute,
   DashboardPostsLazyRoute: DashboardPostsLazyRoute,
   DashboardSettingsLazyRoute: DashboardSettingsLazyRoute,
   DashboardUsersLazyRoute: DashboardUsersLazyRoute,
@@ -481,13 +479,13 @@ export const routeTree = rootRoute
         "/dashboard/comments",
         "/dashboard/edit",
         "/dashboard/gallery",
+        "/dashboard/media",
         "/dashboard/personalInfo",
         "/dashboard/qrcode",
         "/auth/login",
         "/dashboard/about",
         "/dashboard/analytics",
         "/dashboard/editor",
-        "/dashboard/media",
         "/dashboard/posts",
         "/dashboard/settings",
         "/dashboard/users",
@@ -515,6 +513,9 @@ export const routeTree = rootRoute
     "/dashboard/gallery": {
       "filePath": "dashboard/gallery.tsx"
     },
+    "/dashboard/media": {
+      "filePath": "dashboard/media.tsx"
+    },
     "/dashboard/personalInfo": {
       "filePath": "dashboard/personalInfo.tsx"
     },
@@ -532,9 +533,6 @@ export const routeTree = rootRoute
     },
     "/dashboard/editor": {
       "filePath": "dashboard/editor.lazy.tsx"
-    },
-    "/dashboard/media": {
-      "filePath": "dashboard/media.lazy.tsx"
     },
     "/dashboard/posts": {
       "filePath": "dashboard/posts.lazy.tsx"

@@ -1,19 +1,13 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { Layout } from '@/layout'
 import { Button } from "@/components/ui/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Badge } from "@/components/ui/badge"
-import { Check, ChevronDown, Filter, MessageSquare, MoreHorizontal, Search, Trash, X } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import type { Comment } from "@/lib/utils"
-import { useEffect } from 'react'
-import { formatChineseDateTime } from 'sunrise-utils'
+import { Layout } from '@/layout'
 import { useTextComments } from '@/services/textComments'
-interface SearchParams {
-    page?: number
-}
+import { createFileRoute } from '@tanstack/react-router'
+import { ChevronDown, Filter, MessageSquare, MoreHorizontal, Search, Trash } from "lucide-react"
+import { formatChineseDateTime } from 'sunrise-utils'
+
 export const Route = createFileRoute('/dashboard/comments')({
     component: RouteComponent,
     validateSearch: (search: { page: string }) => ({
@@ -126,6 +120,5 @@ function RouteComponent() {
                 </div>
             </div>
         </Layout >
-
     )
 }

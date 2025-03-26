@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import { message } from 'antd'
+import { toast } from 'sonner';
 interface Result<T> {
   code: number;
   message: string;
@@ -10,7 +11,7 @@ export const useAppAxios = () => {
   const http = axios.create({
     // baseURL: 'https://api.chaoyang1024.top:2345/api',
     baseURL: 'http://localhost:2345/api',
-    timeout: 1000,
+    timeout: 10000,
     headers: { 'X-Custom-Header': 'foobar' }
   })
   // 添加请求拦截器
@@ -30,7 +31,8 @@ export const useAppAxios = () => {
     (response) => response,
     (error: AxiosError) => {
       let msg = "";
-      console.log(error.response!.status, 'error')
+      // console.log(error.response!.data, 'error')
+      console.log(error, 'error')
       switch (error.response!.status) {
         case 400:
           msg = "请求错误(400)";
@@ -48,6 +50,9 @@ export const useAppAxios = () => {
         case 408:
           msg = "请求超时(408)";
           break;
+        // case 428:
+        //   msg = "请求不符合要求(428)";
+        //   break;
         case 500:
           msg = "服务器错误(500)";
           break;
@@ -66,10 +71,12 @@ export const useAppAxios = () => {
         case 505:
           msg = "HTTP版本不受支持(505)";
           break;
-        default:
-          msg = `连接出错(${error.response!.status})!`;
+        // default:
+        // msg = `连接出错(${error.response!.status})!`;
       }
-      console.log(msg)
+
+      console.log(msg, '============')
+      toast.error(msg);
       message.error(msg)
       // 超出 2xx 范围的状态码都会触发该函数。
       // 对响应错误做点什么
