@@ -7,7 +7,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { FileText, ImageIcon, Trash, Video } from "lucide-react";
-import { formatChineseDateTime } from "sunrise-utils";
 import { FC } from "react";
 import { MediaItem } from "@/types/media.type";
 
@@ -78,7 +77,7 @@ const fileDetails: FC<Props> = ({
             <div>
               <p className="text-sm font-medium">上传日期</p>
               <p className="text-sm text-muted-foreground">
-                {formatChineseDateTime(selectedMedia.created_at)}
+                {selectedMedia.created_at}
               </p>
             </div>
             <div className="col-span-2">

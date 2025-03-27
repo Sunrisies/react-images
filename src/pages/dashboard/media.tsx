@@ -259,9 +259,7 @@ function RouteComponent() {
                         {item.type || "未知"}
                       </td>
                       <td className="p-4 align-middle">{item.size}</td>
-                      <td className="p-4 align-middle">
-                        {formatChineseDateTime(item.created_at)}
-                      </td>
+                      <td className="p-4 align-middle">{item.created_at}</td>
                       <td className="p-4 align-middle text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>

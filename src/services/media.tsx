@@ -51,10 +51,8 @@ export const getFileListApi = (
   return useQuery<{ data: MediaItem[]; total?: number }, AxiosError>({
     queryKey: ["fileList", params.search],
     queryFn: async () => {
-      // 创建带过滤条件的查询参数
       const searchParams = new URLSearchParams();
       Object.entries(mergedParams).forEach(([key, value]) => {
-        // 过滤空值参数（包括空字符串和undefined）
         if (value !== undefined && value !== "") {
           searchParams.append(key, value.toString());
         }
@@ -72,8 +70,6 @@ export const deleteFileApi = () => {
   return useMutation({
     mutationFn: async (id: number) => {
       const { code, message } = await del(`/oss/?id=${id}`);
-      console.log(code, message);
-
       if (code === 200) {
         toast.success("删除成功");
       } else {
