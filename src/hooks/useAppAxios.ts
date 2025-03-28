@@ -9,8 +9,8 @@ interface Result<T> {
 }
 export const useAppAxios = () => {
   const http = axios.create({
-    // baseURL: 'https://api.chaoyang1024.top:2345/api',
-    baseURL: 'http://localhost:2345/api',
+    baseURL: 'https://api.chaoyang1024.top:2345/new/api',
+    // baseURL: 'http://localhost:12345/api',
     timeout: 10000,
     headers: { 'X-Custom-Header': 'foobar' }
   })
