@@ -33,7 +33,7 @@ export const Layout: FC<{ children: React.ReactNode }> = ({ children }) => {
     console.log(open, "open");
   }, [open]);
   return (
-    <SidebarProvider open={open} onOpenChange={setOpen}>
+    <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
         <header
@@ -59,9 +59,7 @@ export const Layout: FC<{ children: React.ReactNode }> = ({ children }) => {
             </Tooltip>
           </div>
         </header>
-        <main className="flex-1 overflow-auto p-6 mt-14">
-          <div className="mx-auto max-w-7xl">{children}</div>
-        </main>
+        <main className="flex-1 overflow-auto p-6 mt-14">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );
