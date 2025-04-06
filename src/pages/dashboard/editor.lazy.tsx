@@ -5,23 +5,54 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Layout } from "@/layout";
+import { usePostEdit } from "@/services/edit";
+import { ArticleFormValues } from "@/utils/schemas";
+import { uploadImage } from "@/utils/update";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { ImageIcon, Settings } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export const Route = createLazyFileRoute("/dashboard/editor")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const { mutateAsync } = usePostEdit();
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
   const [showSettings, setShowSettings] = useState(false);
   const [showMediaLibrary, setShowMediaLibrary] = useState(false);
   const handleSubmit = () => {
-    setTitle("");
-    setContent("");
+    setTitle(() => "");
+    setContent(() => "");
     console.log(content, title, "清除内容");
+  };
+  const onSubmit = async (item: ArticleFormValues) => {
+    // item.categoryId = +item.categoryId;
+    const data = await mutateAsync({
+      title,
+      content,
+      ...item,
+      categoryId: +item.categoryId,
+      author: "朝阳",
+    });
+    if (data === 200) {
+      setTitle(() => "");
+      setContent(() => "");
+      console.log(content, title, "清除内容");
+      setShowSettings(false);
+      toast.success("发布成功");
+    }
+    console.log(data, "提交数据");
+    console.log(content, title, "提交内容", item);
+  };
+  const onUploadImg = async (
+    files: File[],
+    callback: (urls: string[]) => void
+  ) => {
+    const res = await uploadImage(files[0]);
+    callback([res]);
   };
   return (
     <Layout>
@@ -36,7 +67,8 @@ function RouteComponent() {
                 <Input
                   id="title"
                   placeholder="输入文章标题"
-                  defaultValue={title}
+                  value={title}
+                  // defaultValue={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
                 <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
@@ -49,7 +81,10 @@ function RouteComponent() {
                       <ImageIcon className="mr-2 h-4 w-4" />
                       插入媒体
                     </Button>
-                    <Button variant="outline">
+                    <Button
+                      variant="outline"
+                      onClick={() => setShowSettings(true)}
+                    >
                       <Settings className="mr-2" />
                       发布设置
                     </Button>
@@ -59,6 +94,17 @@ function RouteComponent() {
                       handleSubmit={handleSubmit}
                       open={showSettings}
                       onOpenChange={setShowSettings}
+                      onSubmit={onSubmit}
+                      onCancel={() => {
+                        console.log("取消发布");
+                        setShowSettings(false);
+                      }}
+                      description={content
+                        .replace(/#{1,6}\s?/g, "") // 移除标题符号
+                        .replace(/\*\*(.*?)\*\*/g, "$1") // 移除加粗
+                        .replace(/\*(.*?)\*/g, "$1") // 移除斜体
+                        .replace(/\[(.*?)\]\(.*?\)/g, "$1") // 移除链接
+                        .slice(0, 200)}
                       //   onSubmit={() => {
                       //     // 提交逻辑
                       //     setShowSettings(false);
@@ -69,7 +115,11 @@ function RouteComponent() {
               </div>
             </div>
             <div className="flex-1">
-              <RichTextEditor value={content} onChange={setContent} />
+              <RichTextEditor
+                value={content}
+                onChange={setContent}
+                onUploadImg={onUploadImg}
+              />
             </div>
           </div>
         </div>

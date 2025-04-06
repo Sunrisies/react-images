@@ -3,12 +3,11 @@ export type UpdateType = {
   content: string
   status: string
   author: string
-  category_id: number | undefined
-  tags: number[]
+  categoryId: number | undefined
+  tagIds: number[]
   cover?: string
-  summary: string
-  description:string
-  size:number
+  description: string
+  size: number
 }
 export type addArticleType = {
   code: number
