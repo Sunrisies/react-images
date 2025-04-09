@@ -54,6 +54,11 @@ const data = {
         icon: Bot,
       },
       {
+        title: "第三方库",
+        url: "/dashboard/third",
+        icon: Bot,
+      },
+      {
         title: "数据分析",
         url: "/dashboard/analytics",
         icon: Bot,

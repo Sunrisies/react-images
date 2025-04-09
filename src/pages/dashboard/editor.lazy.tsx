@@ -104,11 +104,9 @@ function RouteComponent() {
                         .replace(/\*\*(.*?)\*\*/g, "$1") // 移除加粗
                         .replace(/\*(.*?)\*/g, "$1") // 移除斜体
                         .replace(/\[(.*?)\]\(.*?\)/g, "$1") // 移除链接
+                        .replace(/\s+/g, " ") // 合并所有空白字符（包括换行）
+                        .replace(/\s{2,}/g, " ") // 合并连续空格
                         .slice(0, 200)}
-                      //   onSubmit={() => {
-                      //     // 提交逻辑
-                      //     setShowSettings(false);
-                      //   }}
                     ></DrawerPublic>
                   </div>
                 </div>
