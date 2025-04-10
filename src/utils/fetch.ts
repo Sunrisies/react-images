@@ -1,10 +1,10 @@
 type RequestType<T> = {
   code: number
   message: string
-  data: T
+  data: { data: T }
 }
 function RequestInterceptor<T, U>(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-  const originalMethod = descriptor.value as (url: string, data: T,config:any) => Promise<RequestType<U>>
+  const originalMethod = descriptor.value as (url: string, data: T, config: any) => Promise<RequestType<U>>
 
   descriptor.value = async function (url: string, data: T): Promise<RequestType<U>> {
     // 请求拦截器逻辑
@@ -17,8 +17,8 @@ function RequestInterceptor<T, U>(target: any, propertyKey: string, descriptor: 
       }
     }
     // 调用原始方法
-    const response = await originalMethod.apply(this, [url, data,config])
-    console.log(response,'response')
+    const response = await originalMethod.apply(this, [url, data, config])
+    console.log(response, 'response')
     return response
   }
 
@@ -30,16 +30,16 @@ function ResponseInterceptor(target: any, propertyKey: string, descriptor: Prope
 
   descriptor.value = async function (...args: any[]) {
     const response = await originalMethod.apply(this, args)
+    return response
+    // // 响应拦截器逻辑
+    // console.log('响应拦截器：', response)
 
-    // 响应拦截器逻辑
-    console.log('响应拦截器：', response)
+    // // 统一处理响应数据
+    // if (!response.ok) {
+    //   throw new Error(response.statusText)
+    // }
 
-    // 统一处理响应数据
-    if (!response.ok) {
-      throw new Error(response.statusText)
-    }
-
-    return response.json()
+    // return response.json()
   }
 
   return descriptor
@@ -97,7 +97,7 @@ class Request {
    */
   @RequestInterceptor
   @ResponseInterceptor
-  async post<T, U>(url: string, data: T,config?:any): Promise<RequestType<U>> {
+  async post<T, U>(url: string, data: T, config?: any): Promise<RequestType<U>> {
     const response = await fetch(this.BaseUrl + url, {
       method: 'POST',
       headers: {
@@ -105,12 +105,50 @@ class Request {
       },
       body: JSON.stringify(data)
     })
-    console.log(config,'config')
+    console.log(config, 'config')
     if (response.ok) {
       return (await response.json()) as RequestType<U>
     }
     return Promise.reject(response.statusText)
   }
+  /**
+   * 发送一个 PUT 请求。
+   *
+   * @template T - 请求发送的数据类型。
+   * @template U - 请求返回的数据类型。
+   */
+  @RequestInterceptor
+  @ResponseInterceptor
+  async put<T, U>(url: string, data: T): Promise<any> {
+    const response = await fetch(this.BaseUrl + url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    })
+    return response
+  }
+
+  /**
+   * 发送一个 DELETE 请求。
+   *
+   * @template T - 请求发送的数据类型。
+   * @template U - 请求返回的数据类型。
+   */
+  @RequestInterceptor
+  @ResponseInterceptor
+  async delete<T, U>(url: string): Promise<any> {
+    const response = await fetch(this.BaseUrl + url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    return response
+  }
+
+
   /** 上传文件 */
 
   async upload(url: string, body: FormData): Promise<any> {
@@ -125,4 +163,6 @@ class Request {
     return Promise.reject(response.statusText)
   }
 }
-export const request = new Request('https://api.chaoyang1024.top:2345/api')
+// const BaseUrl = 'https://api.chaoyang1024.top:2345/new/api'
+const BaseUrl = 'http://localhost:2345/api'
+export const request = new Request(BaseUrl)

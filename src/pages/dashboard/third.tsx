@@ -10,8 +10,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { getThirdApi } from "@/services/third";
+import { getThirdApi, useDeleteThirdApi } from "@/services/third";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { DialogTrigger } from "@radix-ui/react-dialog";
+import { ThirdForm } from "@/components/third/third-form";
 
 export const Route = createFileRoute("/dashboard/third")({
   component: RouteComponent,
@@ -21,24 +30,50 @@ export const Route = createFileRoute("/dashboard/third")({
 });
 
 function RouteComponent() {
+  const { mutateAsync: delThird } = useDeleteThirdApi();
   // 模拟数据 - 实际应从API获取
   const navigate = Route.useNavigate();
   const { page } = Route.useSearch();
-
+  const [selectedItem, setSelectedItem] = useState({});
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { data, isPending, error } = getThirdApi({ page: page, limit: 10 });
   if (isPending) return Loading();
   if (error) return <div>Error: {error.message}</div>;
   console.log(data, "data");
+  const editItem = (item: any) => {
+    setSelectedItem(item);
+    setIsDialogOpen(true);
+  };
+  const deleteItem = async ({ id }: any) => {
+    // 实现删除逻辑
+    console.log(`Deleting item: `, id);
+    await delThird(id);
+  };
+
   return (
     <Layout>
       <div className="p-6 space-y-4">
+        <div>{JSON.stringify(selectedItem)}</div>
         <div className="flex justify-end">
-          <Button
-            onClick={() => navigate({ to: "/dashboard/third/create" })}
-            variant="default"
-          >
-            新增
-          </Button>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button variant="default">新增</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[600px]">
+              <DialogHeader>
+                <DialogTitle>
+                  {selectedItem ? "编辑" : "新增"}第三方库
+                </DialogTitle>
+              </DialogHeader>
+              <ThirdForm
+                onSuccess={() => {
+                  setIsDialogOpen(false);
+                  // 这里添加数据刷新逻辑
+                }}
+                initialData={selectedItem}
+              />
+            </DialogContent>
+          </Dialog>
         </div>
         <Table>
           <TableHeader>
@@ -83,8 +118,8 @@ function RouteComponent() {
                 </TableCell>
                 <TableCell>
                   <div className="flex gap-2">
-                    <Button>修改</Button>
-                    <Button>删除</Button>
+                    <Button onClick={() => editItem(item)}>修改</Button>
+                    <Button onClick={() => deleteItem(item)}>删除</Button>
                   </div>
                 </TableCell>
               </TableRow>

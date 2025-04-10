@@ -3,9 +3,9 @@ export interface IThird {
     name: string;
     officialUrl: string;
     description: string;
-    metadata: string;
-    created_at: string;
-    updated_at: string;
+    metadata?: string;
+    created_at?: string;
+    updated_at?: string;
     category: ICategory;
     tags: ITags[];
 }
