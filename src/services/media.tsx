@@ -1,4 +1,5 @@
 import { useAppAxios } from "@/hooks/useAppAxios";
+import { IParams } from "@/types";
 import { MediaItem } from "@/types/media.type";
 
 import {
@@ -34,10 +35,7 @@ export const uploadFileApi = () => {
     },
   });
 };
-interface IParams {
-  page: number;
-  limit: number;
-}
+
 // 获取文件列表
 export const getFileListApi = (
   params: Partial<IParams> & { search?: string } = {}

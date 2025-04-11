@@ -1,4 +1,3 @@
-import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -9,9 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useQuery } from "@tanstack/react-query";
-// import { getCategories, getTags } from "@/services/third";
-import { getCategoriesApi, getTagsApi } from "@/services/common";
+import { useForm } from "react-hook-form";
 import {
   Select,
   SelectContent,
@@ -20,22 +17,29 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "../ui/badge";
-import { X } from "lucide-react";
+import { getCategoriesApi, getTagsApi } from "@/services/common";
 import { usePostThirdApi, usePutThirdApi } from "@/services/third";
+import { IThird } from "@/types/third.type";
+import { ThirdFormValues, thirdSchema } from "@/utils/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { X } from "lucide-react";
+import { Badge } from "../ui/badge";
+import { TypeOptions } from "@/types";
 
 export function ThirdForm({
   initialData,
   onSuccess,
+  categories,
 }: {
-  initialData?: any;
+  initialData?: IThird;
   onSuccess: () => void;
+  categories: TypeOptions[];
 }) {
   const { mutateAsync: addThird } = usePostThirdApi();
   const { mutateAsync: updateThirdApi } = usePutThirdApi();
-  console.log(initialData, "initialData");
   const hasValidInitialData = initialData?.id !== undefined;
-  const form = useForm({
+  const form = useForm<ThirdFormValues>({
+    resolver: zodResolver(thirdSchema),
     defaultValues: hasValidInitialData
       ? {
           ...initialData,
@@ -46,33 +50,22 @@ export function ThirdForm({
           name: "",
           officialUrl: "",
           description: "",
-          metadata: {},
           categoryId: "",
           tagIds: [] as number[],
         },
   });
-
-  // 获取分类和标签选项
-  //   const { data: categories } = useQuery(["categories"], getCategories);
-  //   const { data: tags } = useQuery(["tags"], getTags);
   const {
     data: tags,
     isLoading: isTagsLoading,
     isError: isTagsError,
   } = getTagsApi();
 
-  const {
-    data: categories,
-    isLoading: isCategoriesLoading,
-    isError: isCategoriesError,
-  } = getCategoriesApi();
   const handleSubmit = async (data: any) => {
     try {
       const payload = {
         ...data,
         categoryId: +data.categoryId,
       };
-      let response;
       if (hasValidInitialData) {
         const { name, officialUrl, categoryId, tagIds, description } = data;
         const payload = {
@@ -85,12 +78,9 @@ export function ThirdForm({
         };
         await updateThirdApi({ id: initialData.id, update: payload });
       } else {
-        response = await addThird(payload);
+        await addThird(payload);
       }
-      // if (response!.code === 200) {
       onSuccess();
-      // }
-      //   onSuccess();
     } catch (error) {
       console.error("操作失败:", error);
     }
@@ -104,10 +94,13 @@ export function ThirdForm({
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>名称</FormLabel>
+              <FormLabel className="w-20">
+                名称<span className="text-red-500">*</span>
+              </FormLabel>
               <FormControl>
                 <Input {...field} placeholder="输入库名称" />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -116,10 +109,14 @@ export function ThirdForm({
           name="officialUrl"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>官方链接</FormLabel>
+              <FormLabel className="w-20">
+                官方链接
+                <span className="text-red-500">*</span>
+              </FormLabel>
               <FormControl>
                 <Input {...field} placeholder="输入官网地址" />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -132,11 +129,7 @@ export function ThirdForm({
                 分类<span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
-                <Select
-                  onValueChange={field.onChange}
-                  value={field.value}
-                  disabled={isCategoriesLoading || isCategoriesError}
-                >
+                <Select onValueChange={field.onChange} value={field.value}>
                   <SelectTrigger>
                     <SelectValue placeholder="选择分类" />
                   </SelectTrigger>
@@ -149,11 +142,6 @@ export function ThirdForm({
                         {category.label}
                       </SelectItem>
                     ))}
-                    {(isCategoriesLoading || isCategoriesError) && (
-                      <div className="px-2 py-1.5 text-sm text-muted-foreground">
-                        {isCategoriesLoading ? "加载中..." : "加载失败"}
-                      </div>
-                    )}
                   </SelectContent>
                 </Select>
               </FormControl>
@@ -246,6 +234,7 @@ export function ThirdForm({
               <FormControl>
                 <Textarea {...field} rows={4} />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />

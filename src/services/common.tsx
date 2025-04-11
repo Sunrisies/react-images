@@ -1,10 +1,8 @@
+import { TypeOptions } from "@/types";
 import { request } from "@/utils/fetch";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-type TypeOptions = {
-  value: number;
-  label: string;
-};
+
 export const getTagsApi = () => {
   return useQuery<TypeOptions[], AxiosError>({
     queryKey: ["tags"],

@@ -1,7 +1,12 @@
+import { IPagination } from "@/types"
+
 type RequestType<T> = {
   code: number
   message: string
-  data: { data: T }
+  data: {
+    data: T,
+    pagination: IPagination
+  }
 }
 function RequestInterceptor<T, U>(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
   const originalMethod = descriptor.value as (url: string, data: T, config: any) => Promise<RequestType<U>>
