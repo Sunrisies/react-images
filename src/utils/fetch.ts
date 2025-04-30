@@ -8,6 +8,34 @@ type RequestType<T> = {
     pagination?: IPagination
   }
 }
+// 请求配置类型
+type RequestConfig = {
+  headers?: Record<string, string>;
+  method?: string;
+  body?: any;
+  redirect?: RequestRedirect;
+}
+// 基础请求方法
+const baseFetch = async <T>(url: string, config: RequestConfig): Promise<RequestType<T>> => {
+  const token = sessionStorage.getItem('token')
+  const defaultHeaders = {
+    'Content-Type': "application/json",
+    Authorization: token ? `Bearer ${token}` : ''
+  }
+  const response = await fetch(url, {
+    ...config,
+    headers: {
+      ...defaultHeaders,
+      ...config.headers
+    }
+  })
+
+  if (response.ok) {
+    const data = await response.json()
+    return data as RequestType<T>
+  }
+  return Promise.reject(response.statusText)
+}
 function RequestInterceptor<T, U>(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
   const originalMethod = descriptor.value as (url: string, data: T, config: any) => Promise<RequestType<U>>
 
@@ -53,6 +81,9 @@ class Request {
   constructor(private readonly BaseUrl: string) {
     this.BaseUrl = BaseUrl
   }
+  private getFullUrl(url: string): string {
+    return this.BaseUrl + url
+  }
   /**
    * 发送一个 GET 请求。
    *
@@ -70,23 +101,28 @@ class Request {
   async get<U, T>(url: string, data: T): Promise<RequestType<U>> // 当有 data 参数时的重载
   async get<U, T>(url: string, data?: T): Promise<RequestType<U> | Error> {
     console.log(this.BaseUrl + url)
-
-    // 如果 data 存在，将其转换为查询参数
-    if (data) {
-      const queryParams = new URLSearchParams(data).toString()
-      url += `?${queryParams}` // 将查询参数追加到 URL
-    }
-    const response = await fetch(this.BaseUrl + url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
+    const queryUrl = data
+      ? `${url}?${new URLSearchParams(data as any).toString()}`
+      : url
+    return baseFetch<U>(this.getFullUrl(queryUrl), {
+      method: 'GET'
     })
-    if (response.ok) {
-      const data = (await response.json())
-      return { ...data } as RequestType<U>
-    }
-    return Promise.reject(response.statusText)
+    // // 如果 data 存在，将其转换为查询参数
+    // if (data) {
+    //   const queryParams = new URLSearchParams(data).toString()
+    //   url += `?${queryParams}` // 将查询参数追加到 URL
+    // }
+    // const response = await fetch(this.BaseUrl + url, {
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   }
+    // })
+    // if (response.ok) {
+    //   const data = (await response.json())
+    //   return { ...data } as RequestType<U>
+    // }
+    // return Promise.reject(response.statusText)
   }
   /**
    * 发送一个 POST 请求。
@@ -104,18 +140,22 @@ class Request {
   @RequestInterceptor
   @ResponseInterceptor
   async post<T, U>(url: string, data: T, config?: any): Promise<RequestType<U>> {
-    const response = await fetch(this.BaseUrl + url, {
+    return baseFetch<U>(this.getFullUrl(url), {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify(data)
     })
-    console.log(config, 'config')
-    if (response.ok) {
-      return (await response.json()) as RequestType<U>
-    }
-    return Promise.reject(response.statusText)
+    // const response = await fetch(this.BaseUrl + url, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(data)
+    // })
+    // console.log(config, 'config')
+    // if (response.ok) {
+    //   return (await response.json()) as RequestType<U>
+    // }
+    // return Promise.reject(response.statusText)
   }
   /**
    * 发送一个 PUT 请求。
@@ -126,14 +166,18 @@ class Request {
   @RequestInterceptor
   @ResponseInterceptor
   async put<T, U>(url: string, data: T): Promise<any> {
-    const response = await fetch(this.BaseUrl + url, {
+    // const response = await fetch(this.BaseUrl + url, {
+    //   method: 'PUT',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(data)
+    // })
+    // return response
+    return baseFetch<U>(this.getFullUrl(url), {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify(data)
     })
-    return response
   }
 
   /**
@@ -145,19 +189,15 @@ class Request {
   @RequestInterceptor
   @ResponseInterceptor
   async delete<T, U>(url: string): Promise<any> {
-    const response = await fetch(this.BaseUrl + url, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    return baseFetch<U>(this.getFullUrl(url), {
+      method: 'DELETE'
     })
-    return await response.json()
   }
 
 
   /** 上传文件 */
 
-  async upload(url: string, body: FormData): Promise<any> {
+  async upload<U>(url: string, body: FormData): Promise<any> {
     const response = await fetch(this.BaseUrl + url, {
       method: 'POST',
       body,
