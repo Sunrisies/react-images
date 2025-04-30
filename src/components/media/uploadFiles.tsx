@@ -17,7 +17,7 @@ import { uploadFileApi } from "@/services/media";
 interface Props {
   showUploadDialog: boolean;
   setShowUploadDialog: (value: boolean) => void;
-  handleSuccess: () => void;
+  handleSuccess?: () => void;
 }
 const UploadFiles: FC<Props> = ({ showUploadDialog, setShowUploadDialog }) => {
   const { mutateAsync } = uploadFileApi();

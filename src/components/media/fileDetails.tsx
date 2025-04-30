@@ -2,20 +2,19 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { FileText, ImageIcon, Trash, Video } from "lucide-react";
-import { FC } from "react";
 import { MediaItem } from "@/types/media.type";
+import { FC } from "react";
+import { FileText, ImageIcon, Trash, Video } from "lucide-react";
 
-interface Props {
+interface FileDetailsProps {
   showDetailsDialog: boolean;
-  setShowDetailsDialog: (value: boolean) => void;
+  setShowDetailsDialog: (show: boolean) => void;
   selectedMedia: MediaItem;
 }
-const fileDetails: FC<Props> = ({
+const FileDetails: FC<FileDetailsProps> = ({
   showDetailsDialog,
   setShowDetailsDialog,
   selectedMedia,
@@ -33,12 +32,12 @@ const fileDetails: FC<Props> = ({
   };
   return (
     <Dialog open={showDetailsDialog} onOpenChange={setShowDetailsDialog}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="max-w-3xl">
         <DialogHeader>
           <DialogTitle>文件详情</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4">
-          <div className="aspect-video bg-muted rounded-lg overflow-hidden flex items-center justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="aspect-video bg-muted rounded-lg overflow-hidden">
             {selectedMedia.type?.startsWith("image") ? (
               <img
                 src={selectedMedia.url || "/placeholder.svg"}
@@ -55,10 +54,10 @@ const fileDetails: FC<Props> = ({
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4">
             <div>
-              <p className="text-sm font-medium">文件名</p>
-              <p className="text-sm text-muted-foreground">
+              <h3 className="text-sm font-medium text-muted-foreground mb-1">文件名</h3>
+              <p className="text-sm truncate hover:text-clip hover:whitespace-normal cursor-help" title={selectedMedia.title!}>
                 {selectedMedia.title}
               </p>
             </div>
@@ -88,17 +87,8 @@ const fileDetails: FC<Props> = ({
             </div>
           </div>
         </div>
-        <DialogFooter className="flex gap-4">
-          <Button variant="outline" onClick={() => setShowDetailsDialog(false)}>
-            关闭
-          </Button>
-          <Button variant="destructive">
-            <Trash className="mr-2 h-4 w-4" />
-            删除
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 };
-export default fileDetails;
+export default FileDetails;
