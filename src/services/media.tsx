@@ -12,18 +12,14 @@ import { AxiosError } from "axios";
 import { toast } from "sonner";
 // 上传文件
 export const uploadFileApi = () => {
-  const { post } = useAppAxios();
+  // const { post } = useAppAxios();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (file: File) => {
       const formData = new FormData();
       formData.append("file", file, file.name);
-      const { code, message } = await post(`/oss/upload/`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const { code, message } = await request.upload(`/storage/`, formData);
       if (code === 200) {
         toast.success("上传成功");
       } else {
@@ -75,11 +71,11 @@ export const deleteFileApi = () => {
 
   return useMutation({
     mutationFn: async (id: number) => {
-      const { code, message } = await del(`/oss/?id=${id}`);
+      const {data,code} = await request.delete(`/storage/${id}`);
       if (code === 200) {
         toast.success("删除成功");
       } else {
-        toast.error(message || "删除失败");
+        toast.error( "删除失败");
       }
     },
     onSuccess: () => {

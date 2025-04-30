@@ -151,7 +151,7 @@ class Request {
         'Content-Type': 'application/json',
       },
     })
-    return response
+    return await response.json()
   }
 
 

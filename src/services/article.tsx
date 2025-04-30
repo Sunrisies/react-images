@@ -1,5 +1,6 @@
 import { useAppAxios } from "@/hooks/useAppAxios";
 import { ArticleType } from "@/types/article.types";
+import { request } from '@/utils/fetch'
 import {
   keepPreviousData,
   useMutation,
@@ -16,11 +17,11 @@ export const useGetArticle = ({
   page: number;
   limit: number;
 }) => {
-  const { get } = useAppAxios();
-  return useQuery<{ data: ArticleType[]; total?: number }, AxiosError>({
+  // const { get } = useAppAxios();
+  return useQuery({
     queryKey: ["article", page, limit],
     queryFn: async () =>
-      await get<ArticleType[]>(`/article?page=${page}&limit=${limit}`),
+      (await request.get<ArticleType[]>(`/article?page=${page}&limit=${limit}`)).data,
     placeholderData: keepPreviousData,
   });
 };
