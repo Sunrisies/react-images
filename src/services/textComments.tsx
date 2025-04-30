@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-query";
 import { message } from "antd";
 import { AxiosError } from "axios";
+import {request } from '@/utils/fetch'
 import type { Comment } from "@/lib/utils";
 export const useTextComments = ({
   page,
@@ -16,13 +17,12 @@ export const useTextComments = ({
   page: number;
   limit: number;
 }) => {
-  const { get } = useAppAxios();
   return useQuery<{ data: Comment[]; total?: number }, AxiosError>({
     queryKey: ["articleComments", page, limit],
     queryFn: async () =>
-      await get<Comment[]>(
+      (await request.get<Comment[]>(
         `/articleComments/admin?page=${page}&limit=${limit}`
-      ),
+      )).data,
     placeholderData: keepPreviousData,
   });
 };

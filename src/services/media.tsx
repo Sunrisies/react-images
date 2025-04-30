@@ -1,4 +1,3 @@
-import { useAppAxios } from "@/hooks/useAppAxios";
 import { IParams } from "@/types";
 import { MediaItem } from "@/types/media.type";
 import { request} from '@/utils/fetch'
@@ -12,7 +11,6 @@ import { AxiosError } from "axios";
 import { toast } from "sonner";
 // 上传文件
 export const uploadFileApi = () => {
-  // const { post } = useAppAxios();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -36,7 +34,6 @@ export const uploadFileApi = () => {
 export const getFileListApi = (
   params: Partial<IParams> & { search?: string } = {}
 ) => {
-  // const { get } = useAppAxios();
   const mergedParams: IParams = {
     ...({ page: 1, limit: 10 } as IParams),
     ...params,
@@ -66,7 +63,6 @@ export const getFileListApi = (
 };
 // 删除文件
 export const deleteFileApi = () => {
-  const { del } = useAppAxios();
   const queryClient = useQueryClient();
 
   return useMutation({

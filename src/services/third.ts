@@ -1,4 +1,3 @@
-import { useAppAxios } from "@/hooks/useAppAxios";
 import { URLSearchParamsUtils } from 'sunrise-utils'
 import { IThird } from "@/types/third.type";
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -12,7 +11,7 @@ export const getThirdApi = (params: Partial<IParams> & { name?: string, category
         ...params,
     };
     const newParams = URLSearchParamsUtils(mergedParams)
-    return useQuery<{ data: IThird[], pagination: IPagination }, AxiosError>({
+    return useQuery({
         queryKey: ["thirdPartyLibrary", params.page, params.limit, params.name, params.categoryId],
         queryFn: async () => {
             const response = await request.get<IThird[]>(`/thirdPartyLibrary?${newParams}`);
