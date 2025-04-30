@@ -29,6 +29,29 @@ import {
 // };
 export const Layout: FC<{ children: React.ReactNode }> = ({ children }) => {
   const [open, setOpen] = useState(false);
+  
+  // 添加退出登录处理函数
+  const handleLogout = async () => {
+    try {
+      // 这里可以调用你的退出登录 API
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include'
+      });
+      
+      if (!response.ok) {
+        // 清除本地存储的用户信息
+        localStorage.removeItem('token');
+        // 重定向到登录页
+        window.location.href = '/auth/login';
+      } else {
+        throw new Error('退出登录失败');
+      }
+    } catch (error) {
+      console.error('退出登录出错:', error);
+      // 这里可以添加错误提示，比如使用 toast 组件
+    }
+  };
   useEffect(() => {
     console.log(open, "open");
   }, [open]);
@@ -48,7 +71,10 @@ export const Layout: FC<{ children: React.ReactNode }> = ({ children }) => {
             <ModeToggle />
             <Tooltip>
               <TooltipTrigger asChild>
-                <button className="rounded-full p-2 hover:bg-muted/50 transition-colors hover:text-foreground text-muted-foreground">
+                <button 
+                  onClick={handleLogout}
+                  className="rounded-full p-2 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors hover:text-red-600 dark:hover:text-red-400 text-muted-foreground"
+                >
                   <LogOut className="h-5 w-5" />
                   <span className="sr-only">登出</span>
                 </button>

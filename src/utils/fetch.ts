@@ -5,7 +5,7 @@ type RequestType<T> = {
   message: string
   data: {
     data: T,
-    pagination: IPagination
+    pagination?: IPagination
   }
 }
 function RequestInterceptor<T, U>(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
@@ -83,7 +83,8 @@ class Request {
       }
     })
     if (response.ok) {
-      return (await response.json()) as RequestType<U>
+      const data = (await response.json())
+      return { ...data } as RequestType<U>
     }
     return Promise.reject(response.statusText)
   }
@@ -168,6 +169,6 @@ class Request {
     return Promise.reject(response.statusText)
   }
 }
-// const BaseUrl = 'https://api.chaoyang1024.top:2345/new/api'
-const BaseUrl = 'http://localhost:2345/api'
+const BaseUrl = 'https://api.chaoyang1024.top:2345/new/api'
+// const BaseUrl = 'http://localhost:2345/api'
 export const request = new Request(BaseUrl)

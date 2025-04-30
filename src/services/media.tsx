@@ -1,7 +1,7 @@
 import { useAppAxios } from "@/hooks/useAppAxios";
 import { IParams } from "@/types";
 import { MediaItem } from "@/types/media.type";
-
+import { request} from '@/utils/fetch'
 import {
   keepPreviousData,
   useMutation,
@@ -40,7 +40,7 @@ export const uploadFileApi = () => {
 export const getFileListApi = (
   params: Partial<IParams> & { search?: string } = {}
 ) => {
-  const { get } = useAppAxios();
+  // const { get } = useAppAxios();
   const mergedParams: IParams = {
     ...({ page: 1, limit: 10 } as IParams),
     ...params,
@@ -55,7 +55,15 @@ export const getFileListApi = (
           searchParams.append(key, value.toString());
         }
       });
-      return await get<MediaItem[]>(`/oss?${searchParams}`);
+      const {code,data} = await request.get<MediaItem[]>(`/storage?${searchParams}`)
+      if (code !== 200) {
+        toast.error("获取文件列表失败");
+      }
+      const newData = {
+        ...data,
+       data: data.data.map(item => ({...item,url:item.path}))
+      }
+      return  newData
     },
     placeholderData: keepPreviousData,
   });
