@@ -40,7 +40,7 @@ function RouteComponent() {
   const { data, isPending, error } = useTextComments({ page: page, limit: 10 });
   if (isPending) return <div>Loading...</div>;
   console.log(data, "data");
-  const comments = data?.data!.data;
+  const comments = data?.data!;
 
   return (
     <Layout>
@@ -114,7 +114,7 @@ function RouteComponent() {
                   <TableCell className="hidden md:table-cell">
                     <div className="flex items-center gap-2">
                       <MessageSquare className="h-4 w-4 text-muted-foreground" />
-                      <span>{comment.articleTitle}</span>
+                      <span>{comment.articleTitle!}</span>
                     </div>
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
