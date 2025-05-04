@@ -1,4 +1,5 @@
 import { useAppAxios } from "@/hooks/useAppAxios";
+import { User, UserUpdateParams } from "@/types/user.type";
 import { request } from '@/utils/fetch'
 import {
   keepPreviousData,
@@ -8,20 +9,7 @@ import {
 } from "@tanstack/react-query";
 import { toast } from 'sonner';
 
-export interface UserUpdateParams {
-  user_name: string;
-  pass_word?: string;
-}
 
-export interface User {
-  id: number;
-  user_name: string;
-  email: string | null;
-  phone: string | null;
-  image: string | null;
-  created_at: string;
-  updated_at: string;
-}
 
 // 获取用户列表
 export const useGetUsers = (page: number, limit: number, user_name?: string) => {
