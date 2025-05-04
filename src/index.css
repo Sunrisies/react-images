@@ -101,3 +101,12 @@
     @apply bg-background text-foreground;
   }
 }
+ul {
+  list-style-type: circle; /* 或者其他类型，如 circle, square */
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  margin-left: 20px; /* 根据需要调整缩进 */
+}

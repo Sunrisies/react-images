@@ -40,22 +40,18 @@ import { useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { ArticleFormValues, articleSchema } from "@/utils/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAppAxios } from "@/hooks/useAppAxios";
 type TypeOptions = {
   value: number;
   label: string;
 };
 
 const getTags = async (): Promise<TypeOptions[]> => {
-  const { get } = useAppAxios();
-  const { data, code } = await get<TypeOptions[]>(`/tags`);
-  return code === 200 ? data : [];
+  const { data, code } = await request.get<TypeOptions[]>(`/tags`);
+  return code === 200 ? data.data : [];
 };
 const getCategories = async (): Promise<TypeOptions[]> => {
-  const { get } = useAppAxios();
-
-  const { data, code } = await get<TypeOptions[]>(`/categories`);
-  return code === 200 ? data : [];
+  const { data, code } = await request.get<TypeOptions[]>(`/categories`);
+  return code === 200 ? data.data : [];
 };
 
 interface DrawerPublicProps {

@@ -18,56 +18,61 @@ import {
 } from "@/components/ui/card";
 // import {Button, Form, Input} from 'antd'
 import { useState } from "react";
+import { useLoginApi } from "@/services/auth";
 
 export const Route = createLazyFileRoute("/auth/login")({
   component: AuthPage,
 });
 
 function AuthPage() {
+  const useAuth = useLoginApi()
   const [showPassword, setShowPassword] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [loginType, setLoginType] = useState<'username' | 'email'>('username');
   const navigate = useNavigate();
 
   const handleSubmit = async (
     e: React.FormEvent,
     action: "login" | "register"
   ) => {
-    // 邮箱正则
-    const emailRegex =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    // 密码正则
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-    // 验证邮箱
-    const email = (e.target as HTMLFormElement).elements.namedItem(
-      "email"
-    ) as HTMLInputElement;
-    if (!emailRegex.test(email.value)) {
-      setError("请输入有效的邮箱地址");
-    }
-    // 验证密码
-    const password = (e.target as HTMLFormElement).elements.namedItem(
-      "password"
-    ) as HTMLInputElement;
-    if (!passwordRegex.test(password.value)) {
-      setError("密码必须包含字母和数字，且长度至少为8位");
-    }
-    console.log("action", action);
-    // navigate({ to: "/dashboard" });
     e.preventDefault();
     setIsLoading(true);
     setError("");
 
-    // 这里应该是实际的身份验证或注册逻辑
-    setTimeout(() => {
-      setIsLoading(false);
-      if (action === "login") {
-        navigate({ to: "/dashboard" });
-      } else {
-        // 处理注册成功
-        console.log("Registration successful");
+    if (action === "login") {
+      const formElement = e.target as HTMLFormElement;
+      const username = formElement.elements.namedItem("username") as HTMLInputElement;
+      const email = formElement.elements.namedItem("email") as HTMLInputElement;
+      const password = formElement.elements.namedItem("password") as HTMLInputElement;
+
+      // 邮箱正则
+      const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      // 密码正则
+      // const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+      // 验证输入
+      if (loginType === 'email' && !emailRegex.test(email.value)) {
+        setError("请输入有效的邮箱地址");
+        setIsLoading(false);
+        return;
       }
-    }, 1500);
+
+      // if (!passwordRegex.test(password.value)) {
+      //   setError("密码必须包含字母和数字，且长度至少为8位");
+      //   setIsLoading(false);
+      //   return;
+      // }
+        await useAuth.mutateAsync({
+          ...(loginType === 'username' ? { user_name: username.value } : { email: email.value }),
+          pass_word: password.value
+        });
+    } else {
+      // 处理注册逻辑
+      // ... existing code ...
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -109,19 +114,44 @@ function AuthPage() {
               <TabsContent value="login">
                 <form onSubmit={(e) => handleSubmit(e, "login")}>
                   <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="email">邮箱</Label>
-                      <div className="relative">
-                        <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                        <Input
-                          id="email"
-                          type="email"
-                          placeholder="请输入邮箱"
-                          className="pl-10"
-                          required
-                        />
-                      </div>
+                    <div className="flex justify-end">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setLoginType(loginType === 'username' ? 'email' : 'username')}
+                      >
+                        切换到{loginType === 'username' ? '邮箱' : '用户名'}登录
+                      </Button>
                     </div>
+                    {loginType === 'username' ? (
+                      <div className="space-y-2">
+                        <Label htmlFor="username">用户名</Label>
+                        <div className="relative">
+                          <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            id="username"
+                            placeholder="请输入用户名"
+                            className="pl-10"
+                            required
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        <Label htmlFor="email">邮箱</Label>
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            id="email"
+                            type="email"
+                            placeholder="请输入邮箱"
+                            className="pl-10"
+                            required
+                          />
+                        </div>
+                      </div>
+                    )}
                     <div className="space-y-2">
                       <Label htmlFor="password">密码</Label>
                       <div className="relative">
@@ -162,7 +192,7 @@ function AuthPage() {
                     </Button>
                     <div className="mt-4 text-center text-sm">
                       <Link
-                        href="/auth/forgot-password"
+                        to="/auth/forgot-password"
                         className="text-primary hover:underline"
                       >
                         忘记密码?

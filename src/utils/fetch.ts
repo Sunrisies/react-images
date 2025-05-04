@@ -1,4 +1,6 @@
 import { IPagination } from "@/types"
+import { useNavigate } from "@tanstack/react-router"
+import { toast } from "sonner"
 
 type RequestType<T> = {
   code: number
@@ -15,9 +17,45 @@ type RequestConfig = {
   body?: any;
   redirect?: RequestRedirect;
 }
+// 错误处理函数类型
+type ErrorHandler = (error: any) => void
+const errorHandler: ErrorHandler = (error) => {
+  switch (error.code) {
+    case 200:
+      // toast.success(error.message || '请求成功')
+      break
+    case 400:
+      if (Array.isArray(error.data)) {
+        // 处理验证错误的情况
+        const errorMessage = error.data
+          .map((error: { field: string; errors: string[] }) =>
+            `${error.field}: ${error.errors.join(', ')}`
+          )
+          .join('; ');
+        toast.error(errorMessage)
+      }
+      break
+    case 401:
+      toast.error(error.message || '未登录')
+      break
+    case 403:
+      toast.error(error.message || '没有权限')
+      break
+    case 404:
+      toast.error(error.message || '请求资源不存在')
+      break
+    case 500:
+      toast.error(error.message || '服务器内部错误')
+      break
+    default:
+      toast.error(error.message || '请求失败')
+      break
+  }
+}
 // 基础请求方法
 const baseFetch = async <T>(url: string, config: RequestConfig): Promise<RequestType<T>> => {
   const token = sessionStorage.getItem('token')
+  console.log(token,'============')
   const defaultHeaders = {
     'Content-Type': "application/json",
     Authorization: token ? `Bearer ${token}` : ''
@@ -29,12 +67,10 @@ const baseFetch = async <T>(url: string, config: RequestConfig): Promise<Request
       ...config.headers
     }
   })
-
-  if (response.ok) {
-    const data = await response.json()
-    return data as RequestType<T>
-  }
-  return Promise.reject(response.statusText)
+  const data = await response.json()
+  console.log(data,'data--------',url)
+  errorHandler(data)
+  return {...data} as RequestType<T>
 }
 function RequestInterceptor<T, U>(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
   const originalMethod = descriptor.value as (url: string, data: T, config: any) => Promise<RequestType<U>>
@@ -63,6 +99,7 @@ function ResponseInterceptor(target: any, propertyKey: string, descriptor: Prope
 
   descriptor.value = async function (...args: any[]) {
     const response = await originalMethod.apply(this, args)
+    console.log(response, 'response--1111--------')
     return response
     // // 响应拦截器逻辑
     // console.log('响应拦截器：', response)
@@ -144,18 +181,6 @@ class Request {
       method: 'POST',
       body: JSON.stringify(data)
     })
-    // const response = await fetch(this.BaseUrl + url, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(data)
-    // })
-    // console.log(config, 'config')
-    // if (response.ok) {
-    //   return (await response.json()) as RequestType<U>
-    // }
-    // return Promise.reject(response.statusText)
   }
   /**
    * 发送一个 PUT 请求。
