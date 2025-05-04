@@ -6,23 +6,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
-import { Badge } from "@/components/ui/badge"
 import { ChevronDown, Filter, MoreHorizontal, Search, UserPlus } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
+import { useEffect, useState, useCallback } from 'react'
+import {debounce} from 'lodash';
+
 import { useCreateUser, useGetUsers, useDeleteUser, useUpdateUser, type User, type UserUpdateParams } from '@/services/user'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
 
 interface UserFormData {
   user_name: string;
@@ -33,14 +22,6 @@ interface PaginationInfo {
   page: number;
   limit: number;
   total: number;
-}
-
-interface ApiResponse {
-  code: number;
-  data: {
-    data: User[];
-    pagination: PaginationInfo;
-  };
 }
 
 export const Route = createLazyFileRoute('/dashboard/users')({
@@ -66,13 +47,15 @@ function UserFormDialog({ isOpen, onOpenChange, user, onSuccess }: {
   const updateUser = useUpdateUser();
 
   useEffect(() => {
-    if (user) {
+    // 每次对话框打开时重置表单数据
+    if (isOpen) {
       setFormData({
-        user_name: user.user_name,
+        user_name: user?.user_name || '',
         pass_word: ''
       });
+      setErrors({}); // 同时重置错误信息
     }
-  }, [user]);
+  }, [isOpen, user]);
 
   const validateForm = () => {
     const newErrors: typeof errors = {};
@@ -174,10 +157,38 @@ function UserFormDialog({ isOpen, onOpenChange, user, onSuccess }: {
   );
 }
 
+
 function RouteComponent() {
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
-  const { data } = useGetUsers(page, limit);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+
+  // 创建一个防抖的搜索处理函数
+  const debouncedSearch = useCallback(
+    debounce((value: string) => {
+      setDebouncedSearchTerm(value);
+      setPage(1); // 重置页码
+    }, 500),
+    []
+  );
+
+  // 使用防抖后的搜索词进行查询
+  const { data } = useGetUsers(page, limit, debouncedSearchTerm);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    debouncedSearch(value);
+    setPage(1); // 重置页码
+  };
+
+  // 组件卸载时取消防抖
+  useEffect(() => {
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [debouncedSearch]);
   const deleteUser = useDeleteUser();
 
   const users = data?.data || [];
@@ -213,7 +224,7 @@ function RouteComponent() {
       setUserToDelete(null);
     }
   };
-
+  
   return (
     <Layout>
       <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
@@ -232,6 +243,8 @@ function RouteComponent() {
                 type="search"
                 placeholder="搜索用户..."
                 className="w-full pl-8"
+                value={searchTerm}
+                onChange={handleSearch}
               />
             </div>
             <DropdownMenu>
@@ -347,3 +360,4 @@ function RouteComponent() {
     </Layout>
   );
 }
+
