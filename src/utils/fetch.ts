@@ -37,6 +37,7 @@ const errorHandler: ErrorHandler = (error) => {
       break
     case 401:
       toast.error(error.message || '未登录')
+      window.location.href = '/auth/login'
       break
     case 403:
       toast.error(error.message || '没有权限')
