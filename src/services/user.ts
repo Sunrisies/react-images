@@ -24,11 +24,18 @@ export interface User {
 }
 
 // 获取用户列表
-export const useGetUsers = (page: number, limit: number) => {
+export const useGetUsers = (page: number, limit: number, user_name?: string) => {
   return useQuery({
-    queryKey: ["users", page, limit],
+    queryKey: ["users", page, limit, user_name],
     queryFn: async () => {
-      const response = await request.get<User[]>(`/user?page=${page}&limit=${limit}`);
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: limit.toString(),
+      });
+      if (user_name) {
+        params.append('user_name', user_name);
+      }
+      const response = await request.get<User[]>(`/user?${params.toString()}`);
       return response.data;
     },
     placeholderData: keepPreviousData,
