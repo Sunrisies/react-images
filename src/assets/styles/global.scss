@@ -42,3 +42,24 @@ button {
     box-sizing: content-box !important;
   }
 }
+
+.md-editor-rt {
+  // 覆盖编辑器中的列表样式
+  .md-editor-preview {
+    ol {
+      list-style-type: decimal !important;
+      padding-left: 2em !important;
+      margin: 1em 0 !important;
+    }
+
+    ul {
+      list-style-type: disc !important;
+      padding-left: 2em !important;
+      margin: 1em 0 !important;
+    }
+
+    li {
+      list-style: inherit !important;
+    }
+  }
+}

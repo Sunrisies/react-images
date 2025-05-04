@@ -20,7 +20,6 @@ import { MdEditor } from 'md-editor-rt'
 import 'md-editor-rt/lib/style.css'
 import { useState } from 'react'
 import { useImmer } from 'use-immer'
-import styles from '@/assets/styles/edit.module.css'
 
 const DEFAULT_ARTICLE = {
   title: '',
@@ -68,7 +67,6 @@ const ArticleEditor = ({
       style={{ height: 'calc(100vh - 160px)', maxWidth: 'calc(100vw - 300px)' }}
       onChange={onContentChange}
       onUploadImg={onUploadImg}
-      className={styles.mdEditor}
       autoDetectCode={true}
       showToolbarName={true}
     />
