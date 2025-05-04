@@ -1,6 +1,6 @@
 import { MdEditor } from "md-editor-rt";
 import "md-editor-rt/lib/style.css";
-import "md-editor-rt/lib/preview.css";
+// import "md-editor-rt/lib/preview.css";
 import { useState } from "react";
 import rehypeSanitize from "rehype-sanitize";
 
@@ -37,6 +37,7 @@ export function RichTextEditor({
           showToolbarName={true}
         /> */}
         <MdEditor
+          
           value={value}
           style={{
             height: "calc(100vh - 160px)",
@@ -44,14 +45,14 @@ export function RichTextEditor({
           }}
           onChange={onChange}
           onUploadImg={onUploadImg}
-          // autoDetectCode={true}
-          // showToolbarName={true}
-          // theme="light"
-          // previewTheme="github"
-          // codeTheme="github"
-          // onGetCatalog={(catalog) => {
-          //   console.log(catalog,'获取目录');
-          // }}
+          autoDetectCode={true}
+          showToolbarName={true}
+          theme="light"
+          previewTheme="github"
+          codeTheme="github"
+          onGetCatalog={(catalog) => {
+            console.log(catalog,'获取目录');
+          }}
          
           // formatCopiedText={true}
           // previewOnly={false}
