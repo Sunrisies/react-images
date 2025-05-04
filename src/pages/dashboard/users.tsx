@@ -1,4 +1,4 @@
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import { Layout } from "@/layout";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -24,8 +24,20 @@ interface PaginationInfo {
   total: number;
 }
 
-export const Route = createLazyFileRoute('/dashboard/users')({
+export const Route = createFileRoute('/dashboard/users')({
   component: RouteComponent,
+  validateSearch: (search: { page?: string, limit?: string, search?: string }) => {
+    const result: { page: number; limit: number; search?: string } = {
+      page: search.page ? Number(search.page) : 1,
+      limit: search.limit ? Number(search.limit) : 10,
+    };
+    
+    if (search.search) {
+      result.search = search.search;
+    }
+    
+    return result;
+  },
 })
 
 function UserFormDialog({ isOpen, onOpenChange, user, onSuccess }: {
@@ -159,36 +171,27 @@ function UserFormDialog({ isOpen, onOpenChange, user, onSuccess }: {
 
 
 function RouteComponent() {
-  const [page, setPage] = useState(1);
-  const [limit] = useState(10);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
-
-  // 创建一个防抖的搜索处理函数
-  const debouncedSearch = useCallback(
-    debounce((value: string) => {
-      setDebouncedSearchTerm(value);
-      setPage(1); // 重置页码
-    }, 500),
-    []
-  );
-
-  // 使用防抖后的搜索词进行查询
-  const { data } = useGetUsers(page, limit, debouncedSearchTerm);
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    debouncedSearch(value);
-    setPage(1); // 重置页码
+  // 使用 useSearch 获取验证后的搜索参数
+  const { page, limit, search } = Route.useSearch()
+  const navigate = Route.useNavigate()
+  
+  // 处理搜索事件
+  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      const value = e.currentTarget.value;
+      navigate({
+        search: {
+          page: 1,
+          limit,
+          ...(value ? { search: value } : {})
+        }
+      })
+    }
   };
 
-  // 组件卸载时取消防抖
-  useEffect(() => {
-    return () => {
-      debouncedSearch.cancel();
-    };
-  }, [debouncedSearch]);
+  // 使用搜索参数进行查询
+  const { data } = useGetUsers(page, limit, search || '');
+
   const deleteUser = useDeleteUser();
 
   const users = data?.data || [];
@@ -207,23 +210,18 @@ function RouteComponent() {
     setSelectedUser(user);
     setIsDialogOpen(true);
   };
-  const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
-  const [userToDelete, setUserToDelete] = useState<number | null>(null);
 
-  const handleDeleteUser = (userId: number) => {
-    // e.stopPropagation(); // 阻止事件冒泡
-    setUserToDelete(userId);
-    setIsDeleteAlertOpen(true);
-  };
 
-  const confirmDelete = async (e: React.MouseEvent) => {
-    e.stopPropagation(); // 阻止事件冒泡
-    if (userToDelete) {
-      await deleteUser.mutateAsync(userToDelete);
-      setIsDeleteAlertOpen(false);
-      setUserToDelete(null);
-    }
-  };
+  // 修改页码变化的处理函数
+  const handlePageChange = (newPage: number) => {
+    // 使用 navigate 更新 URL
+    navigate({
+      search: {
+        page: newPage,
+        limit
+      }
+    })
+  }
   
   return (
     <Layout>
@@ -243,8 +241,8 @@ function RouteComponent() {
                 type="search"
                 placeholder="搜索用户..."
                 className="w-full pl-8"
-                value={searchTerm}
-                onChange={handleSearch}
+                defaultValue={search || ''}
+                onKeyDown={handleSearch}
               />
             </div>
             <DropdownMenu>
@@ -327,22 +325,22 @@ function RouteComponent() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => setPage(page => Math.max(1, page - 1))}
+            onClick={() => handlePageChange(Math.max(1, page - 1))}
             disabled={page <= 1}
           >
             上一页
           </Button>
           <div className="flex items-center gap-1">
-            <span className="text-sm font-medium">第 {pagination.page} 页</span>
+            <span className="text-sm font-medium">第 {page} 页</span>
             <span className="text-sm text-muted-foreground">
-              共 {Math.ceil(pagination.total / pagination.limit)} 页
+              共 {Math.ceil(pagination.total / limit)} 页
             </span>
           </div>
           <Button
             variant="outline"
             size="sm"
-            onClick={() => setPage(page => page + 1)}
-            disabled={page >= Math.ceil(pagination.total / pagination.limit)}
+            onClick={() => handlePageChange(page + 1)}
+            disabled={page >= Math.ceil(pagination.total / limit)}
           >
             下一页
           </Button>
