@@ -1,5 +1,5 @@
 import { useAppAxios } from "@/hooks/useAppAxios";
-import {request} from '@/utils/fetch'
+import { request } from '@/utils/fetch'
 import {
   keepPreviousData,
   useMutation,
@@ -25,8 +25,6 @@ export interface User {
 
 // 获取用户列表
 export const useGetUsers = (page: number, limit: number) => {
-//   const { get } = useAppAxios();
-  
   return useQuery({
     queryKey: ["users", page, limit],
     queryFn: async () => {
@@ -78,3 +76,19 @@ export const useUpdateUser = () => {
     },
   });
 };
+
+// 删除用户
+export const useDeleteUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: number) => {
+      const { code } = await request.delete(`/user/${id}`);
+      if (code === 200) {
+        toast.success("删除成功");
+      }
+    },
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  })
+}
