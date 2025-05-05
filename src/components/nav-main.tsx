@@ -6,8 +6,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { Link, useLocation } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 export function NavMain({
   items,
@@ -29,9 +31,34 @@ export function NavMain({
   const pathname = useLocation({
     select: (location) => location.pathname,
   });
+  
+  const {
+    state,
+    open,
+    setOpen,
+    openMobile,
+    setOpenMobile,
+    isMobile,
+    toggleSidebar,
+  } = useSidebar();
+
+  // 从 localStorage 读取状态
+  useEffect(() => {
+    const savedState = localStorage.getItem('sidebarState');
+    if (savedState !== null) {
+      setOpen(JSON.parse(savedState));
+    }
+  }, []);
+
+  // 当状态改变时保存到 localStorage
+  useEffect(() => {
+    localStorage.setItem('sidebarState', JSON.stringify(open));
+  }, [open]);
+
   const isActive = (path: string) => {
     return pathname === path;
   };
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>{items.title}</SidebarGroupLabel>
@@ -45,7 +72,6 @@ export function NavMain({
             >
               <Link href={item.url} to={item.url}>
                 {item.icon && <item.icon />}
-
                 <span>{item.title}</span>
               </Link>
             </SidebarMenuButton>
