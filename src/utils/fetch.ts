@@ -235,6 +235,6 @@ class Request {
     return Promise.reject(response.statusText)
   }
 }
-// const BaseUrl = 'https://api.chaoyang1024.top:2345/new/api'
-const BaseUrl = 'http://localhost:2345/api'
+const BaseUrl = 'https://api.chaoyang1024.top:2345/new/api'
+// const BaseUrl = 'http://localhost:2345/api'
 export const request = new Request(BaseUrl)
