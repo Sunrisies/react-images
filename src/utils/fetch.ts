@@ -1,5 +1,4 @@
 import { IPagination } from "@/types"
-import { useNavigate } from "@tanstack/react-router"
 import { toast } from "sonner"
 
 type RequestType<T> = {
@@ -100,17 +99,7 @@ function ResponseInterceptor(target: any, propertyKey: string, descriptor: Prope
 
   descriptor.value = async function (...args: any[]) {
     const response = await originalMethod.apply(this, args)
-    console.log(response, 'response--1111--------')
     return response
-    // // 响应拦截器逻辑
-    // console.log('响应拦截器：', response)
-
-    // // 统一处理响应数据
-    // if (!response.ok) {
-    //   throw new Error(response.statusText)
-    // }
-
-    // return response.json()
   }
 
   return descriptor
@@ -145,22 +134,6 @@ class Request {
     return baseFetch<U>(this.getFullUrl(queryUrl), {
       method: 'GET'
     })
-    // // 如果 data 存在，将其转换为查询参数
-    // if (data) {
-    //   const queryParams = new URLSearchParams(data).toString()
-    //   url += `?${queryParams}` // 将查询参数追加到 URL
-    // }
-    // const response = await fetch(this.BaseUrl + url, {
-    //   method: 'GET',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   }
-    // })
-    // if (response.ok) {
-    //   const data = (await response.json())
-    //   return { ...data } as RequestType<U>
-    // }
-    // return Promise.reject(response.statusText)
   }
   /**
    * 发送一个 POST 请求。
@@ -192,14 +165,6 @@ class Request {
   @RequestInterceptor
   @ResponseInterceptor
   async put<T, U>(url: string, data: T): Promise<any> {
-    // const response = await fetch(this.BaseUrl + url, {
-    //   method: 'PUT',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(data)
-    // })
-    // return response
     return baseFetch<U>(this.getFullUrl(url), {
       method: 'PUT',
       body: JSON.stringify(data)
