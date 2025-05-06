@@ -36,13 +36,18 @@ const errorHandler: ErrorHandler = (error) => {
       break
     case 401:
       toast.error(error.message || '未登录')
-      window.location.href = '/auth/login'
+      requestAnimationFrame(() => {
+        window.location.href = '/auth/login'
+      })
       break
     case 403:
       toast.error(error.message || '没有权限')
       break
     case 404:
       toast.error(error.message || '请求资源不存在')
+      break
+    case 422:
+      toast.error(error.message || '请求参数错误')
       break
     case 500:
       toast.error(error.message || '服务器内部错误')
@@ -55,7 +60,7 @@ const errorHandler: ErrorHandler = (error) => {
 // 基础请求方法
 const baseFetch = async <T>(url: string, config: RequestConfig): Promise<RequestType<T>> => {
   const token = sessionStorage.getItem('token')
-  console.log(token,'============')
+  console.log(token, '============')
   const defaultHeaders = {
     'Content-Type': "application/json",
     Authorization: token ? `Bearer ${token}` : ''
@@ -68,9 +73,9 @@ const baseFetch = async <T>(url: string, config: RequestConfig): Promise<Request
     }
   })
   const data = await response.json()
-  console.log(data,'data--------',url)
+  console.log(data, 'data--------', url)
   errorHandler(data)
-  return {...data} as RequestType<T>
+  return { ...data } as RequestType<T>
 }
 function RequestInterceptor<T, U>(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
   const originalMethod = descriptor.value as (url: string, data: T, config: any) => Promise<RequestType<U>>

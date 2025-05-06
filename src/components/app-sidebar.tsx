@@ -7,7 +7,8 @@ import {
   LineChart,
   MessageSquare,
   Settings,
-  Users
+  Users,
+  Info
 } from "lucide-react";
 import * as React from "react";
 
@@ -79,6 +80,11 @@ const data = {
         title: "系统设置",
         url: "/dashboard/settings",
         icon: Settings,
+      },
+      {
+        title: "关于",
+        url: "/dashboard/about",
+        icon: Info,  // 修改为 Info 图标
       },
     ],
   },
