@@ -1,11 +1,13 @@
 import {
   BookOpen,
-  Bot,
+  Database,
   FileText,
   Home,
+  Image,
+  LineChart,
+  MessageSquare,
   Settings,
-  Settings2,
-  Users,
+  Users
 } from "lucide-react";
 import * as React from "react";
 
@@ -41,27 +43,27 @@ const data = {
       {
         title: "历史数据",
         url: "/dashboard/articles",
-        icon: Settings2,
+        icon: Database,  // 修改为数据库图标
       },
       {
         title: "评论管理",
         url: "/dashboard/comments",
-        icon: Bot,
+        icon: MessageSquare,  // 修改为评论图标
       },
       {
         title: "媒体库",
         url: "/dashboard/media",
-        icon: Bot,
+        icon: Image,  // 修改为图片图标
       },
       {
         title: "第三方库",
         url: "/dashboard/third",
-        icon: Bot,
+        icon: Database,  // 修改为数据库图标
       },
       {
         title: "数据分析",
         url: "/dashboard/analytics",
-        icon: Bot,
+        icon: LineChart,  // 修改为图表图标
       },
     ],
   },
