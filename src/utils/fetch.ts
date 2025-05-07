@@ -1,7 +1,7 @@
 import { IPagination } from "@/types"
 import { toast } from "sonner"
 
-type RequestType<T> = {
+export type RequestType<T> = {
   code: number
   message: string
   data: {
