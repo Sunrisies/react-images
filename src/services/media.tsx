@@ -32,7 +32,7 @@ export const uploadFileApi = () => {
 
 // 获取文件列表
 export const getFileListApi = (
-  params: Partial<IParams> & { search?: string } = {}
+  params: Partial<IParams> & { search?: string; type?: string } = {}
 ) => {
   const mergedParams: IParams = {
     ...({ page: 1, limit: 10 } as IParams),
@@ -40,7 +40,7 @@ export const getFileListApi = (
   };
 
   return useQuery<{ data: MediaItem[]; total?: number }, AxiosError>({
-    queryKey: ["fileList", params.search],
+    queryKey: ["fileList", params.search, params.type],
     queryFn: async () => {
       const searchParams = new URLSearchParams();
       Object.entries(mergedParams).forEach(([key, value]) => {
@@ -48,15 +48,15 @@ export const getFileListApi = (
           searchParams.append(key, value.toString());
         }
       });
-      const {code,data} = await request.get<MediaItem[]>(`/storage?${searchParams}`)
+      const { code, data } = await request.get<MediaItem[]>(`/storage?${searchParams}`);
       if (code !== 200) {
         toast.error("获取文件列表失败");
       }
       const newData = {
         ...data,
-       data: data.data.map(item => ({...item,url:item.path}))
-      }
-      return  newData
+        data: data.data.map(item => ({ ...item, url: item.path }))
+      };
+      return newData;
     },
     placeholderData: keepPreviousData,
   });
