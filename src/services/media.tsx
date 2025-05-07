@@ -1,6 +1,6 @@
 import { IParams } from "@/types";
 import { MediaItem } from "@/types/media.type";
-import { request} from '@/utils/fetch'
+import { request, RequestType} from '@/utils/fetch'
 import {
   keepPreviousData,
   useMutation,
@@ -29,19 +29,19 @@ export const uploadFileApi = () => {
     },
   });
 };
-
+type DataOnly<T> = Pick<RequestType<T>, 'data'>['data'];
 // 获取文件列表
 export const getFileListApi = (
   params: Partial<IParams> & { search?: string; type?: string } = {}
 ) => {
   const mergedParams: IParams = {
-    ...({ page: 1, limit: 10 } as IParams),
+    ...({ page: 1, limit: 8 } as IParams),
     ...params,
   };
 
-  return useQuery<{ data: MediaItem[]; total?: number }, AxiosError>({
-    queryKey: ["fileList", params.search, params.type],
-    queryFn: async () => {
+  return useQuery < DataOnly< MediaItem[]>, AxiosError>({
+    queryKey: ["fileList", params.search, params.type, params.page, params.limit],
+    queryFn: async (): Promise<DataOnly<MediaItem[]>> => {
       const searchParams = new URLSearchParams();
       Object.entries(mergedParams).forEach(([key, value]) => {
         if (value !== undefined && value !== "") {
@@ -56,6 +56,7 @@ export const getFileListApi = (
         ...data,
         data: data.data.map(item => ({ ...item, url: item.path }))
       };
+      console.log(newData,'11==1=1=1=1=');
       return newData;
     },
     placeholderData: keepPreviousData,
