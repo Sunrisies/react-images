@@ -22,13 +22,13 @@ export const useLoginApi = () => {
   const navigate = useNavigate();
   return useMutation({
     mutationFn: async (params: LoginParams) => {
-      const {data,code,message} = await request.post<LoginParams, LoginResponse>('/auth/login', params);
+      const { data, code, message } = await request.post<LoginParams, LoginResponse>('/auth/login', params);
+      console.log(data, code, message);
       if (code === 200) {
-        sessionStorage.setItem('token', data.data.access_token);
+        sessionStorage.setItem('token', data.access_token);
         toast.success(message || "登录成功");
         navigate({ to: "/dashboard" });
       }
     },
-    
   });
 };

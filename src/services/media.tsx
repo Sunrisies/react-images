@@ -1,6 +1,6 @@
 import { IParams } from "@/types";
 import { MediaItem } from "@/types/media.type";
-import { request, RequestType} from '@/utils/fetch'
+import { request, GetRequestType } from '@/utils/fetch'
 import {
   keepPreviousData,
   useMutation,
@@ -29,7 +29,7 @@ export const uploadFileApi = () => {
     },
   });
 };
-type DataOnly<T> = Pick<RequestType<T>, 'data'>['data'];
+type DataOnly<T> = Pick<GetRequestType<T>, 'data'>['data'];
 // 获取文件列表
 export const getFileListApi = (
   params: Partial<IParams> & { search?: string; type?: string } = {}
@@ -39,7 +39,7 @@ export const getFileListApi = (
     ...params,
   };
 
-  return useQuery < DataOnly< MediaItem[]>, AxiosError>({
+  return useQuery<DataOnly<MediaItem[]>, AxiosError>({
     queryKey: ["fileList", params.search, params.type, params.page, params.limit],
     queryFn: async (): Promise<DataOnly<MediaItem[]>> => {
       const searchParams = new URLSearchParams();
@@ -56,7 +56,6 @@ export const getFileListApi = (
         ...data,
         data: data.data.map(item => ({ ...item, url: item.path }))
       };
-      console.log(newData,'11==1=1=1=1=');
       return newData;
     },
     placeholderData: keepPreviousData,
@@ -68,11 +67,11 @@ export const deleteFileApi = () => {
 
   return useMutation({
     mutationFn: async (id: number) => {
-      const {data,code} = await request.delete(`/storage/${id}`);
+      const { data, code } = await request.delete(`/storage/${id}`);
       if (code === 200) {
         toast.success("删除成功");
       } else {
-        toast.error( "删除失败");
+        toast.error("删除失败");
       }
     },
     onSuccess: () => {
