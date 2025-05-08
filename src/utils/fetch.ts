@@ -1,13 +1,18 @@
 import { IPagination } from "@/types"
 import { toast } from "sonner"
 
-export type RequestType<T> = {
+export type GetRequestType<T> = {
   code: number
   message: string
   data: {
     data: T,
     pagination?: IPagination
   }
+}
+export type PostRequestType<T> = {
+  code: number
+  message: string
+  data: T,
 }
 // 请求配置类型
 type RequestConfig = {
@@ -58,9 +63,8 @@ const errorHandler: ErrorHandler = (error) => {
   }
 }
 // 基础请求方法
-const baseFetch = async <T>(url: string, config: RequestConfig): Promise<RequestType<T>> => {
+const baseFetch = async <T, R = GetRequestType<T> | PostRequestType<T>>(url: string, config: RequestConfig): Promise<R> => {
   const token = sessionStorage.getItem('token')
-  console.log(token, '============')
   const defaultHeaders = {
     'Content-Type': "application/json",
     Authorization: token ? `Bearer ${token}` : ''
@@ -73,14 +77,13 @@ const baseFetch = async <T>(url: string, config: RequestConfig): Promise<Request
     }
   })
   const data = await response.json()
-  console.log(data, 'data--------', url)
   errorHandler(data)
-  return { ...data } as RequestType<T>
+  return { ...data } as R
 }
 function RequestInterceptor<T, U>(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-  const originalMethod = descriptor.value as (url: string, data: T, config: any) => Promise<RequestType<U>>
+  const originalMethod = descriptor.value as (url: string, data: T, config: any) => Promise<GetRequestType<U>>
 
-  descriptor.value = async function (url: string, data: T): Promise<RequestType<U>> {
+  descriptor.value = async function (url: string, data: T): Promise<GetRequestType<U>> {
     // 请求拦截器逻辑
     console.log('请求拦截器：', url, data)
     const token = sessionStorage.getItem('token')
@@ -125,18 +128,18 @@ class Request {
    * @param {string} url - 请求的 URL。
    * @param {T} [data] - 可选的查询参数对象。
    *
-   * @returns {Promise<RequestType<U> | Error>} - 返回一个 Promise，解析为请求的数据或错误信息。
+   * @returns {Promise<GetRequestType<U> | Error>} - 返回一个 Promise，解析为请求的数据或错误信息。
    *
    * @throws {Error} - 如果请求失败，抛出错误信息。
    */
-  async get<U>(url: string): Promise<RequestType<U>> // 当没有 data 参数时的重载
-  async get<U, T>(url: string, data: T): Promise<RequestType<U>> // 当有 data 参数时的重载
-  async get<U, T>(url: string, data?: T): Promise<RequestType<U> | Error> {
+  async get<U>(url: string): Promise<GetRequestType<U>> // 当没有 data 参数时的重载
+  async get<U, T>(url: string, data: T): Promise<GetRequestType<U>> // 当有 data 参数时的重载
+  async get<U, T>(url: string, data?: T): Promise<GetRequestType<U> | Error> {
     console.log(this.BaseUrl + url)
     const queryUrl = data
       ? `${url}?${new URLSearchParams(data as any).toString()}`
       : url
-    return baseFetch<U>(this.getFullUrl(queryUrl), {
+    return baseFetch<U, GetRequestType<U>>(this.getFullUrl(queryUrl), {
       method: 'GET'
     })
   }
@@ -149,14 +152,14 @@ class Request {
    * @param {string} url - 请求的 URL。
    * @param {T} data - 发送的数据对象。
    *
-   * @returns {Promise<RequestType<U>>} - 返回一个 Promise，解析为请求的数据。
+   * @returns {Promise<PostRequestType<U>>} - 返回一个 Promise，解析为请求的数据。
    *
    * @throws {Error} - 如果请求失败，抛出错误信息。
    */
   @RequestInterceptor
   @ResponseInterceptor
-  async post<T, U>(url: string, data: T, config?: any): Promise<RequestType<U>> {
-    return baseFetch<U>(this.getFullUrl(url), {
+  async post<T, U>(url: string, data: T, config?: any): Promise<PostRequestType<U>> {
+    return baseFetch<U, PostRequestType<U>>(this.getFullUrl(url), {
       method: 'POST',
       body: JSON.stringify(data)
     })
