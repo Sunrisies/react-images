@@ -1,13 +1,12 @@
 import { IParams } from "@/types";
 import { MediaItem } from "@/types/media.type";
-import { request, GetRequestType } from '@/utils/fetch'
+import { GetRequestType, request } from '@/utils/fetch';
 import {
   keepPreviousData,
   useMutation,
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 import { toast } from "sonner";
 // 上传文件
 export const uploadFileApi = () => {
@@ -39,7 +38,7 @@ export const getFileListApi = (
     ...params,
   };
 
-  return useQuery<DataOnly<MediaItem[]>, AxiosError>({
+  return useQuery<DataOnly<MediaItem[]>>({
     queryKey: ["fileList", params.search, params.type, params.page, params.limit],
     queryFn: async (): Promise<DataOnly<MediaItem[]>> => {
       const searchParams = new URLSearchParams();

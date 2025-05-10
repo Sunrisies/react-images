@@ -1,10 +1,9 @@
-import { URLSearchParamsUtils } from 'sunrise-utils'
+import { IParams } from "@/types";
 import { IThird } from "@/types/third.type";
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 import { request } from "@/utils/fetch";
-import { toast } from 'sonner'
-import { IPagination, IParams } from "@/types";
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from 'sonner';
+import { URLSearchParamsUtils } from 'sunrise-utils';
 export const getThirdApi = (params: Partial<IParams> & { name?: string, categoryId?: number | string } = {}) => {
     const mergedParams: IParams = {
         ...({ page: 1, limit: 10 } as IParams),

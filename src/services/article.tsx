@@ -1,6 +1,5 @@
-import { useAppAxios } from "@/hooks/useAppAxios";
 import { ArticleType } from "@/types/article.types";
-import { request } from '@/utils/fetch'
+import { request } from '@/utils/fetch';
 import {
   keepPreviousData,
   useMutation,
@@ -8,7 +7,6 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { message } from "antd";
-import { AxiosError } from "axios";
 
 export const useGetArticle = ({
   page,
@@ -17,7 +15,6 @@ export const useGetArticle = ({
   page: number;
   limit: number;
 }) => {
-  // const { get } = useAppAxios();
   return useQuery({
     queryKey: ["article", page, limit],
     queryFn: async () =>
@@ -26,12 +23,12 @@ export const useGetArticle = ({
   });
 };
 
+// TODO: 由axios换成request还没有测试过
 export const useDeleteArticle = () => {
-  const { del } = useAppAxios();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: number) => {
-      const { code } = await del(`/article/${id}`);
+      const { code } = await request.delete(`/article/${id}`);
       if (code === 200) {
         message.success("删除成功");
       } else {
@@ -43,12 +40,12 @@ export const useDeleteArticle = () => {
     },
   });
 };
+// TODO: 由axios换成request还没有测试过
 export const useUpdateArticle = () => {
-  const { put } = useAppAxios();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, ...params }: Partial<ArticleType>) => {
-      const { code } = await put(`/article/${id}`, params);
+      const { code } = await request.put(`/article/${id}`, params);
       if (code === 200) {
         message.success("更新成功");
       } else {
