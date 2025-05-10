@@ -8,7 +8,8 @@ import {
   MessageSquare,
   Settings,
   Users,
-  Info
+  Info,
+  Activity
 } from "lucide-react";
 import * as React from "react";
 
@@ -66,6 +67,11 @@ const data = {
         url: "/dashboard/analytics",
         icon: LineChart,  // 修改为图表图标
       },
+      {
+        title: '访问日志',
+        url: '/dashboard/visit-log',
+        icon: Activity,
+      }
     ],
   },
   system: {

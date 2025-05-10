@@ -1,24 +1,18 @@
-import styles from "@/assets/styles/login.module.css";
-import {
-  LoginAndRegisterType,
-  usePostLogin,
-  usePostRegister,
-} from "@/services/login";
-import { createLazyFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { createLazyFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 // import {Button, Form, Input} from 'antd'
-import { useState } from "react";
 import { useLoginApi } from "@/services/auth";
+import { useState } from "react";
 
 export const Route = createLazyFileRoute("/auth/login")({
   component: AuthPage,
@@ -64,10 +58,11 @@ function AuthPage() {
       //   setIsLoading(false);
       //   return;
       // }
-        await useAuth.mutateAsync({
-          ...(loginType === 'username' ? { user_name: username.value } : { email: email.value }),
-          pass_word: password.value
-        });
+      await useAuth.mutateAsync({
+        ...(loginType === 'username' ? { user_name: username.value } : { email: email.value }),
+        pass_word: password.value,
+        method: loginType === 'username' ? 'password' : 'email-password'
+      });
     } else {
       // 处理注册逻辑
       // ... existing code ...

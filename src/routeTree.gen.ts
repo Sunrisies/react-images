@@ -15,6 +15,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './pages/__root.lazy'
 import { Route as IndexImport } from './pages/index'
 import { Route as DashboardIndexImport } from './pages/dashboard/index'
+import { Route as DashboardVisitLogImport } from './pages/dashboard/visit-log'
 import { Route as DashboardUsersImport } from './pages/dashboard/users'
 import { Route as DashboardThirdImport } from './pages/dashboard/third'
 import { Route as DashboardQrcodeImport } from './pages/dashboard/qrcode'
@@ -95,6 +96,12 @@ const AuthLoginLazyRoute = AuthLoginLazyImport.update({
   path: '/auth/login',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./pages/auth/login.lazy').then((d) => d.Route))
+
+const DashboardVisitLogRoute = DashboardVisitLogImport.update({
+  id: '/dashboard/visit-log',
+  path: '/dashboard/visit-log',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const DashboardUsersRoute = DashboardUsersImport.update({
   id: '/dashboard/users',
@@ -250,6 +257,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardUsersImport
       parentRoute: typeof rootRoute
     }
+    '/dashboard/visit-log': {
+      id: '/dashboard/visit-log'
+      path: '/dashboard/visit-log'
+      fullPath: '/dashboard/visit-log'
+      preLoaderRoute: typeof DashboardVisitLogImport
+      parentRoute: typeof rootRoute
+    }
     '/auth/login': {
       id: '/auth/login'
       path: '/auth/login'
@@ -317,6 +331,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/qrcode': typeof DashboardQrcodeRoute
   '/dashboard/third': typeof DashboardThirdRoute
   '/dashboard/users': typeof DashboardUsersRoute
+  '/dashboard/visit-log': typeof DashboardVisitLogRoute
   '/auth/login': typeof AuthLoginLazyRoute
   '/dashboard/about': typeof DashboardAboutLazyRoute
   '/dashboard/analytics': typeof DashboardAnalyticsLazyRoute
@@ -339,6 +354,7 @@ export interface FileRoutesByTo {
   '/dashboard/qrcode': typeof DashboardQrcodeRoute
   '/dashboard/third': typeof DashboardThirdRoute
   '/dashboard/users': typeof DashboardUsersRoute
+  '/dashboard/visit-log': typeof DashboardVisitLogRoute
   '/auth/login': typeof AuthLoginLazyRoute
   '/dashboard/about': typeof DashboardAboutLazyRoute
   '/dashboard/analytics': typeof DashboardAnalyticsLazyRoute
@@ -362,6 +378,7 @@ export interface FileRoutesById {
   '/dashboard/qrcode': typeof DashboardQrcodeRoute
   '/dashboard/third': typeof DashboardThirdRoute
   '/dashboard/users': typeof DashboardUsersRoute
+  '/dashboard/visit-log': typeof DashboardVisitLogRoute
   '/auth/login': typeof AuthLoginLazyRoute
   '/dashboard/about': typeof DashboardAboutLazyRoute
   '/dashboard/analytics': typeof DashboardAnalyticsLazyRoute
@@ -386,6 +403,7 @@ export interface FileRouteTypes {
     | '/dashboard/qrcode'
     | '/dashboard/third'
     | '/dashboard/users'
+    | '/dashboard/visit-log'
     | '/auth/login'
     | '/dashboard/about'
     | '/dashboard/analytics'
@@ -407,6 +425,7 @@ export interface FileRouteTypes {
     | '/dashboard/qrcode'
     | '/dashboard/third'
     | '/dashboard/users'
+    | '/dashboard/visit-log'
     | '/auth/login'
     | '/dashboard/about'
     | '/dashboard/analytics'
@@ -428,6 +447,7 @@ export interface FileRouteTypes {
     | '/dashboard/qrcode'
     | '/dashboard/third'
     | '/dashboard/users'
+    | '/dashboard/visit-log'
     | '/auth/login'
     | '/dashboard/about'
     | '/dashboard/analytics'
@@ -451,6 +471,7 @@ export interface RootRouteChildren {
   DashboardQrcodeRoute: typeof DashboardQrcodeRoute
   DashboardThirdRoute: typeof DashboardThirdRoute
   DashboardUsersRoute: typeof DashboardUsersRoute
+  DashboardVisitLogRoute: typeof DashboardVisitLogRoute
   AuthLoginLazyRoute: typeof AuthLoginLazyRoute
   DashboardAboutLazyRoute: typeof DashboardAboutLazyRoute
   DashboardAnalyticsLazyRoute: typeof DashboardAnalyticsLazyRoute
@@ -473,6 +494,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardQrcodeRoute: DashboardQrcodeRoute,
   DashboardThirdRoute: DashboardThirdRoute,
   DashboardUsersRoute: DashboardUsersRoute,
+  DashboardVisitLogRoute: DashboardVisitLogRoute,
   AuthLoginLazyRoute: AuthLoginLazyRoute,
   DashboardAboutLazyRoute: DashboardAboutLazyRoute,
   DashboardAnalyticsLazyRoute: DashboardAnalyticsLazyRoute,
@@ -504,6 +526,7 @@ export const routeTree = rootRoute
         "/dashboard/qrcode",
         "/dashboard/third",
         "/dashboard/users",
+        "/dashboard/visit-log",
         "/auth/login",
         "/dashboard/about",
         "/dashboard/analytics",
@@ -548,6 +571,9 @@ export const routeTree = rootRoute
     },
     "/dashboard/users": {
       "filePath": "dashboard/users.tsx"
+    },
+    "/dashboard/visit-log": {
+      "filePath": "dashboard/visit-log.tsx"
     },
     "/auth/login": {
       "filePath": "auth/login.lazy.tsx"
