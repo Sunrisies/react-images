@@ -25,17 +25,17 @@ const CustomTrigger = () => {
 };
 export const Layout: FC<{ children: React.ReactNode }> = ({ children }) => {
   // 从 localStorage 读取初始状态，如果没有则默认为 true
-  const initialState = localStorage.getItem('sidebarState') 
-    ? JSON.parse(localStorage.getItem('sidebarState')!) 
+  const initialState = localStorage.getItem('sidebarState')
+    ? JSON.parse(localStorage.getItem('sidebarState')!)
     : true;
-    
+
   const [open, setOpen] = useState(initialState);
-  
+
   // 当状态改变时保存到 localStorage
   useEffect(() => {
     localStorage.setItem('sidebarState', JSON.stringify(open));
   }, [open]);
-  
+
   // 添加退出登录处理函数
   const handleLogout = async () => {
     try {
@@ -44,7 +44,7 @@ export const Layout: FC<{ children: React.ReactNode }> = ({ children }) => {
         method: 'POST',
         credentials: 'include'
       });
-      
+
       if (!response.ok) {
         // 清除本地存储的用户信息
         localStorage.removeItem('token');
@@ -64,17 +64,17 @@ export const Layout: FC<{ children: React.ReactNode }> = ({ children }) => {
       <AppSidebar />
       <SidebarInset>
         <header
-          className={`fixed  ${open ? "left-48" : "left-16"} right-0 h-16 shrink-0 items-center gap-2 transition-all duration-300 ease-linear justify-between px-6 border-b-2 border-muted/20 dark:border-neutral-700 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:shadow-neutral-900/30 flex`}
+          className={`fixed  ${open ? "left-48" : "left-16"} right-0 h-16 shrink-0 items-center gap-2 transition-all duration-300 ease-linear justify-between px-6 border-b-2 border-muted/20 dark:border-neutral-700 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:shadow-neutral-900/30 flex z-[999]`}
         >
           <div className="flex items-center gap-2 px-4 flex-1">
-          <CustomTrigger></CustomTrigger>
+            <CustomTrigger></CustomTrigger>
             <Separator orientation="vertical" className="mr-2 h-4" />
           </div>
           <div className="flex items-center gap-4">
             <ModeToggle />
             <Tooltip>
               <TooltipTrigger asChild>
-                <button 
+                <button
                   onClick={handleLogout}
                   className="rounded-full p-2 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors hover:text-red-600 dark:hover:text-red-400 text-muted-foreground"
                 >
