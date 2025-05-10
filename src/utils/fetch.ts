@@ -37,6 +37,8 @@ const errorHandler: ErrorHandler = (error) => {
           )
           .join('; ');
         toast.error(errorMessage)
+      } else {
+        toast.error(error.message)
       }
       break
     case 401:

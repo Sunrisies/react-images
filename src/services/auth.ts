@@ -5,6 +5,7 @@ import { useNavigate } from '@tanstack/react-router';
 interface LoginParams {
   user_name?: string;
   email?: string;
+  method: 'email' | 'password' | 'phone' | 'email-password'
   pass_word: string;
 }
 
