@@ -1,21 +1,6 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { useVisitLogs } from '@/services/visitLog';
-import { Layout } from '@/layout/index'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { formatDistanceToNow } from 'date-fns';
-import { getRelativeTime } from 'sunrise-utils'
-import { zhCN } from 'date-fns/locale';
-import { Monitor, Globe, Chrome, Search, RefreshCw } from 'lucide-react';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import {
   Pagination,
   PaginationContent,
@@ -24,16 +9,28 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination"
-import { useState } from 'react';
-import React from 'react';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/pagination";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip"
+} from "@/components/ui/tooltip";
+import { Layout } from '@/layout/index';
+import { cn } from '@/lib/utils';
+import { useVisitLogs } from '@/services/visitLog';
+import { createFileRoute } from '@tanstack/react-router';
+import { RefreshCw, Search } from 'lucide-react';
+import React, { useState } from 'react';
+import { getRelativeTime } from 'sunrise-utils';
 
 export const Route = createFileRoute('/dashboard/visit-log')({
   component: RouteComponent,
