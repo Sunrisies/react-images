@@ -10,7 +10,6 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { createLazyFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
-// import {Button, Form, Input} from 'antd'
 import { useLoginApi } from "@/services/auth";
 import { useState } from "react";
 

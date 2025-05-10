@@ -1,5 +1,4 @@
-import { message } from 'antd'
-
+import { toast } from 'sonner'
 import { request } from './fetch'
 
 /**
@@ -24,10 +23,10 @@ export const uploadImage = async (file: File) => {
   formData.append('file', file, fileName)
   const { code, url } = await request.upload('/upload/image', formData)
   if (code === 200) {
-    message.success('上传图片成功')
+    toast.success('上传图片成功')
     return url
   } else {
-    message.error('上传图片失败')
+    toast.error('上传图片失败')
     throw new Error('上传图片失败')
   }
 }

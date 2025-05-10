@@ -6,7 +6,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { message } from "antd";
+import { toast } from 'sonner';
 
 export const useGetArticle = ({
   page,
@@ -30,9 +30,9 @@ export const useDeleteArticle = () => {
     mutationFn: async (id: number) => {
       const { code } = await request.delete(`/article/${id}`);
       if (code === 200) {
-        message.success("删除成功");
+        toast.success("删除成功");
       } else {
-        message.error("删除失败");
+        toast.error("删除失败");
       }
     },
     onSuccess() {
@@ -47,9 +47,9 @@ export const useUpdateArticle = () => {
     mutationFn: async ({ id, ...params }: Partial<ArticleType>) => {
       const { code } = await request.put(`/article/${id}`, params);
       if (code === 200) {
-        message.success("更新成功");
+        toast.success("更新成功");
       } else {
-        message.error("更新失败");
+        toast.error("更新失败");
       }
     },
     onSuccess() {
