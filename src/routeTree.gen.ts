@@ -18,10 +18,8 @@ import { Route as DashboardIndexImport } from './pages/dashboard/index'
 import { Route as DashboardVisitLogImport } from './pages/dashboard/visit-log'
 import { Route as DashboardUsersImport } from './pages/dashboard/users'
 import { Route as DashboardThirdImport } from './pages/dashboard/third'
-import { Route as DashboardQrcodeImport } from './pages/dashboard/qrcode'
 import { Route as DashboardPersonalInfoImport } from './pages/dashboard/personalInfo'
 import { Route as DashboardMediaImport } from './pages/dashboard/media'
-import { Route as DashboardGalleryImport } from './pages/dashboard/gallery'
 import { Route as DashboardCommentsImport } from './pages/dashboard/comments'
 import { Route as DashboardBlogImport } from './pages/dashboard/blog'
 import { Route as DashboardArticlesImport } from './pages/dashboard/articles'
@@ -114,12 +112,6 @@ const DashboardThirdRoute = DashboardThirdImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const DashboardQrcodeRoute = DashboardQrcodeImport.update({
-  id: '/dashboard/qrcode',
-  path: '/dashboard/qrcode',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const DashboardPersonalInfoRoute = DashboardPersonalInfoImport.update({
   id: '/dashboard/personalInfo',
   path: '/dashboard/personalInfo',
@@ -129,12 +121,6 @@ const DashboardPersonalInfoRoute = DashboardPersonalInfoImport.update({
 const DashboardMediaRoute = DashboardMediaImport.update({
   id: '/dashboard/media',
   path: '/dashboard/media',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const DashboardGalleryRoute = DashboardGalleryImport.update({
-  id: '/dashboard/gallery',
-  path: '/dashboard/gallery',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -201,13 +187,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardCommentsImport
       parentRoute: typeof rootRoute
     }
-    '/dashboard/gallery': {
-      id: '/dashboard/gallery'
-      path: '/dashboard/gallery'
-      fullPath: '/dashboard/gallery'
-      preLoaderRoute: typeof DashboardGalleryImport
-      parentRoute: typeof rootRoute
-    }
     '/dashboard/media': {
       id: '/dashboard/media'
       path: '/dashboard/media'
@@ -220,13 +199,6 @@ declare module '@tanstack/react-router' {
       path: '/dashboard/personalInfo'
       fullPath: '/dashboard/personalInfo'
       preLoaderRoute: typeof DashboardPersonalInfoImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard/qrcode': {
-      id: '/dashboard/qrcode'
-      path: '/dashboard/qrcode'
-      fullPath: '/dashboard/qrcode'
-      preLoaderRoute: typeof DashboardQrcodeImport
       parentRoute: typeof rootRoute
     }
     '/dashboard/third': {
@@ -310,10 +282,8 @@ export interface FileRoutesByFullPath {
   '/dashboard/articles': typeof DashboardArticlesRoute
   '/dashboard/blog': typeof DashboardBlogRoute
   '/dashboard/comments': typeof DashboardCommentsRoute
-  '/dashboard/gallery': typeof DashboardGalleryRoute
   '/dashboard/media': typeof DashboardMediaRoute
   '/dashboard/personalInfo': typeof DashboardPersonalInfoRoute
-  '/dashboard/qrcode': typeof DashboardQrcodeRoute
   '/dashboard/third': typeof DashboardThirdRoute
   '/dashboard/users': typeof DashboardUsersRoute
   '/dashboard/visit-log': typeof DashboardVisitLogRoute
@@ -332,10 +302,8 @@ export interface FileRoutesByTo {
   '/dashboard/articles': typeof DashboardArticlesRoute
   '/dashboard/blog': typeof DashboardBlogRoute
   '/dashboard/comments': typeof DashboardCommentsRoute
-  '/dashboard/gallery': typeof DashboardGalleryRoute
   '/dashboard/media': typeof DashboardMediaRoute
   '/dashboard/personalInfo': typeof DashboardPersonalInfoRoute
-  '/dashboard/qrcode': typeof DashboardQrcodeRoute
   '/dashboard/third': typeof DashboardThirdRoute
   '/dashboard/users': typeof DashboardUsersRoute
   '/dashboard/visit-log': typeof DashboardVisitLogRoute
@@ -355,10 +323,8 @@ export interface FileRoutesById {
   '/dashboard/articles': typeof DashboardArticlesRoute
   '/dashboard/blog': typeof DashboardBlogRoute
   '/dashboard/comments': typeof DashboardCommentsRoute
-  '/dashboard/gallery': typeof DashboardGalleryRoute
   '/dashboard/media': typeof DashboardMediaRoute
   '/dashboard/personalInfo': typeof DashboardPersonalInfoRoute
-  '/dashboard/qrcode': typeof DashboardQrcodeRoute
   '/dashboard/third': typeof DashboardThirdRoute
   '/dashboard/users': typeof DashboardUsersRoute
   '/dashboard/visit-log': typeof DashboardVisitLogRoute
@@ -379,10 +345,8 @@ export interface FileRouteTypes {
     | '/dashboard/articles'
     | '/dashboard/blog'
     | '/dashboard/comments'
-    | '/dashboard/gallery'
     | '/dashboard/media'
     | '/dashboard/personalInfo'
-    | '/dashboard/qrcode'
     | '/dashboard/third'
     | '/dashboard/users'
     | '/dashboard/visit-log'
@@ -400,10 +364,8 @@ export interface FileRouteTypes {
     | '/dashboard/articles'
     | '/dashboard/blog'
     | '/dashboard/comments'
-    | '/dashboard/gallery'
     | '/dashboard/media'
     | '/dashboard/personalInfo'
-    | '/dashboard/qrcode'
     | '/dashboard/third'
     | '/dashboard/users'
     | '/dashboard/visit-log'
@@ -421,10 +383,8 @@ export interface FileRouteTypes {
     | '/dashboard/articles'
     | '/dashboard/blog'
     | '/dashboard/comments'
-    | '/dashboard/gallery'
     | '/dashboard/media'
     | '/dashboard/personalInfo'
-    | '/dashboard/qrcode'
     | '/dashboard/third'
     | '/dashboard/users'
     | '/dashboard/visit-log'
@@ -444,10 +404,8 @@ export interface RootRouteChildren {
   DashboardArticlesRoute: typeof DashboardArticlesRoute
   DashboardBlogRoute: typeof DashboardBlogRoute
   DashboardCommentsRoute: typeof DashboardCommentsRoute
-  DashboardGalleryRoute: typeof DashboardGalleryRoute
   DashboardMediaRoute: typeof DashboardMediaRoute
   DashboardPersonalInfoRoute: typeof DashboardPersonalInfoRoute
-  DashboardQrcodeRoute: typeof DashboardQrcodeRoute
   DashboardThirdRoute: typeof DashboardThirdRoute
   DashboardUsersRoute: typeof DashboardUsersRoute
   DashboardVisitLogRoute: typeof DashboardVisitLogRoute
@@ -466,10 +424,8 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardArticlesRoute: DashboardArticlesRoute,
   DashboardBlogRoute: DashboardBlogRoute,
   DashboardCommentsRoute: DashboardCommentsRoute,
-  DashboardGalleryRoute: DashboardGalleryRoute,
   DashboardMediaRoute: DashboardMediaRoute,
   DashboardPersonalInfoRoute: DashboardPersonalInfoRoute,
-  DashboardQrcodeRoute: DashboardQrcodeRoute,
   DashboardThirdRoute: DashboardThirdRoute,
   DashboardUsersRoute: DashboardUsersRoute,
   DashboardVisitLogRoute: DashboardVisitLogRoute,
@@ -497,10 +453,8 @@ export const routeTree = rootRoute
         "/dashboard/articles",
         "/dashboard/blog",
         "/dashboard/comments",
-        "/dashboard/gallery",
         "/dashboard/media",
         "/dashboard/personalInfo",
-        "/dashboard/qrcode",
         "/dashboard/third",
         "/dashboard/users",
         "/dashboard/visit-log",
@@ -528,17 +482,11 @@ export const routeTree = rootRoute
     "/dashboard/comments": {
       "filePath": "dashboard/comments.tsx"
     },
-    "/dashboard/gallery": {
-      "filePath": "dashboard/gallery.tsx"
-    },
     "/dashboard/media": {
       "filePath": "dashboard/media.tsx"
     },
     "/dashboard/personalInfo": {
       "filePath": "dashboard/personalInfo.tsx"
-    },
-    "/dashboard/qrcode": {
-      "filePath": "dashboard/qrcode.tsx"
     },
     "/dashboard/third": {
       "filePath": "dashboard/third.tsx"
