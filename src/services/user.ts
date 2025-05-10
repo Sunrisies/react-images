@@ -1,6 +1,5 @@
-import { useAppAxios } from "@/hooks/useAppAxios";
 import { User, UserUpdateParams } from "@/types/user.type";
-import { request } from '@/utils/fetch'
+import { request } from '@/utils/fetch';
 import {
   keepPreviousData,
   useMutation,
@@ -31,13 +30,12 @@ export const useGetUsers = (page: number, limit: number, user_name?: string) => 
 };
 
 // 创建用户
+// TODO: 换成fetch没有测试
 export const useCreateUser = () => {
-  const { post } = useAppAxios();
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: async (params: UserUpdateParams) => {
-      const { code } = await post('/auth/register', params);
+      const { code } = await request.post('/auth/register', params);
       if (code === 200) {
         toast.success("创建用户成功");
       } else {
@@ -52,13 +50,12 @@ export const useCreateUser = () => {
 };
 
 // 更新用户
+// TODO: 换成fetch没有测试
 export const useUpdateUser = () => {
-  const { put } = useAppAxios();
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: async ({ id, ...params }: { id: number } & UserUpdateParams) => {
-      const { code } = await put(`/user/${id}`, params);
+      const { code } = await request.put(`/user/${id}`, params);
       if (code === 200) {
         toast.success("更新成功");
       } else {

@@ -1,15 +1,9 @@
-import { useAppAxios } from "@/hooks/useAppAxios";
-import { ArticleType } from "@/types/article.types";
+import type { Comment } from "@/lib/utils";
+import { request } from '@/utils/fetch';
 import {
   keepPreviousData,
-  useMutation,
-  useQuery,
-  useQueryClient,
+  useQuery
 } from "@tanstack/react-query";
-import { message } from "antd";
-import { AxiosError } from "axios";
-import {request } from '@/utils/fetch'
-import type { Comment } from "@/lib/utils";
 export const useTextComments = ({
   page,
   limit,
@@ -17,7 +11,7 @@ export const useTextComments = ({
   page: number;
   limit: number;
 }) => {
-  return useQuery<{ data: Comment[]; total?: number }, AxiosError>({
+  return useQuery<{ data: Comment[]; total?: number }>({
     queryKey: ["articleComments", page, limit],
     queryFn: async () =>
       (await request.get<Comment[]>(

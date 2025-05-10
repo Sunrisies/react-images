@@ -1,10 +1,9 @@
 import { TypeOptions } from "@/types";
 import { request } from "@/utils/fetch";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 
 export const getTagsApi = () => {
-  return useQuery<TypeOptions[], AxiosError>({
+  return useQuery<TypeOptions[]>({
     queryKey: ["tags"],
     queryFn: async () => {
       const response = await request.get<TypeOptions[]>(`/tags`);
@@ -15,7 +14,7 @@ export const getTagsApi = () => {
   });
 };
 export const getCategoriesApi = () => {
-  return useQuery<TypeOptions[], AxiosError>({
+  return useQuery<TypeOptions[]>({
     queryKey: ["categories"],
     queryFn: async () => {
       const response = await request.get<TypeOptions[]>(
