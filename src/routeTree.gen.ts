@@ -22,7 +22,6 @@ import { Route as DashboardQrcodeImport } from './pages/dashboard/qrcode'
 import { Route as DashboardPersonalInfoImport } from './pages/dashboard/personalInfo'
 import { Route as DashboardMediaImport } from './pages/dashboard/media'
 import { Route as DashboardGalleryImport } from './pages/dashboard/gallery'
-import { Route as DashboardEditImport } from './pages/dashboard/edit'
 import { Route as DashboardCommentsImport } from './pages/dashboard/comments'
 import { Route as DashboardBlogImport } from './pages/dashboard/blog'
 import { Route as DashboardArticlesImport } from './pages/dashboard/articles'
@@ -139,12 +138,6 @@ const DashboardGalleryRoute = DashboardGalleryImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const DashboardEditRoute = DashboardEditImport.update({
-  id: '/dashboard/edit',
-  path: '/dashboard/edit',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const DashboardCommentsRoute = DashboardCommentsImport.update({
   id: '/dashboard/comments',
   path: '/dashboard/comments',
@@ -206,13 +199,6 @@ declare module '@tanstack/react-router' {
       path: '/dashboard/comments'
       fullPath: '/dashboard/comments'
       preLoaderRoute: typeof DashboardCommentsImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard/edit': {
-      id: '/dashboard/edit'
-      path: '/dashboard/edit'
-      fullPath: '/dashboard/edit'
-      preLoaderRoute: typeof DashboardEditImport
       parentRoute: typeof rootRoute
     }
     '/dashboard/gallery': {
@@ -324,7 +310,6 @@ export interface FileRoutesByFullPath {
   '/dashboard/articles': typeof DashboardArticlesRoute
   '/dashboard/blog': typeof DashboardBlogRoute
   '/dashboard/comments': typeof DashboardCommentsRoute
-  '/dashboard/edit': typeof DashboardEditRoute
   '/dashboard/gallery': typeof DashboardGalleryRoute
   '/dashboard/media': typeof DashboardMediaRoute
   '/dashboard/personalInfo': typeof DashboardPersonalInfoRoute
@@ -347,7 +332,6 @@ export interface FileRoutesByTo {
   '/dashboard/articles': typeof DashboardArticlesRoute
   '/dashboard/blog': typeof DashboardBlogRoute
   '/dashboard/comments': typeof DashboardCommentsRoute
-  '/dashboard/edit': typeof DashboardEditRoute
   '/dashboard/gallery': typeof DashboardGalleryRoute
   '/dashboard/media': typeof DashboardMediaRoute
   '/dashboard/personalInfo': typeof DashboardPersonalInfoRoute
@@ -371,7 +355,6 @@ export interface FileRoutesById {
   '/dashboard/articles': typeof DashboardArticlesRoute
   '/dashboard/blog': typeof DashboardBlogRoute
   '/dashboard/comments': typeof DashboardCommentsRoute
-  '/dashboard/edit': typeof DashboardEditRoute
   '/dashboard/gallery': typeof DashboardGalleryRoute
   '/dashboard/media': typeof DashboardMediaRoute
   '/dashboard/personalInfo': typeof DashboardPersonalInfoRoute
@@ -396,7 +379,6 @@ export interface FileRouteTypes {
     | '/dashboard/articles'
     | '/dashboard/blog'
     | '/dashboard/comments'
-    | '/dashboard/edit'
     | '/dashboard/gallery'
     | '/dashboard/media'
     | '/dashboard/personalInfo'
@@ -418,7 +400,6 @@ export interface FileRouteTypes {
     | '/dashboard/articles'
     | '/dashboard/blog'
     | '/dashboard/comments'
-    | '/dashboard/edit'
     | '/dashboard/gallery'
     | '/dashboard/media'
     | '/dashboard/personalInfo'
@@ -440,7 +421,6 @@ export interface FileRouteTypes {
     | '/dashboard/articles'
     | '/dashboard/blog'
     | '/dashboard/comments'
-    | '/dashboard/edit'
     | '/dashboard/gallery'
     | '/dashboard/media'
     | '/dashboard/personalInfo'
@@ -464,7 +444,6 @@ export interface RootRouteChildren {
   DashboardArticlesRoute: typeof DashboardArticlesRoute
   DashboardBlogRoute: typeof DashboardBlogRoute
   DashboardCommentsRoute: typeof DashboardCommentsRoute
-  DashboardEditRoute: typeof DashboardEditRoute
   DashboardGalleryRoute: typeof DashboardGalleryRoute
   DashboardMediaRoute: typeof DashboardMediaRoute
   DashboardPersonalInfoRoute: typeof DashboardPersonalInfoRoute
@@ -487,7 +466,6 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardArticlesRoute: DashboardArticlesRoute,
   DashboardBlogRoute: DashboardBlogRoute,
   DashboardCommentsRoute: DashboardCommentsRoute,
-  DashboardEditRoute: DashboardEditRoute,
   DashboardGalleryRoute: DashboardGalleryRoute,
   DashboardMediaRoute: DashboardMediaRoute,
   DashboardPersonalInfoRoute: DashboardPersonalInfoRoute,
@@ -519,7 +497,6 @@ export const routeTree = rootRoute
         "/dashboard/articles",
         "/dashboard/blog",
         "/dashboard/comments",
-        "/dashboard/edit",
         "/dashboard/gallery",
         "/dashboard/media",
         "/dashboard/personalInfo",
@@ -550,9 +527,6 @@ export const routeTree = rootRoute
     },
     "/dashboard/comments": {
       "filePath": "dashboard/comments.tsx"
-    },
-    "/dashboard/edit": {
-      "filePath": "dashboard/edit.tsx"
     },
     "/dashboard/gallery": {
       "filePath": "dashboard/gallery.tsx"
