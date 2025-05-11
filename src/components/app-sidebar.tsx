@@ -76,7 +76,17 @@ const data = {
         title: "文章分类",
         url: "/dashboard/categories",
         icon: Database,  // 修改为数据库图标
-      }
+      },
+      {
+        title: "文章标签",
+        url: "/dashboard/tags",
+        icon: Database,  // 修改为数据库图标
+      },
+      {
+        title: "友情链接",
+        url: "/dashboard/links",
+        icon: Database,  // 修改为数据库图标
+      },
     ],
   },
   system: {

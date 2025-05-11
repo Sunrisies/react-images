@@ -18,6 +18,7 @@ import { Route as DashboardIndexImport } from './pages/dashboard/index'
 import { Route as DashboardVisitLogImport } from './pages/dashboard/visit-log'
 import { Route as DashboardUsersImport } from './pages/dashboard/users'
 import { Route as DashboardThirdImport } from './pages/dashboard/third'
+import { Route as DashboardTagsImport } from './pages/dashboard/tags'
 import { Route as DashboardPersonalInfoImport } from './pages/dashboard/personalInfo'
 import { Route as DashboardMediaImport } from './pages/dashboard/media'
 import { Route as DashboardCommentsImport } from './pages/dashboard/comments'
@@ -110,6 +111,12 @@ const DashboardUsersRoute = DashboardUsersImport.update({
 const DashboardThirdRoute = DashboardThirdImport.update({
   id: '/dashboard/third',
   path: '/dashboard/third',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DashboardTagsRoute = DashboardTagsImport.update({
+  id: '/dashboard/tags',
+  path: '/dashboard/tags',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -215,6 +222,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardPersonalInfoImport
       parentRoute: typeof rootRoute
     }
+    '/dashboard/tags': {
+      id: '/dashboard/tags'
+      path: '/dashboard/tags'
+      fullPath: '/dashboard/tags'
+      preLoaderRoute: typeof DashboardTagsImport
+      parentRoute: typeof rootRoute
+    }
     '/dashboard/third': {
       id: '/dashboard/third'
       path: '/dashboard/third'
@@ -299,6 +313,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/comments': typeof DashboardCommentsRoute
   '/dashboard/media': typeof DashboardMediaRoute
   '/dashboard/personalInfo': typeof DashboardPersonalInfoRoute
+  '/dashboard/tags': typeof DashboardTagsRoute
   '/dashboard/third': typeof DashboardThirdRoute
   '/dashboard/users': typeof DashboardUsersRoute
   '/dashboard/visit-log': typeof DashboardVisitLogRoute
@@ -320,6 +335,7 @@ export interface FileRoutesByTo {
   '/dashboard/comments': typeof DashboardCommentsRoute
   '/dashboard/media': typeof DashboardMediaRoute
   '/dashboard/personalInfo': typeof DashboardPersonalInfoRoute
+  '/dashboard/tags': typeof DashboardTagsRoute
   '/dashboard/third': typeof DashboardThirdRoute
   '/dashboard/users': typeof DashboardUsersRoute
   '/dashboard/visit-log': typeof DashboardVisitLogRoute
@@ -342,6 +358,7 @@ export interface FileRoutesById {
   '/dashboard/comments': typeof DashboardCommentsRoute
   '/dashboard/media': typeof DashboardMediaRoute
   '/dashboard/personalInfo': typeof DashboardPersonalInfoRoute
+  '/dashboard/tags': typeof DashboardTagsRoute
   '/dashboard/third': typeof DashboardThirdRoute
   '/dashboard/users': typeof DashboardUsersRoute
   '/dashboard/visit-log': typeof DashboardVisitLogRoute
@@ -365,6 +382,7 @@ export interface FileRouteTypes {
     | '/dashboard/comments'
     | '/dashboard/media'
     | '/dashboard/personalInfo'
+    | '/dashboard/tags'
     | '/dashboard/third'
     | '/dashboard/users'
     | '/dashboard/visit-log'
@@ -385,6 +403,7 @@ export interface FileRouteTypes {
     | '/dashboard/comments'
     | '/dashboard/media'
     | '/dashboard/personalInfo'
+    | '/dashboard/tags'
     | '/dashboard/third'
     | '/dashboard/users'
     | '/dashboard/visit-log'
@@ -405,6 +424,7 @@ export interface FileRouteTypes {
     | '/dashboard/comments'
     | '/dashboard/media'
     | '/dashboard/personalInfo'
+    | '/dashboard/tags'
     | '/dashboard/third'
     | '/dashboard/users'
     | '/dashboard/visit-log'
@@ -427,6 +447,7 @@ export interface RootRouteChildren {
   DashboardCommentsRoute: typeof DashboardCommentsRoute
   DashboardMediaRoute: typeof DashboardMediaRoute
   DashboardPersonalInfoRoute: typeof DashboardPersonalInfoRoute
+  DashboardTagsRoute: typeof DashboardTagsRoute
   DashboardThirdRoute: typeof DashboardThirdRoute
   DashboardUsersRoute: typeof DashboardUsersRoute
   DashboardVisitLogRoute: typeof DashboardVisitLogRoute
@@ -448,6 +469,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardCommentsRoute: DashboardCommentsRoute,
   DashboardMediaRoute: DashboardMediaRoute,
   DashboardPersonalInfoRoute: DashboardPersonalInfoRoute,
+  DashboardTagsRoute: DashboardTagsRoute,
   DashboardThirdRoute: DashboardThirdRoute,
   DashboardUsersRoute: DashboardUsersRoute,
   DashboardVisitLogRoute: DashboardVisitLogRoute,
@@ -478,6 +500,7 @@ export const routeTree = rootRoute
         "/dashboard/comments",
         "/dashboard/media",
         "/dashboard/personalInfo",
+        "/dashboard/tags",
         "/dashboard/third",
         "/dashboard/users",
         "/dashboard/visit-log",
@@ -513,6 +536,9 @@ export const routeTree = rootRoute
     },
     "/dashboard/personalInfo": {
       "filePath": "dashboard/personalInfo.tsx"
+    },
+    "/dashboard/tags": {
+      "filePath": "dashboard/tags.tsx"
     },
     "/dashboard/third": {
       "filePath": "dashboard/third.tsx"
