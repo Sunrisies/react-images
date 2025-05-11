@@ -14,6 +14,7 @@ export type PostRequestType<T> = {
   message: string
   data: T,
 }
+export type DataOnly<T> = Pick<GetRequestType<T>, 'data'>['data'];
 // 请求配置类型
 type RequestConfig = {
   headers?: Record<string, string>;

@@ -71,6 +71,11 @@ const data = {
         title: '访问日志',
         url: '/dashboard/visit-log',
         icon: Activity,
+      },
+      {
+        title: "文章分类",
+        url: "/dashboard/categories",
+        icon: Database,  // 修改为数据库图标
       }
     ],
   },
