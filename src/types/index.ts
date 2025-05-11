@@ -11,3 +11,7 @@ export interface IPagination {
     limit: number;
     total: number;
 }
+export interface IOptions {
+    value: number;
+    label: string;
+}

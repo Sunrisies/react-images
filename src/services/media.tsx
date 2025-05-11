@@ -1,6 +1,6 @@
 import { IParams } from "@/types";
 import { MediaItem } from "@/types/media.type";
-import { GetRequestType, request } from '@/utils/fetch';
+import { DataOnly, GetRequestType, request } from '@/utils/fetch';
 import {
   keepPreviousData,
   useMutation,
@@ -28,7 +28,7 @@ export const uploadFileApi = () => {
     },
   });
 };
-type DataOnly<T> = Pick<GetRequestType<T>, 'data'>['data'];
+
 // 获取文件列表
 export const getFileListApi = (
   params: Partial<IParams> & { search?: string; type?: string } = {}

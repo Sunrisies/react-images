@@ -21,6 +21,7 @@ import { Route as DashboardThirdImport } from './pages/dashboard/third'
 import { Route as DashboardPersonalInfoImport } from './pages/dashboard/personalInfo'
 import { Route as DashboardMediaImport } from './pages/dashboard/media'
 import { Route as DashboardCommentsImport } from './pages/dashboard/comments'
+import { Route as DashboardCategoriesImport } from './pages/dashboard/categories'
 import { Route as DashboardBlogImport } from './pages/dashboard/blog'
 import { Route as DashboardArticlesImport } from './pages/dashboard/articles'
 import { Route as AuthForgotPasswordImport } from './pages/auth/forgot-password'
@@ -130,6 +131,12 @@ const DashboardCommentsRoute = DashboardCommentsImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const DashboardCategoriesRoute = DashboardCategoriesImport.update({
+  id: '/dashboard/categories',
+  path: '/dashboard/categories',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const DashboardBlogRoute = DashboardBlogImport.update({
   id: '/dashboard/blog',
   path: '/dashboard/blog',
@@ -178,6 +185,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard/blog'
       fullPath: '/dashboard/blog'
       preLoaderRoute: typeof DashboardBlogImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard/categories': {
+      id: '/dashboard/categories'
+      path: '/dashboard/categories'
+      fullPath: '/dashboard/categories'
+      preLoaderRoute: typeof DashboardCategoriesImport
       parentRoute: typeof rootRoute
     }
     '/dashboard/comments': {
@@ -281,6 +295,7 @@ export interface FileRoutesByFullPath {
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/dashboard/articles': typeof DashboardArticlesRoute
   '/dashboard/blog': typeof DashboardBlogRoute
+  '/dashboard/categories': typeof DashboardCategoriesRoute
   '/dashboard/comments': typeof DashboardCommentsRoute
   '/dashboard/media': typeof DashboardMediaRoute
   '/dashboard/personalInfo': typeof DashboardPersonalInfoRoute
@@ -301,6 +316,7 @@ export interface FileRoutesByTo {
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/dashboard/articles': typeof DashboardArticlesRoute
   '/dashboard/blog': typeof DashboardBlogRoute
+  '/dashboard/categories': typeof DashboardCategoriesRoute
   '/dashboard/comments': typeof DashboardCommentsRoute
   '/dashboard/media': typeof DashboardMediaRoute
   '/dashboard/personalInfo': typeof DashboardPersonalInfoRoute
@@ -322,6 +338,7 @@ export interface FileRoutesById {
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/dashboard/articles': typeof DashboardArticlesRoute
   '/dashboard/blog': typeof DashboardBlogRoute
+  '/dashboard/categories': typeof DashboardCategoriesRoute
   '/dashboard/comments': typeof DashboardCommentsRoute
   '/dashboard/media': typeof DashboardMediaRoute
   '/dashboard/personalInfo': typeof DashboardPersonalInfoRoute
@@ -344,6 +361,7 @@ export interface FileRouteTypes {
     | '/auth/forgot-password'
     | '/dashboard/articles'
     | '/dashboard/blog'
+    | '/dashboard/categories'
     | '/dashboard/comments'
     | '/dashboard/media'
     | '/dashboard/personalInfo'
@@ -363,6 +381,7 @@ export interface FileRouteTypes {
     | '/auth/forgot-password'
     | '/dashboard/articles'
     | '/dashboard/blog'
+    | '/dashboard/categories'
     | '/dashboard/comments'
     | '/dashboard/media'
     | '/dashboard/personalInfo'
@@ -382,6 +401,7 @@ export interface FileRouteTypes {
     | '/auth/forgot-password'
     | '/dashboard/articles'
     | '/dashboard/blog'
+    | '/dashboard/categories'
     | '/dashboard/comments'
     | '/dashboard/media'
     | '/dashboard/personalInfo'
@@ -403,6 +423,7 @@ export interface RootRouteChildren {
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   DashboardArticlesRoute: typeof DashboardArticlesRoute
   DashboardBlogRoute: typeof DashboardBlogRoute
+  DashboardCategoriesRoute: typeof DashboardCategoriesRoute
   DashboardCommentsRoute: typeof DashboardCommentsRoute
   DashboardMediaRoute: typeof DashboardMediaRoute
   DashboardPersonalInfoRoute: typeof DashboardPersonalInfoRoute
@@ -423,6 +444,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   DashboardArticlesRoute: DashboardArticlesRoute,
   DashboardBlogRoute: DashboardBlogRoute,
+  DashboardCategoriesRoute: DashboardCategoriesRoute,
   DashboardCommentsRoute: DashboardCommentsRoute,
   DashboardMediaRoute: DashboardMediaRoute,
   DashboardPersonalInfoRoute: DashboardPersonalInfoRoute,
@@ -452,6 +474,7 @@ export const routeTree = rootRoute
         "/auth/forgot-password",
         "/dashboard/articles",
         "/dashboard/blog",
+        "/dashboard/categories",
         "/dashboard/comments",
         "/dashboard/media",
         "/dashboard/personalInfo",
@@ -478,6 +501,9 @@ export const routeTree = rootRoute
     },
     "/dashboard/blog": {
       "filePath": "dashboard/blog.tsx"
+    },
+    "/dashboard/categories": {
+      "filePath": "dashboard/categories.tsx"
     },
     "/dashboard/comments": {
       "filePath": "dashboard/comments.tsx"
