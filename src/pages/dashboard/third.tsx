@@ -53,7 +53,6 @@ export const Route = createFileRoute("/dashboard/third")({
 function RouteComponent() {
   const { mutateAsync: delThird } = useDeleteThirdApi();
   const { data: categories } = getCategoriesApi();
-  // 模拟数据 - 实际应从API获取
   // 新增搜索表单
   const searchForm = useForm({
     defaultValues: {
@@ -235,7 +234,7 @@ function RouteComponent() {
               {Array.from(
                 {
                   length: Math.ceil(
-                    data.pagination.total / data.pagination.limit
+                    data.pagination!.total / data.pagination!.limit
                   ),
                 },
                 (_, i) => i + 1
@@ -258,7 +257,7 @@ function RouteComponent() {
                         ...prev,
                         page: Math.min(
                           Math.ceil(
-                            data.pagination.total / data.pagination.limit
+                            data.pagination!.total / data.pagination!.limit
                           ),
                           page + 1
                         ),
@@ -267,7 +266,7 @@ function RouteComponent() {
                   }
                   className={
                     page ===
-                    Math.ceil(data.pagination.total / data.pagination.limit)
+                    Math.ceil(data.pagination!.total / data.pagination!.limit)
                       ? "opacity-50 cursor-not-allowed"
                       : ""
                   }
