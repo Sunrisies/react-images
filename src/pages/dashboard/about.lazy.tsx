@@ -27,7 +27,7 @@ function AboutComponent() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  这是一个现代化的博客管理系统，采用最新的技术栈开发，提供了文章管理、用户管理、媒体管理等功能。
+                  这是一个现代化的博客管理系统，采用最新的技术栈开发，提供了文章管理、用户管理、媒体管理、分类管理、标签管理、友情链接等完整的博客系统功能。系统采用前后端分离架构，确保了良好的扩展性和维护性。
                 </p>
               </CardContent>
             </Card>
@@ -41,8 +41,11 @@ function AboutComponent() {
                 <ul className="list-disc list-inside text-sm text-muted-foreground space-y-2">
                   <li>React + TypeScript</li>
                   <li>TanStack Router</li>
+                  <li>TanStack Query</li>
                   <li>Tailwind CSS</li>
                   <li>Shadcn UI</li>
+                  <li>Sonner Toast</li>
+                  <li>React Hook Form</li>
                 </ul>
               </CardContent>
             </Card>
@@ -54,9 +57,9 @@ function AboutComponent() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2 text-sm text-muted-foreground">
-                  <p>版本号：1.0.0</p>
-                  <p>更新日期：2024年</p>
-                  <p>开发团队：博客开发团队</p>
+                  <p>版本号：1.2.0</p>
+                  <p>更新日期：2024年2月</p>
+                  <p>开发团队：朝阳博客开发团队</p>
                 </div>
               </CardContent>
             </Card>
