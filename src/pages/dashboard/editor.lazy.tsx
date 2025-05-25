@@ -10,14 +10,19 @@ import { ArticleFormValues } from "@/utils/schemas";
 import { uploadImage } from "@/utils/update";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { ImageIcon, Settings } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useSearch } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { request } from '@/utils/fetch';
 
 export const Route = createLazyFileRoute("/dashboard/editor")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const search = Route.useSearch();
+  const articleId = search.id;
   const { mutateAsync } = usePostEdit();
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
@@ -28,24 +33,44 @@ function RouteComponent() {
     setContent(() => "");
     console.log(content, title, "清除内容");
   };
+  // 加载文章详情（编辑模式）
+  useEffect(() => {
+    if (articleId) {
+      request.get(`/article/${articleId}`).then(res => {
+        const article = res.data;
+        setTitle(article.title);
+        setContent(article.content);
+        // 其他字段同理
+      });
+    }
+  }, [articleId]);
+
+  // 提交逻辑
   const onSubmit = async (item: ArticleFormValues) => {
-    // item.categoryId = +item.categoryId;
-    const data = await mutateAsync({
-      title,
-      content,
-      ...item,
-      categoryId: +item.categoryId,
-      author: "朝阳",
-    });
-    if (data === 200) {
-      setTitle(() => "");
-      setContent(() => "");
-      console.log(content, title, "清除内容");
-      setShowSettings(false);
+    if (articleId) {
+      // 编辑
+      await request.put(`/article/${articleId}`, {
+        title,
+        content,
+        ...item,
+        categoryId: +item.categoryId,
+        author: "朝阳",
+      });
+      toast.success("更新成功");
+    } else {
+      // 新增
+      await mutateAsync({
+        title,
+        content,
+        ...item,
+        categoryId: +item.categoryId,
+        author: "朝阳",
+      });
       toast.success("发布成功");
     }
-    console.log(data, "提交数据");
-    console.log(content, title, "提交内容", item);
+    setTitle("");
+    setContent("");
+    setShowSettings(false);
   };
   const onUploadImg = async (
     files: File[],
