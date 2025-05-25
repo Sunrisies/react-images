@@ -138,7 +138,7 @@ function RouteComponent() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate({ to: '/dashboard/editor', search: { id: post.id } })}>
                           <Edit className="mr-2 h-4 w-4" />
                           编辑
                         </DropdownMenuItem>
