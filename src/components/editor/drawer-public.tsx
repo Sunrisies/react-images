@@ -151,7 +151,7 @@ const DrawerPublic: FC<DrawerPublicProps> = ({
         }
       }}
     >
-      <DrawerContent className="max-w-2xl ml-auto h-full rounded-none">
+      <DrawerContent className="max-w-2xl ml-auto rounded-none h-[calc(100%-64px)] -top-8 z-[9999]">
         <div className="p-6 space-y-6">
           <DrawerHeader className="p-0">
             <DrawerTitle>发布设置</DrawerTitle>
