@@ -3,7 +3,7 @@ import { isLogin } from '@/utils/auth'
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { BarChart, LineChart } from "@/components/charts"
+import { BarChart, DateCountChart, LineChart } from "@/components/charts"
 import { RecentPosts } from "@/components/recent-posts"
 import { RecentComments } from "@/components/recent-comments"
 import { BarChart3, FileText, MessageSquare, Users } from "lucide-react"
@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils"
 import { ThemeProvider } from "@/components/theme-provider"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { DashboardSidebar } from "@/components/dashboard-sidebar"
-
+import {useGetUploadTime} from '@/services/index'
 export const Route = createFileRoute('/dashboard/')({
   component: RouteComponent,
   beforeLoad: () => {
@@ -24,6 +24,9 @@ export const Route = createFileRoute('/dashboard/')({
 })
 
 function RouteComponent() {
+  const {data,isLoading,isError,error} = useGetUploadTime()
+  if (isLoading) return <div className="flex items-center justify-center h-full">加载中...</div>;
+  if (isError) return <div className="text-red-500">加载失败: {error.message}</div>;
   return (<Layout>
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
       <div className="flex items-center justify-between">
@@ -104,11 +107,11 @@ function RouteComponent() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
             <Card className="col-span-4">
               <CardHeader>
-                <CardTitle>最近文章</CardTitle>
-                <CardDescription>最近发布和编辑的文章</CardDescription>
+                <CardTitle>日期分布统计</CardTitle>
+                <CardDescription>按日期统计的数据分布</CardDescription>
               </CardHeader>
               <CardContent>
-                <RecentPosts />
+                <DateCountChart data={data} />
               </CardContent>
             </Card>
             <Card className="col-span-3">

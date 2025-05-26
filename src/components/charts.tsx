@@ -11,6 +11,7 @@ import {
     Legend,
     type ChartOptions,
 } from "chart.js"
+import { warehouseType } from "@/services"
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend)
 
@@ -85,5 +86,25 @@ export function BarChart() {
             <Bar data={data} options={options}/>
         </div>
     )
+}
+
+export function DateCountChart({ data }: { data: warehouseType[] }) {
+  const chartData = {
+    labels: data.map(item => item[0]),
+    datasets: [
+      {
+        label: "数量",
+        data: data.map(item => item[1]),
+        backgroundColor: "hsl(var(--primary) / 0.8)",
+      },
+    ],
+  }
+  const options = {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    maintainAspectRatio: false,
+    scales: { y: { beginAtZero: true } },
+  }
+  return <div className="h-[300px]"><Bar data={chartData} options={options} /></div>
 }
 
