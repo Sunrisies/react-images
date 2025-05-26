@@ -12,6 +12,8 @@ import {
     type ChartOptions,
 } from "chart.js"
 import { warehouseType } from "@/services"
+import { useTheme } from "./theme-provider"
+import { useMemo } from "react"
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend)
 
@@ -89,22 +91,49 @@ export function BarChart() {
 }
 
 export function DateCountChart({ data }: { data: warehouseType[] }) {
-  const chartData = {
-    labels: data.map(item => item[0]),
-    datasets: [
-      {
-        label: "数量",
-        data: data.map(item => item[1]),
-        backgroundColor: "hsl(var(--primary) / 0.8)",
-      },
-    ],
-  }
+    const { theme } = useTheme() // 新增主题hook
+  
+    // 添加theme到依赖项
+    const chartData = useMemo(() => {
+       return {
+            labels: data.map(item => item[0]),
+                datasets: [
+                    {
+                        label: "数量",
+                        data: data.map(item => item[1]),
+                        borderColor: theme === 'light' ? "hsl(var(--muted-foreground))" : "#fff",  // 设置线条颜色为主题色，不加透明度
+                        backgroundColor:theme === 'light' ? "hsl(var(--muted-foreground) / 0.1)" :"#fff",  // 填充区域使用低透明度
+                        tension: 0.3,
+                        fill: true,
+                    },
+                ],
+    }
+    }, [data, theme]) // 添加theme依赖
+ 
   const options = {
     responsive: true,
-    plugins: { legend: { display: false } },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: "#222",
+        titleColor: "#fff",
+        bodyColor: "#fff"
+      }
+    },
     maintainAspectRatio: false,
-    scales: { y: { beginAtZero: true } },
+    scales: {
+      x: {
+        ticks: { color: "#bbb" },
+        grid: { color: "rgba(180,180,180,0.15)" }
+      },
+      y: {
+        beginAtZero: true,
+        ticks: { color: "#bbb" },
+        grid: { color: "rgba(180,180,180,0.15)" },
+      }
+    },
   }
-  return <div className="h-[300px]"><Bar data={chartData} options={options} /></div>
+
+  return <div className="h-[300px]"><Line redraw={true} data={chartData} options={options} /></div>
 }
 
