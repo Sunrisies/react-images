@@ -31,7 +31,6 @@ import { Route as AuthForgotPasswordImport } from './pages/auth/forgot-password'
 // Create Virtual Routes
 
 const DashboardSettingsLazyImport = createFileRoute('/dashboard/settings')()
-const DashboardPostsLazyImport = createFileRoute('/dashboard/posts')()
 const DashboardEditorLazyImport = createFileRoute('/dashboard/editor')()
 const DashboardAnalyticsLazyImport = createFileRoute('/dashboard/analytics')()
 const DashboardAboutLazyImport = createFileRoute('/dashboard/about')()
@@ -57,14 +56,6 @@ const DashboardSettingsLazyRoute = DashboardSettingsLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() =>
   import('./pages/dashboard/settings.lazy').then((d) => d.Route),
-)
-
-const DashboardPostsLazyRoute = DashboardPostsLazyImport.update({
-  id: '/dashboard/posts',
-  path: '/dashboard/posts',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./pages/dashboard/posts.lazy').then((d) => d.Route),
 )
 
 const DashboardEditorLazyRoute = DashboardEditorLazyImport.update({
@@ -292,13 +283,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardEditorLazyImport
       parentRoute: typeof rootRoute
     }
-    '/dashboard/posts': {
-      id: '/dashboard/posts'
-      path: '/dashboard/posts'
-      fullPath: '/dashboard/posts'
-      preLoaderRoute: typeof DashboardPostsLazyImport
-      parentRoute: typeof rootRoute
-    }
     '/dashboard/settings': {
       id: '/dashboard/settings'
       path: '/dashboard/settings'
@@ -336,7 +320,6 @@ export interface FileRoutesByFullPath {
   '/dashboard/about': typeof DashboardAboutLazyRoute
   '/dashboard/analytics': typeof DashboardAnalyticsLazyRoute
   '/dashboard/editor': typeof DashboardEditorLazyRoute
-  '/dashboard/posts': typeof DashboardPostsLazyRoute
   '/dashboard/settings': typeof DashboardSettingsLazyRoute
   '/dashboard': typeof DashboardIndexRoute
 }
@@ -359,7 +342,6 @@ export interface FileRoutesByTo {
   '/dashboard/about': typeof DashboardAboutLazyRoute
   '/dashboard/analytics': typeof DashboardAnalyticsLazyRoute
   '/dashboard/editor': typeof DashboardEditorLazyRoute
-  '/dashboard/posts': typeof DashboardPostsLazyRoute
   '/dashboard/settings': typeof DashboardSettingsLazyRoute
   '/dashboard': typeof DashboardIndexRoute
 }
@@ -383,7 +365,6 @@ export interface FileRoutesById {
   '/dashboard/about': typeof DashboardAboutLazyRoute
   '/dashboard/analytics': typeof DashboardAnalyticsLazyRoute
   '/dashboard/editor': typeof DashboardEditorLazyRoute
-  '/dashboard/posts': typeof DashboardPostsLazyRoute
   '/dashboard/settings': typeof DashboardSettingsLazyRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
@@ -408,7 +389,6 @@ export interface FileRouteTypes {
     | '/dashboard/about'
     | '/dashboard/analytics'
     | '/dashboard/editor'
-    | '/dashboard/posts'
     | '/dashboard/settings'
     | '/dashboard'
   fileRoutesByTo: FileRoutesByTo
@@ -430,7 +410,6 @@ export interface FileRouteTypes {
     | '/dashboard/about'
     | '/dashboard/analytics'
     | '/dashboard/editor'
-    | '/dashboard/posts'
     | '/dashboard/settings'
     | '/dashboard'
   id:
@@ -452,7 +431,6 @@ export interface FileRouteTypes {
     | '/dashboard/about'
     | '/dashboard/analytics'
     | '/dashboard/editor'
-    | '/dashboard/posts'
     | '/dashboard/settings'
     | '/dashboard/'
   fileRoutesById: FileRoutesById
@@ -476,7 +454,6 @@ export interface RootRouteChildren {
   DashboardAboutLazyRoute: typeof DashboardAboutLazyRoute
   DashboardAnalyticsLazyRoute: typeof DashboardAnalyticsLazyRoute
   DashboardEditorLazyRoute: typeof DashboardEditorLazyRoute
-  DashboardPostsLazyRoute: typeof DashboardPostsLazyRoute
   DashboardSettingsLazyRoute: typeof DashboardSettingsLazyRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
@@ -499,7 +476,6 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardAboutLazyRoute: DashboardAboutLazyRoute,
   DashboardAnalyticsLazyRoute: DashboardAnalyticsLazyRoute,
   DashboardEditorLazyRoute: DashboardEditorLazyRoute,
-  DashboardPostsLazyRoute: DashboardPostsLazyRoute,
   DashboardSettingsLazyRoute: DashboardSettingsLazyRoute,
   DashboardIndexRoute: DashboardIndexRoute,
 }
@@ -531,7 +507,6 @@ export const routeTree = rootRoute
         "/dashboard/about",
         "/dashboard/analytics",
         "/dashboard/editor",
-        "/dashboard/posts",
         "/dashboard/settings",
         "/dashboard/"
       ]
@@ -586,9 +561,6 @@ export const routeTree = rootRoute
     },
     "/dashboard/editor": {
       "filePath": "dashboard/editor.lazy.tsx"
-    },
-    "/dashboard/posts": {
-      "filePath": "dashboard/posts.lazy.tsx"
     },
     "/dashboard/settings": {
       "filePath": "dashboard/settings.lazy.tsx"
