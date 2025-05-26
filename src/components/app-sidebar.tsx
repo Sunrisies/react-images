@@ -32,11 +32,7 @@ const data = {
         icon: Home,
         isActive: true,
       },
-      {
-        title: "文章管理",
-        url: "/dashboard/posts",
-        icon: FileText,
-      },
+      
       {
         title: "添加文件",
         url: "/dashboard/editor",
