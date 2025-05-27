@@ -26,7 +26,7 @@ import {
   Trash,
 } from "lucide-react";
 import { formatChineseDateTime } from "sunrise-utils";
-
+import Loading from "@/components/loading";
 export const Route = createFileRoute("/dashboard/comments")({
   component: RouteComponent,
   validateSearch: (search: { page: string }) => ({
@@ -38,7 +38,7 @@ function RouteComponent() {
   const { page } = Route.useSearch();
   console.log(page, "page");
   const { data, isPending, error } = useTextComments({ page: page, limit: 10 });
-  if (isPending) return <div>Loading...</div>;
+  if (isPending) return Loading();
   console.log(data, "data");
   const comments = data?.data!;
 

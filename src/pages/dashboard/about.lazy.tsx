@@ -4,14 +4,16 @@ import { Layout } from '@/layout'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useCommitHistory } from '@/services/github';
 import { getRelativeTime } from 'sunrise-utils'
+import Loading from "@/components/loading";
+
 export const Route = createLazyFileRoute('/dashboard/about')({
   component: AboutComponent,
 })
 
 function AboutComponent() {
-  const { data: commits, isLoading, error } = useCommitHistory();
+  const { data: commits, isPending, error } = useCommitHistory();
   console.log(commits, 'commits')
-  if (isLoading) return <div className="flex items-center justify-center h-full">加载中...</div>;
+  if (isPending) return Loading();
   if (error) return <div className="text-red-500">加载失败: {error.message}</div>;
   return (
     <Layout>
