@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dialog";
 import { useLinks, useCreateLink, useUpdateLink, useDeleteLink } from "@/services/links";
 import { toast } from "sonner";
+import Loading from "@/components/loading";
 
 interface LinkForm {
   label: string;
@@ -45,6 +46,7 @@ function LinksPage() {
   });
   
   const { data, isLoading } = useLinks({ search, page, limit: 10 });
+  if(Loading) return Loading();
   const createLink = useCreateLink();
   const updateLink = useUpdateLink();
   const deleteLink = useDeleteLink();

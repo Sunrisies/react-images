@@ -21,7 +21,7 @@ import {
 import { useCategories, useCreateCategory, useUpdateCategory, useDeleteCategory } from "@/services/categories";
 import { toast } from "sonner";
 import { IOptions } from "@/types";
-
+import Loading from "@/components/loading";
 export const Route = createFileRoute("/dashboard/categories")({
   component: CategoriesPage,
 });
@@ -35,6 +35,7 @@ function CategoriesPage() {
   const [searchValue, setSearchValue] = useState("");  // 新增一个状态用于输入框的值
   
   const { data, isLoading } = useCategories({ search, page, limit: 10 });
+  if(isLoading) return Loading()
   const createCategory = useCreateCategory();
   const updateCategory = useUpdateCategory();
   const deleteCategory = useDeleteCategory();
