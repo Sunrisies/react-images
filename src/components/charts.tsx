@@ -1,19 +1,19 @@
-import {Bar, Line} from "react-chartjs-2"
+import { warehouseType } from "@/services"
 import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
     BarElement,
+    CategoryScale,
+    Chart as ChartJS,
+    Legend,
+    LinearScale,
+    LineElement,
+    PointElement,
     Title,
     Tooltip,
-    Legend,
     type ChartOptions,
 } from "chart.js"
-import { warehouseType } from "@/services"
-import { useTheme } from "./theme-provider"
 import { useMemo } from "react"
+import { Bar, Line } from "react-chartjs-2"
+import { useTheme } from "./theme-provider"
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend)
 

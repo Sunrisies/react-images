@@ -1,10 +1,9 @@
 import { MdEditor } from "md-editor-rt";
 import "md-editor-rt/lib/style.css";
 // import "md-editor-rt/lib/preview.css";
-import { useState } from "react";
-import rehypeSanitize from "rehype-sanitize";
-import { useSidebar } from "@/components/ui/sidebar";
 import { useTheme } from "@/components/theme-provider";
+import { useSidebar } from "@/components/ui/sidebar";
+import { useState } from "react";
 
 interface RichTextEditorProps {
   value: string;
