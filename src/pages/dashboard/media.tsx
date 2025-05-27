@@ -1,21 +1,21 @@
-import { Layout } from "@/layout";
+import FileDetails from "@/components/media/file-details";
+import { MediaContent } from "@/components/media/media-content";
 import { MediaHeader } from "@/components/media/media-header";
 import { MediaToolbar } from "@/components/media/media-toolbar";
-import { MediaContent } from "@/components/media/media-content";
-import { MediaItem } from "@/types/media.type";
-import { deleteFileApi, getFileListApi } from "@/services/media";
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import FileDetails from "@/components/media/file-details";
 import UploadFiles from "@/components/media/upload-files";
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
-  PaginationPrevious,
   PaginationLink,
   PaginationNext,
+  PaginationPrevious,
 } from "@/components/ui/pagination";
+import { Layout } from "@/layout";
+import { deleteFileApi, getFileListApi } from "@/services/media";
+import { MediaItem } from "@/types/media.type";
+import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 
 export const Route = createFileRoute("/dashboard/media")({
   component: RouteComponent,

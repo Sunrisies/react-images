@@ -1,10 +1,9 @@
-import * as React from 'react'
-import { createLazyFileRoute } from '@tanstack/react-router'
-import { Layout } from '@/layout'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { useCommitHistory } from '@/services/github';
-import { getRelativeTime } from 'sunrise-utils'
 import Loading from "@/components/loading";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Layout } from '@/layout';
+import { useCommitHistory } from '@/services/github';
+import { createLazyFileRoute } from '@tanstack/react-router';
+import { getRelativeTime } from 'sunrise-utils';
 
 export const Route = createLazyFileRoute('/dashboard/about')({
   component: AboutComponent,

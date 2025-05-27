@@ -1,18 +1,12 @@
-import { Layout } from '@/layout'
-import { isLogin } from '@/utils/auth'
-import { createFileRoute, redirect } from '@tanstack/react-router'
+import { BarChart, DateCountChart, LineChart } from "@/components/charts"
+import { RecentComments } from "@/components/recent-comments"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { BarChart, DateCountChart, LineChart } from "@/components/charts"
-import { RecentPosts } from "@/components/recent-posts"
-import { RecentComments } from "@/components/recent-comments"
+import { Layout } from '@/layout'
+import { createFileRoute } from '@tanstack/react-router'
 import { BarChart3, FileText, MessageSquare, Users } from "lucide-react"
 // import "@/styles/globals.scss"
-import { cn } from "@/lib/utils"
-import { ThemeProvider } from "@/components/theme-provider"
-import { SidebarProvider } from "@/components/ui/sidebar"
-import { DashboardSidebar } from "@/components/dashboard-sidebar"
-import {useGetUploadTime} from '@/services/index'
+import { useGetUploadTime } from '@/services/index'
 export const Route = createFileRoute('/dashboard/')({
   component: RouteComponent,
   beforeLoad: () => {

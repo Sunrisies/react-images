@@ -1,15 +1,15 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { Layout } from "@/layout";
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { ChevronDown, Filter, MoreHorizontal, Search, UserPlus } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { useState } from 'react'
-import { useGetUsers, useDeleteUser} from '@/services/user'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { UserFormDialog } from '@/components/user-form-dialog';
+import { Layout } from "@/layout";
+import { useDeleteUser, useGetUsers } from '@/services/user';
 import { User } from '@/types/user.type';
+import { createFileRoute } from '@tanstack/react-router';
+import { ChevronDown, Filter, MoreHorizontal, Search, UserPlus } from "lucide-react";
+import { useState } from 'react';
 
 export const Route = createFileRoute('/dashboard/users')({
   component: RouteComponent,

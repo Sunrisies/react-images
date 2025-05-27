@@ -1,3 +1,4 @@
+import Loading from "@/components/loading";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -26,7 +27,6 @@ import {
   Trash,
 } from "lucide-react";
 import { formatChineseDateTime } from "sunrise-utils";
-import Loading from "@/components/loading";
 export const Route = createFileRoute("/dashboard/comments")({
   component: RouteComponent,
   validateSearch: (search: { page: string }) => ({

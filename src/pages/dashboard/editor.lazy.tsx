@@ -6,15 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Layout } from "@/layout";
 import { usePostEdit } from "@/services/edit";
+import { request } from '@/utils/fetch';
 import { ArticleFormValues } from "@/utils/schemas";
 import { uploadImage } from "@/utils/update";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { ImageIcon, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { useSearch } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { request } from '@/utils/fetch';
 
 export const Route = createLazyFileRoute("/dashboard/editor")({
   component: RouteComponent,
