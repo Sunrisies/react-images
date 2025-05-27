@@ -1,15 +1,14 @@
 import {
+  Activity,
   BookOpen,
   Database,
-  FileText,
   Home,
   Image,
+  Info,
   LineChart,
   MessageSquare,
   Settings,
-  Users,
-  Info,
-  Activity
+  Users
 } from "lucide-react";
 import * as React from "react";
 
