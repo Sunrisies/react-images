@@ -1,5 +1,4 @@
 import { IGithubCommit } from '@/types/github.type';
-import { request } from '@/utils/fetch';
 import { useQuery } from '@tanstack/react-query';
 
 interface CommitAuthor {

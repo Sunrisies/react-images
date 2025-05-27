@@ -1,6 +1,12 @@
-import { Layout } from "@/layout";
-import { createFileRoute } from "@tanstack/react-router";
-import { useState, KeyboardEvent } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -9,18 +15,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { useTags, useCreateTag, useUpdateTag, useDeleteTag } from "@/services/tags";
-import { toast } from "sonner";
+import { Layout } from "@/layout";
+import { useCreateTag, useDeleteTag, useTags, useUpdateTag } from "@/services/tags";
 import { IOptions } from "@/types";
+import { createFileRoute } from "@tanstack/react-router";
+import { KeyboardEvent, useState } from "react";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/dashboard/tags")({
   component: TagsPage,

@@ -1,6 +1,6 @@
 import { IParams } from "@/types";
 import { MediaItem } from "@/types/media.type";
-import { DataOnly, GetRequestType, request } from '@/utils/fetch';
+import { DataOnly, request } from '@/utils/fetch';
 import {
   keepPreviousData,
   useMutation,

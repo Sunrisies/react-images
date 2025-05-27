@@ -1,12 +1,12 @@
-import { useNavigate } from "@tanstack/react-router";
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
-  PaginationPrevious,
   PaginationLink,
   PaginationNext,
+  PaginationPrevious,
 } from "@/components/ui/pagination";
+import { useNavigate } from "@tanstack/react-router";
 
 interface PaginationWrapperProps {
   page: number;

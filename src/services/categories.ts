@@ -1,8 +1,8 @@
 import { IOptions, IParams } from '@/types';
-import { DataOnly, GetRequestType, request } from '@/utils/fetch';
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { DataOnly, request } from '@/utils/fetch';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { URLSearchParamsUtils } from 'sunrise-utils'
+import { URLSearchParamsUtils } from 'sunrise-utils';
 
 
 // 获取分类列表

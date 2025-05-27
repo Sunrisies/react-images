@@ -1,6 +1,6 @@
 import { addArticleType, UpdateType } from '@/types/edit.types'
-import { useMutation } from '@tanstack/react-query'
 import { request } from '@/utils/fetch'
+import { useMutation } from '@tanstack/react-query'
 export const usePostEdit = () => {
   return useMutation({
     mutationFn: async (params: UpdateType) => {

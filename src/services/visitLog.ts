@@ -1,5 +1,5 @@
 import { IParams } from '@/types';
-import { request } from '@/utils/fetch'
+import { request } from '@/utils/fetch';
 import { useQuery } from "@tanstack/react-query";
 import { URLSearchParamsUtils } from 'sunrise-utils';
 

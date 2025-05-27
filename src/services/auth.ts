@@ -1,7 +1,7 @@
-import { request } from '@/utils/fetch'
+import { request } from '@/utils/fetch';
 import { useMutation } from "@tanstack/react-query";
-import { toast } from 'sonner';
 import { useNavigate } from '@tanstack/react-router';
+import { toast } from 'sonner';
 interface LoginParams {
   user_name?: string;
   email?: string;

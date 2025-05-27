@@ -1,13 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
+import Loading from "@/components/loading";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
-import { ChevronDown, Edit, Eye, Filter, MoreHorizontal, Plus, Search, Trash } from "lucide-react";
 import { Layout } from "@/layout";
-import Loading from "@/components/loading";
 import { useGetArticle } from "@/services/article";
+import { createFileRoute } from "@tanstack/react-router";
+import { ChevronDown, Edit, Eye, Filter, MoreHorizontal, Plus, Search, Trash } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard/articles")({
   component: RouteComponent,

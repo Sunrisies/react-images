@@ -1,29 +1,29 @@
-import {createLazyFileRoute} from '@tanstack/react-router'
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs"
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
-import {Button} from "@/components/ui/button"
-import {Calendar} from "@/components/ui/calendar"
-import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
-import {format} from "date-fns"
-import {zhCN} from "date-fns/locale"
-import {CalendarIcon, Download} from "lucide-react"
-import {useState} from "react"
-import {Bar, Line, Pie} from "react-chartjs-2"
+import { Button } from "@/components/ui/button"
+import { Calendar } from "@/components/ui/calendar"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Layout } from "@/layout"
+import { createLazyFileRoute } from '@tanstack/react-router'
 import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    BarElement,
     ArcElement,
+    BarElement,
+    CategoryScale,
+    Chart as ChartJS,
+    Legend,
+    LinearScale,
+    LineElement,
+    PointElement,
     Title,
     Tooltip,
-    Legend,
     type ChartOptions,
 } from "chart.js"
-import {Layout} from "@/layout";
+import { format } from "date-fns"
+import { zhCN } from "date-fns/locale"
+import { CalendarIcon, Download } from "lucide-react"
+import { useState } from "react"
+import { Bar, Line, Pie } from "react-chartjs-2"
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Title, Tooltip, Legend)
 export const Route = createLazyFileRoute('/dashboard/analytics')({

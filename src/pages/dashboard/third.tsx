@@ -14,10 +14,9 @@ import {
   Pagination,
   PaginationContent,
   PaginationItem,
-  PaginationPrevious,
   PaginationLink,
   PaginationNext,
-  PaginationEllipsis,
+  PaginationPrevious
 } from "@/components/ui/pagination";
 
 import {
