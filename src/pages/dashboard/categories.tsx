@@ -34,11 +34,12 @@ function CategoriesPage() {
   const [categoryName, setCategoryName] = useState("");
   const [searchValue, setSearchValue] = useState("");  // 新增一个状态用于输入框的值
   
-  const { data, isLoading } = useCategories({ search, page, limit: 10 });
-  if(isLoading) return Loading()
+  const { data, isLoading, error, isError } = useCategories({ search, page, limit: 10 });
+  console.log(data,'分类数据', error,isError,isLoading);
   const createCategory = useCreateCategory();
   const updateCategory = useUpdateCategory();
   const deleteCategory = useDeleteCategory();
+  if(isLoading) return Loading()
 
   const handleSubmit = async () => {
     if (!categoryName.trim()) {
@@ -93,12 +94,6 @@ function CategoriesPage() {
       setPage(1);  // 重置页码
     }
   };
-
-  if (isLoading) return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-    </div>
-  );
 
   return (
     <Layout>
