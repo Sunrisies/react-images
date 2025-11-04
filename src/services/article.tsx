@@ -1,59 +1,59 @@
-import { ArticleType } from "@/types/article.types";
-import { request } from '@/utils/fetch';
+import { ArticleType } from "@/types/article.types"
+import { request } from '@/utils/fetch'
 import {
   keepPreviousData,
   useMutation,
   useQuery,
   useQueryClient,
-} from "@tanstack/react-query";
-import { toast } from 'sonner';
+} from "@tanstack/react-query"
+import { toast } from 'sonner'
 
 export const useGetArticle = ({
   page,
   limit,
 }: {
-  page: number;
-  limit: number;
+  page: number
+  limit: number
 }) => {
   return useQuery({
-    queryKey: ["article", page, limit],
+    queryKey: ["posts", page, limit],
     queryFn: async () =>
-      (await request.get<ArticleType[]>(`/article?page=${page}&limit=${limit}`)).data,
+      (await request.get<ArticleType[]>(`/v1/posts?page=${page}&limit=${limit}`)).data,
     placeholderData: keepPreviousData,
-  });
-};
+  })
+}
 
 // TODO: 由axios换成request还没有测试过
 export const useDeleteArticle = () => {
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (id: number) => {
-      const { code } = await request.delete(`/article/${id}`);
+      const { code } = await request.delete(`/article/${id}`)
       if (code === 200) {
-        toast.success("删除成功");
+        toast.success("删除成功")
       } else {
-        toast.error("删除失败");
+        toast.error("删除失败")
       }
     },
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ["article"] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] })
     },
-  });
-};
+  })
+}
 // TODO: 由axios换成request还没有测试过
 export const useUpdateArticle = () => {
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async ({ id, ...params }: Partial<ArticleType>) => {
-      const { code } = await request.put(`/article/${id}`, params);
+      const { code } = await request.put(`/article/${id}`, params)
       if (code === 200) {
-        toast.success("更新成功");
+        toast.success("更新成功")
       } else {
-        toast.error("更新失败");
+        toast.error("更新失败")
       }
     },
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ["article"] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] })
     },
-  });
-};
+  })
+}
