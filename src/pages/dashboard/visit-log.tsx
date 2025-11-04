@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
 import {
   Pagination,
   PaginationContent,
@@ -9,7 +9,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
+} from "@/components/ui/pagination"
 import {
   Table,
   TableBody,
@@ -17,21 +17,23 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/components/ui/table"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Layout } from '@/layout/index';
-import { cn } from '@/lib/utils';
-import { useVisitLogs } from '@/services/visitLog';
-import { createFileRoute } from '@tanstack/react-router';
-import { RefreshCw, Search } from 'lucide-react';
-import React, { useState } from 'react';
-import { getRelativeTime } from 'sunrise-utils';
-
+} from "@/components/ui/tooltip"
+import { Layout } from '@/layout/index'
+import { cn } from '@/lib/utils'
+import { useVisitLogs } from '@/services/visitLog'
+import { createFileRoute } from '@tanstack/react-router'
+import { RefreshCw, Search } from 'lucide-react'
+import React, { useState } from 'react'
+import { getRelativeTime } from 'sunrise-utils'
+import { Link, useLocation } from "@tanstack/react-router"
+import Error from '@/components/error'
+import Loading from '@/components/lading'
 export const Route = createFileRoute('/dashboard/visit-log')({
   component: RouteComponent,
   validateSearch: (search: { page: string }) => ({
@@ -40,89 +42,90 @@ export const Route = createFileRoute('/dashboard/visit-log')({
 })
 
 function RouteComponent() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const pageSize = 10;
-  const { page } = Route.useSearch();
+  const [searchTerm, setSearchTerm] = useState('')
+  const pageSize = 10
+  const { page } = Route.useSearch()
   const { data, isLoading, error, refetch } = useVisitLogs({
     page: page,
     limit: pageSize
-  });
-  const navigate = Route.useNavigate();
+  })
+  const navigate = Route.useNavigate()
 
   // 搜索处理函数
   const handleSearch = (value: string) => {
-    setSearchTerm(value);
-  };
+    setSearchTerm(value)
+  }
 
   // 重置处理函数
   const handleReset = () => {
-    setSearchTerm('');
-    refetch();
-  };
+    setSearchTerm('')
+    refetch()
+  }
 
   // 过滤数据
   const filteredData = data?.data.filter(log =>
     log.url_path.toLowerCase().includes(searchTerm.toLowerCase()) ||
     log.page_title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     log.session.city.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  )
 
-  if (isLoading) return <div className="flex items-center justify-center h-full">加载中...</div>
-  if (error) return <div className="text-red-500">错误: {error.message}</div>
+  if (isLoading) return <Loading></Loading>
+  // if (error) return <div className="text-red-500">错误: { error.message }</div>
+  if (error) return <Error reset={ () => console.log("重试") }></Error>
   if (!data) return <div>暂无数据</div>
 
   // 统计设备类型
   const deviceStats = data.data.reduce((acc, curr) => {
-    acc[curr.session.device] = (acc[curr.session.device] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
+    acc[curr.session.device] = (acc[curr.session.device] || 0) + 1
+    return acc
+  }, {} as Record<string, number>)
 
   // 统计浏览器类型
   const browserStats = data.data.reduce((acc, curr) => {
-    acc[curr.session.browser] = (acc[curr.session.browser] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
+    acc[curr.session.browser] = (acc[curr.session.browser] || 0) + 1
+    return acc
+  }, {} as Record<string, number>)
 
   // 统计操作系统
   const osStats = data.data.reduce((acc, curr) => {
-    acc[curr.session.os] = (acc[curr.session.os] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
+    acc[curr.session.os] = (acc[curr.session.os] || 0) + 1
+    return acc
+  }, {} as Record<string, number>)
 
   // 统计城市
   const cityStats = data.data.reduce((acc, curr) => {
-    acc[curr.session.city] = (acc[curr.session.city] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
+    acc[curr.session.city] = (acc[curr.session.city] || 0) + 1
+    return acc
+  }, {} as Record<string, number>)
 
   return (
     <Layout>
       <div className="space-y-6 p-6">
-        {/* 搜索栏 */}
+        {/* 搜索栏 */ }
         <div className="flex gap-4 items-center">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="搜索访问记录..."
-              value={searchTerm}
-              onChange={(e) => handleSearch(e.target.value)}
+              value={ searchTerm }
+              onChange={ (e) => handleSearch(e.target.value) }
               className="pl-10"
             />
           </div>
-          <Button variant="outline" onClick={handleReset}>
+          <Button variant="outline" onClick={ handleReset }>
             <RefreshCw className="h-4 w-4 mr-2" />
             重置
           </Button>
         </div>
 
-        {/* 统计卡片 */}
+        {/* 统计卡片 */ }
         <div className="">
-          {/* 访问详情表格 */}
+          {/* 访问详情表格 */ }
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>访问详情</CardTitle>
               <div className="text-sm text-muted-foreground">
-                共 {filteredData?.length || 0} 条记录
+                共 { filteredData?.length || 0 } 条记录
               </div>
             </CardHeader>
             <CardContent>
@@ -138,76 +141,76 @@ function RouteComponent() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredData?.map((log) => (
-                    <TableRow key={log.event_id}>
-                      <TableCell className="font-medium">{log.url_path}</TableCell>
+                  { filteredData?.map((log) => (
+                    <TableRow key={ log.event_id }>
+                      <TableCell className="font-medium">{ log.url_path }</TableCell>
                       <TableCell className="max-w-[200px] truncate">
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger className="cursor-help">
-                              {log.page_title || '-'}
+                              { log.page_title || '-' }
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p className="max-w-xs break-words">{log.page_title || '-'}</p>
+                              <p className="max-w-xs break-words">{ log.page_title || '-' }</p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       </TableCell>
                       <TableCell>
-                        {getRelativeTime(new Date(log.created_at))}
+                        { getRelativeTime(new Date(log.created_at)) }
                       </TableCell>
-                      <TableCell>{log.referrer_domain || '直接访问'}</TableCell>
+                      <TableCell>{ log.referrer_domain || '直接访问' }</TableCell>
                       <TableCell>
                         <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-gray-100 dark:bg-gray-800">
-                          {log.session.device} / {log.session.browser}
+                          { log.session.device } / { log.session.browser }
                         </span>
                       </TableCell>
                       <TableCell>
                         <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 dark:bg-blue-900">
-                          {log.session.city} ({log.session.country})
+                          { log.session.city } ({ log.session.country })
                         </span>
                       </TableCell>
                     </TableRow>
-                  ))}
+                  )) }
                 </TableBody>
               </Table>
 
-              {/* 分页 */}
+              {/* 分页 */ }
               <div className="mt-4 flex justify-center">
                 <Pagination>
                   <PaginationContent>
                     <PaginationItem>
                       <PaginationPrevious
-                        onClick={() => navigate({ search: { page: 1 } })}
-                        className={cn(page === 1 ? "opacity-50 cursor-not-allowed" : "", 'cursor-pointer')}
+                        onClick={ () => navigate({ search: { page: 1 } }) }
+                        className={ cn(page === 1 ? "opacity-50 cursor-not-allowed" : "", 'cursor-pointer') }
                       />
                     </PaginationItem>
-                    {Array.from({ length: Math.ceil(data.pagination!.total / pageSize) }, (_, i) => i + 1)
+                    { Array.from({ length: Math.ceil(data.pagination!.total / pageSize) }, (_, i) => i + 1)
                       .filter(pageNum => {
                         // 显示第一页、最后一页，和当前页附近的页码
-                        const lastPage = Math.ceil(data.pagination!.total / pageSize);
+                        const lastPage = Math.ceil(data.pagination!.total / pageSize)
                         return pageNum === 1 ||
                           pageNum === lastPage ||
-                          (pageNum >= page - 1 && pageNum <= page + 1);
+                          (pageNum >= page - 1 && pageNum <= page + 1)
                       })
                       .map((p, index, array) => (
-                        <React.Fragment key={p}>
-                          {index > 0 && array[index - 1] !== p - 1 && (
+                        <React.Fragment key={ p }>
+                          { index > 0 && array[index - 1] !== p - 1 && (
                             <PaginationEllipsis />
-                          )}
+                          ) }
                           <PaginationItem>
                             <PaginationLink
-                              isActive={page === p}
-                              onClick={() => navigate({ search: { page: p } })}
+                              isActive={ page === p }
+                              onClick={ () => navigate({ search: { page: p } }) }
                             >
-                              {p}
+                              { p }
                             </PaginationLink>
                           </PaginationItem>
                         </React.Fragment>
-                      ))}
+                      )) }
                     <PaginationItem>
                       <PaginationNext
-                        onClick={() =>
+                        onClick={ () =>
                           navigate({
                             search: (prev) => ({
                               ...prev,
@@ -220,7 +223,7 @@ function RouteComponent() {
                             }),
                           })
                         }
-                        className={cn(page >= Math.ceil(data.pagination!.total / pageSize) ? "opacity-50 cursor-not-allowed" : "", 'cursor-pointer')}
+                        className={ cn(page >= Math.ceil(data.pagination!.total / pageSize) ? "opacity-50 cursor-not-allowed" : "", 'cursor-pointer') }
                       />
                     </PaginationItem>
                   </PaginationContent>
@@ -231,5 +234,5 @@ function RouteComponent() {
         </div>
       </div>
     </Layout>
-  );
+  )
 }

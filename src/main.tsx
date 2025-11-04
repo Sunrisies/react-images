@@ -1,7 +1,7 @@
 import '@/assets/styles/global.scss'
 import 'dayjs/locale/zh-cn'
 import ReactDOM from 'react-dom/client'
-
+import "@/index.css"
 import { useAppAntdConfig } from '@/hooks/useAppAntdConfig'
 import { useAppQuery } from '@/hooks/useAppQuery'
 import { useAppRouter } from '@/hooks/useAppRouter'

@@ -36,15 +36,15 @@ export function ModeToggle() {
   }
   return (
     <button
-      onClick={handleThemeChange}
+      onClick={ handleThemeChange }
       className="theme-toggle-button relative h-7 w-14 rounded-full bg-slate-200 transition-colors duration-300 ease-in-out dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600"
     >
       <div
-        className={`absolute left-0.5 top-0.5 h-6 w-6 rounded-full bg-white shadow-md transition-all duration-300 ease-in-out flex items-center justify-center
+        className={ `absolute left-0.5 top-0.5 h-6 w-6 rounded-full bg-white shadow-md transition-all duration-300 ease-in-out flex items-center justify-center
           ${theme === 'dark' ? 'translate-x-7' : 'translate-x-0'}
           hover:shadow-lg`}
       >
-        {theme === 'dark' ? <Moon className="h-4 w-4 text-slate-700" /> : <Sun className="h-4 w-4 text-amber-400" />}
+        { theme === 'dark' ? <Moon className="h-4 w-4 text-slate-700" /> : <Sun className="h-4 w-4 text-amber-400" /> }
       </div>
     </button>
   )
