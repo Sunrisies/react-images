@@ -1,55 +1,55 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { createLazyFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
-import { useLoginApi } from "@/services/auth";
-import { useState } from "react";
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { createLazyFileRoute, Link, useNavigate } from "@tanstack/react-router"
+import { Eye, EyeOff, Lock, Mail, User } from "lucide-react"
+import { useLoginApi } from "@/services/auth"
+import { useState } from "react"
 
 export const Route = createLazyFileRoute("/auth/login")({
   component: AuthPage,
-});
+})
 
 function AuthPage() {
   const useAuth = useLoginApi()
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [loginType, setLoginType] = useState<'username' | 'email'>('username');
-  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [loginType, setLoginType] = useState<'account' | 'email'>('account')
+  const navigate = useNavigate()
 
   const handleSubmit = async (
     e: React.FormEvent,
     action: "login" | "register"
   ) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError("");
+    e.preventDefault()
+    setIsLoading(true)
+    setError("")
 
     if (action === "login") {
-      const formElement = e.target as HTMLFormElement;
-      const username = formElement.elements.namedItem("username") as HTMLInputElement;
-      const email = formElement.elements.namedItem("email") as HTMLInputElement;
-      const password = formElement.elements.namedItem("password") as HTMLInputElement;
+      const formElement = e.target as HTMLFormElement
+      const account = formElement.elements.namedItem("account") as HTMLInputElement
+      const email = formElement.elements.namedItem("email") as HTMLInputElement
+      const password = formElement.elements.namedItem("password") as HTMLInputElement
 
       // 邮箱正则
-      const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       // 密码正则
       // const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
       // 验证输入
       if (loginType === 'email' && !emailRegex.test(email.value)) {
-        setError("请输入有效的邮箱地址");
-        setIsLoading(false);
-        return;
+        setError("请输入有效的邮箱地址")
+        setIsLoading(false)
+        return
       }
 
       // if (!passwordRegex.test(password.value)) {
@@ -58,21 +58,21 @@ function AuthPage() {
       //   return;
       // }
       await useAuth.mutateAsync({
-        ...(loginType === 'username' ? { user_name: username.value } : { email: email.value }),
-        pass_word: password.value,
-        method: loginType === 'username' ? 'password' : 'email-password'
-      });
+        ...(loginType === 'account' ? { account: account.value } : { email: email.value }),
+        password: password.value,
+        login_type: loginType === 'account' ? 'password' : 'email-password'
+      })
     } else {
       // 处理注册逻辑
       // ... existing code ...
     }
-    setIsLoading(false);
-  };
+    setIsLoading(false)
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 via-white to-amber-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4">
       <div className="w-full max-w-4xl flex shadow-2xl rounded-2xl overflow-hidden">
-        {/* 左侧装饰区域 */}
+        {/* 左侧装饰区域 */ }
         <div className="hidden md:block w-1/2 bg-gradient-to-br from-red-500 to-amber-500 p-12 text-white">
           <h2 className="text-4xl font-bold mb-6">欢迎来到博客管理系统</h2>
           <p className="text-lg mb-8">登录或注册您的账户以开始管理您的博客</p>
@@ -92,7 +92,7 @@ function AuthPage() {
           </div>
         </div>
 
-        {/* 右侧表单 */}
+        {/* 右侧表单 */ }
         <Card className="w-full md:w-1/2 border-none shadow-none">
           <CardHeader className="space-y-1">
             <div className="flex justify-center mb-4">
@@ -106,25 +106,25 @@ function AuthPage() {
                 <TabsTrigger value="register">注册</TabsTrigger>
               </TabsList>
               <TabsContent value="login">
-                <form onSubmit={(e) => handleSubmit(e, "login")}>
+                <form onSubmit={ (e) => handleSubmit(e, "login") }>
                   <CardContent className="space-y-4">
                     <div className="flex justify-end">
                       <Button
                         type="button"
                         variant="ghost"
                         size="sm"
-                        onClick={() => setLoginType(loginType === 'username' ? 'email' : 'username')}
+                        onClick={ () => setLoginType(loginType === 'account' ? 'email' : 'account') }
                       >
-                        切换到{loginType === 'username' ? '邮箱' : '用户名'}登录
+                        切换到{ loginType === 'account' ? '邮箱' : '用户名' }登录
                       </Button>
                     </div>
-                    {loginType === 'username' ? (
+                    { loginType === 'account' ? (
                       <div className="space-y-2">
-                        <Label htmlFor="username">用户名</Label>
+                        <Label htmlFor="account">用户名</Label>
                         <div className="relative">
                           <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                           <Input
-                            id="username"
+                            id="account"
                             placeholder="请输入用户名"
                             className="pl-10"
                             required
@@ -145,14 +145,14 @@ function AuthPage() {
                           />
                         </div>
                       </div>
-                    )}
+                    ) }
                     <div className="space-y-2">
                       <Label htmlFor="password">密码</Label>
                       <div className="relative">
                         <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                         <Input
                           id="password"
-                          type={showPassword ? "text" : "password"}
+                          type={ showPassword ? "text" : "password" }
                           placeholder="请输入密码"
                           className="pl-10"
                           required
@@ -162,15 +162,15 @@ function AuthPage() {
                           variant="ghost"
                           size="icon"
                           className="absolute right-1 top-1 h-8 w-8"
-                          onClick={() => setShowPassword(!showPassword)}
+                          onClick={ () => setShowPassword(!showPassword) }
                         >
-                          {showPassword ? (
+                          { showPassword ? (
                             <Eye className="h-4 w-4" />
                           ) : (
                             <EyeOff className="h-4 w-4" />
-                          )}
+                          ) }
                           <span className="sr-only">
-                            {showPassword ? "隐藏密码" : "显示密码"}
+                            { showPassword ? "隐藏密码" : "显示密码" }
                           </span>
                         </Button>
                       </div>
@@ -180,9 +180,9 @@ function AuthPage() {
                     <Button
                       type="submit"
                       className="w-full bg-gradient-to-r from-red-500 to-amber-500 hover:from-red-600 hover:to-amber-600 text-white"
-                      disabled={isLoading}
+                      disabled={ isLoading }
                     >
-                      {isLoading ? "登录中..." : "登录"}
+                      { isLoading ? "登录中..." : "登录" }
                     </Button>
                     <div className="mt-4 text-center text-sm">
                       <Link
@@ -196,7 +196,7 @@ function AuthPage() {
                 </form>
               </TabsContent>
               <TabsContent value="register">
-                <form onSubmit={(e) => handleSubmit(e, "register")}>
+                <form onSubmit={ (e) => handleSubmit(e, "register") }>
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="register-email">邮箱</Label>
@@ -217,7 +217,7 @@ function AuthPage() {
                         <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                         <Input
                           id="register-password"
-                          type={showPassword ? "text" : "password"}
+                          type={ showPassword ? "text" : "password" }
                           placeholder="请输入密码"
                           className="pl-10"
                           required
@@ -227,15 +227,15 @@ function AuthPage() {
                           variant="ghost"
                           size="icon"
                           className="absolute right-1 top-1 h-8 w-8"
-                          onClick={() => setShowPassword(!showPassword)}
+                          onClick={ () => setShowPassword(!showPassword) }
                         >
-                          {showPassword ? (
+                          { showPassword ? (
                             <Eye className="h-4 w-4" />
                           ) : (
                             <EyeOff className="h-4 w-4" />
-                          )}
+                          ) }
                           <span className="sr-only">
-                            {showPassword ? "隐藏密码" : "显示密码"}
+                            { showPassword ? "隐藏密码" : "显示密码" }
                           </span>
                         </Button>
                       </div>
@@ -246,7 +246,7 @@ function AuthPage() {
                         <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                         <Input
                           id="confirm-password"
-                          type={showPassword ? "text" : "password"}
+                          type={ showPassword ? "text" : "password" }
                           placeholder="请再次输入密码"
                           className="pl-10"
                           required
@@ -258,18 +258,18 @@ function AuthPage() {
                     <Button
                       type="submit"
                       className="w-full bg-gradient-to-r from-red-500 to-amber-500 hover:from-red-600 hover:to-amber-600 text-white"
-                      disabled={isLoading}
+                      disabled={ isLoading }
                     >
-                      {isLoading ? "注册中..." : "注册"}
+                      { isLoading ? "注册中..." : "注册" }
                     </Button>
                   </CardFooter>
                 </form>
               </TabsContent>
             </Tabs>
           </CardHeader>
-          {error && <p className="text-sm text-red-500 text-center">{error}</p>}
+          { error && <p className="text-sm text-red-500 text-center">{ error }</p> }
         </Card>
       </div>
     </div>
-  );
+  )
 }
