@@ -1,26 +1,13 @@
-import CustomPagination from "@/components/pagination"
+// tags-page.tsx
+import { DataTable } from "@/components/data-table"
 import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
 import { Layout } from "@/layout"
 import { useCreateTag, useDeleteTag, useTags, useUpdateTag } from "@/services/tags"
 import { IOptions } from "@/types"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
-import { KeyboardEvent, useEffect, useState } from "react"
+import { KeyboardEvent, useState } from "react"
 import { toast } from "sonner"
 
 export const Route = createFileRoute("/dashboard/tags")({
@@ -34,7 +21,6 @@ export const Route = createFileRoute("/dashboard/tags")({
 function TagsPage() {
   const navigate = useNavigate()
   const { page, search: searchQuery } = Route.useSearch()
-  const [searchValue, setSearchValue] = useState(searchQuery)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [editingTag, setEditingTag] = useState<IOptions | null>(null)
   const [tagName, setTagName] = useState("")
@@ -43,6 +29,17 @@ function TagsPage() {
   const createTag = useCreateTag()
   const updateTag = useUpdateTag()
   const deleteTag = useDeleteTag()
+
+  const columns = [
+    {
+      key: "value",
+      title: "ID",
+    },
+    {
+      key: "label",
+      title: "名称",
+    },
+  ]
 
   const handleSubmit = async () => {
     if (!tagName.trim()) {
@@ -91,30 +88,6 @@ function TagsPage() {
     }
   }
 
-  const handleSearch = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      navigate({
-        to: "/dashboard/tags",
-        search: { page: 1, search: searchValue }
-      })
-    }
-  }
-
-  const handlePageChange = (newPage: number) => {
-    navigate({
-      to: "/dashboard/tags",
-      search: { page: newPage, search: searchQuery }
-    })
-  }
-
-  if (isLoading) return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-    </div>
-  )
-
-  const totalPages = Math.ceil(data?.pagination?.total! / data?.pagination?.limit!)
-
   return (
     <Layout>
       <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
@@ -152,61 +125,50 @@ function TagsPage() {
           </Dialog>
         </div>
 
-        <div className="rounded-md border">
-          <div className="flex items-center justify-between p-4 border-b">
-            <Input
-              placeholder="搜索标签..."
-              value={ searchValue }
-              onChange={ (e) => setSearchValue(e.target.value) }
-              onKeyDown={ handleSearch }
-              className="max-w-sm"
-            />
-          </div>
-
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-muted/50">
-                <TableHead className="w-[100px]">ID</TableHead>
-                <TableHead>名称</TableHead>
-                <TableHead className="w-[150px]">操作</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              { data?.data.map((tag) => (
-                <TableRow key={ tag.value }>
-                  <TableCell className="font-medium">{ tag.value }</TableCell>
-                  <TableCell>{ tag.label }</TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={ () => handleEdit(tag) }
-                      >
-                        编辑
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={ () => handleDelete(tag.value) }
-                      >
-                        删除
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              )) }
-            </TableBody>
-          </Table>
-        </div>
-
-        <CustomPagination
-          currentPage={ page }
-          totalPages={ totalPages }
-          onPageChange={ handlePageChange }
-          maxVisiblePages={ 5 }
-          showEllipsis={ true }
-          className="mt-4"
+        <DataTable
+          columns={ columns }
+          data={ data?.data || [] }
+          loading={ isLoading }
+          search={ {
+            placeholder: "搜索标签...",
+            onSearch: (value) => {
+              navigate({
+                to: "/dashboard/tags",
+                search: { page: 1, search: value }
+              })
+            }
+          } }
+          actions={ {
+            render: (record: IOptions) => (
+              <>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={ () => handleEdit(record) }
+                >
+                  编辑
+                </Button>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={ () => handleDelete(record.value) }
+                >
+                  删除
+                </Button>
+              </>
+            )
+          } }
+          pagination={ {
+            current: page,
+            total: data?.pagination?.total || 0,
+            pageSize: 10,
+            onChange: (newPage) => {
+              navigate({
+                to: "/dashboard/tags",
+                search: { page: newPage, search: searchQuery }
+              })
+            }
+          } }
         />
       </div>
     </Layout>
