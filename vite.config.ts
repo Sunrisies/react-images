@@ -1,9 +1,9 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
-import path from "path"
-import { visualizer } from 'rollup-plugin-visualizer'
-import viteCompression from 'vite-plugin-compression'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
+import path from "path";
+import { visualizer } from "rollup-plugin-visualizer";
+import viteCompression from "vite-plugin-compression";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [TanStackRouterVite(), react()],
@@ -14,47 +14,48 @@ export default defineConfig({
   },
   server: {
     open: true,
-    host:'0.0.0.0'
+    host: "0.0.0.0",
+    port: 12002,
   },
   css: {
     preprocessorOptions: {
       scss: {
-        api:'modern-compiler'
-      }
-    }
+        api: "modern-compiler",
+      },
+    },
   },
   build: {
-    target: 'es2020',
-    minify: 'terser',
+    target: "es2020",
+    minify: "terser",
     // rollup 配置
     rollupOptions: {
       output: {
-        chunkFileNames: 'js/[name]-[hash].js', // 引入文件名的名称
-        entryFileNames: 'js/[name]-[hash].js', // 包的入口文件名称
-        assetFileNames: '[ext]/[name]-[hash].[ext]' // 资源文件像 字体，图片等
+        chunkFileNames: "js/[name]-[hash].js", // 引入文件名的名称
+        entryFileNames: "js/[name]-[hash].js", // 包的入口文件名称
+        assetFileNames: "[ext]/[name]-[hash].[ext]", // 资源文件像 字体，图片等
       },
       plugins: [
         visualizer({
           open: true, // 直接在浏览器中打开分析报告
-          filename: 'stats.html', // 输出文件的名称
+          filename: "stats.html", // 输出文件的名称
           gzipSize: true, // 显示gzip后的大小
-          brotliSize: true // 显示brotli压缩后的大小
+          brotliSize: true, // 显示brotli压缩后的大小
         }),
         viteCompression({
           verbose: true, // 是否在控制台中输出压缩结果
           disable: false,
           threshold: 10240, // 如果体积大于阈值，将被压缩，单位为b，体积过小时请不要压缩，以免适得其反
-          algorithm: 'gzip', // 压缩算法，可选['gzip'，' brotliccompress '，'deflate '，'deflateRaw']
-          ext: '.gz',
-          deleteOriginFile: false // 源文件压缩后是否删除
-        })
-      ]
+          algorithm: "gzip", // 压缩算法，可选['gzip'，' brotliccompress '，'deflate '，'deflateRaw']
+          ext: ".gz",
+          deleteOriginFile: false, // 源文件压缩后是否删除
+        }),
+      ],
     },
     terserOptions: {
       compress: {
         drop_console: true,
-        drop_debugger: true
-      }
-    }
+        drop_debugger: true,
+      },
+    },
   },
-})
+});
