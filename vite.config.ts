@@ -33,6 +33,14 @@ export default defineConfig({
         chunkFileNames: "js/[name]-[hash].js", // 引入文件名的名称
         entryFileNames: "js/[name]-[hash].js", // 包的入口文件名称
         assetFileNames: "[ext]/[name]-[hash].[ext]", // 资源文件像 字体，图片等
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            return "vendor";
+          }
+          if (id.includes("src/components")) {
+            return "components"; // 将组件分离
+          }
+        },
       },
       plugins: [
         visualizer({
@@ -45,7 +53,6 @@ export default defineConfig({
           verbose: true, // 是否在控制台中输出压缩结果
           disable: false,
           threshold: 10240, // 如果体积大于阈值，将被压缩，单位为b，体积过小时请不要压缩，以免适得其反
-          algorithm: "gzip", // 压缩算法，可选['gzip'，' brotliccompress '，'deflate '，'deflateRaw']
           ext: ".gz",
           deleteOriginFile: false, // 源文件压缩后是否删除
         }),
