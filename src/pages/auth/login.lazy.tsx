@@ -70,7 +70,7 @@ function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 via-white to-amber-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4">
+    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 via-white to-amber-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4">
       <div className="w-full max-w-4xl flex shadow-2xl rounded-2xl overflow-hidden">
         {/* 左侧装饰区域 */ }
         <div className="hidden md:block w-1/2 bg-gradient-to-br from-red-500 to-amber-500 p-12 text-white">
@@ -269,6 +269,18 @@ function AuthPage() {
           </CardHeader>
           { error && <p className="text-sm text-red-500 text-center">{ error }</p> }
         </Card>
+      </div>
+      <div className="absolute bottom-1 ">
+        <div className="flex items-center gap-4 text-sm">
+          <a
+            href="https://beian.miit.gov.cn/"
+            target="_blank"
+            rel="noreferrer"
+            className="text-muted-foreground hover:text-foreground transition-colors hover:underline"
+          >
+            豫ICP备2023028265号-2
+          </a>
+        </div>
       </div>
     </div>
   )
