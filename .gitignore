@@ -19,3 +19,4 @@ dist/
 stats.html
 *.zip
 *.tar.gz
+.env

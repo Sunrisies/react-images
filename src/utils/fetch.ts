@@ -233,6 +233,5 @@ class Request {
     return Promise.reject(response.statusText);
   }
 }
-const BaseUrl = "https://api.chaoyang1024.top:12345/api";
-// const BaseUrl = 'http://localhost:2345/api'
+const BaseUrl = import.meta.env.VITE_PUBLIC_API_URL;
 export const request = new Request(BaseUrl);
