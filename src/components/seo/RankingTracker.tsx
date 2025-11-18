@@ -3,13 +3,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
 } from '@/components/ui/table';
 import {
   Select,
@@ -19,12 +19,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Progress } from '@/components/ui/progress';
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  Minus, 
-  Search, 
-  RefreshCw, 
+import {
+  TrendingUp,
+  TrendingDown,
+  Minus,
+  Search,
+  RefreshCw,
   Download,
   Filter,
   Calendar,
@@ -40,11 +40,11 @@ interface RankingTrackerProps {
 }
 
 export const RankingTracker: React.FC<RankingTrackerProps> = ({ className }) => {
-  const { 
-    rankings, 
-    isLoading, 
-    error, 
-    searchQuery, 
+  const {
+    rankings,
+    isLoading,
+    error,
+    searchQuery,
     setSearchQuery,
     selectedEngine,
     setSelectedEngine,
@@ -132,7 +132,7 @@ export const RankingTracker: React.FC<RankingTrackerProps> = ({ className }) => 
               className="pl-10"
             />
           </div>
-          
+
           <div className="flex gap-2">
             <Select value={selectedEngine} onValueChange={setSelectedEngine}>
               <SelectTrigger className="w-[180px]">
@@ -195,9 +195,9 @@ export const RankingTracker: React.FC<RankingTrackerProps> = ({ className }) => 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">排名范围</label>
-                  <Select 
-                    value={filters.rankRange} 
-                    onValueChange={(value) => setFilters({...filters, rankRange: value})}
+                  <Select
+                    value={filters.rankRange}
+                    onValueChange={(value) => setFilters({ ...filters, rankRange: value })}
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -214,9 +214,9 @@ export const RankingTracker: React.FC<RankingTrackerProps> = ({ className }) => 
 
                 <div>
                   <label className="block text-sm font-medium mb-2">变化趋势</label>
-                  <Select 
-                    value={filters.trend} 
-                    onValueChange={(value) => setFilters({...filters, trend: value})}
+                  <Select
+                    value={filters.trend}
+                    onValueChange={(value) => setFilters({ ...filters, trend: value })}
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -232,18 +232,18 @@ export const RankingTracker: React.FC<RankingTrackerProps> = ({ className }) => 
 
                 <div>
                   <label className="block text-sm font-medium mb-2">搜索量</label>
-                  <Select 
-                    value={filters.searchVolume} 
-                    onValueChange={(value) => setFilters({...filters, searchVolume: value})}
+                  <Select
+                    value={filters.searchVolume}
+                    onValueChange={(value) => setFilters({ ...filters, searchVolume: value })}
                   >
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">全部</SelectItem>
-                      <SelectItem value="high">高 (>10000)</SelectItem>
+                      <SelectItem value="high">高 ( 10000)</SelectItem>
                       <SelectItem value="medium">中 (1000-10000)</SelectItem>
-                      <SelectItem value="low">低 (<1000)</SelectItem>
+                      <SelectItem value="low">低 (1000)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -273,8 +273,8 @@ export const RankingTracker: React.FC<RankingTrackerProps> = ({ className }) => 
             <div className="text-2xl font-bold text-green-600">
               {rankings.filter(r => r.currentRank <= 10).length}
             </div>
-            <Progress 
-              value={(rankings.filter(r => r.currentRank <= 10).length / rankings.length) * 100} 
+            <Progress
+              value={(rankings.filter(r => r.currentRank <= 10).length / rankings.length) * 100}
               className="mt-2"
             />
           </CardContent>
@@ -286,7 +286,7 @@ export const RankingTracker: React.FC<RankingTrackerProps> = ({ className }) => 
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {rankings.length > 0 
+              {rankings.length > 0
                 ? Math.round(rankings.reduce((sum, r) => sum + r.currentRank, 0) / rankings.length)
                 : 0
               }
@@ -400,8 +400,8 @@ export const RankingTracker: React.FC<RankingTrackerProps> = ({ className }) => 
                       <TableCell className="text-center">
                         <div className="flex items-center justify-center">
                           <div className="w-16 bg-gray-200 rounded-full h-2">
-                            <div 
-                              className="bg-blue-600 h-2 rounded-full" 
+                            <div
+                              className="bg-blue-600 h-2 rounded-full"
                               style={{ width: `${ranking.competition}%` }}
                             />
                           </div>
@@ -412,9 +412,9 @@ export const RankingTracker: React.FC<RankingTrackerProps> = ({ className }) => 
                       </TableCell>
                       <TableCell>
                         <div className="max-w-xs truncate" title={ranking.url}>
-                          <a 
-                            href={ranking.url} 
-                            target="_blank" 
+                          <a
+                            href={ranking.url}
+                            target="_blank"
                             rel="noopener noreferrer"
                             className="text-blue-600 hover:underline text-sm"
                           >

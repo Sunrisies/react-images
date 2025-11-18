@@ -8,7 +8,8 @@ import {
   LineChart,
   MessageSquare,
   Settings,
-  Users
+  Users,
+  Search
 } from "lucide-react";
 import * as React from "react";
 
@@ -81,6 +82,11 @@ const data = {
         title: "友情链接",
         url: "/dashboard/links",
         icon: Database,  // 修改为数据库图标
+      },
+      {
+        title: "SEO优化",
+        url: "/dashboard/seo",
+        icon: Search,  // SEO优化图标
       },
     ],
   },

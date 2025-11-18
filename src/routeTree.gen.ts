@@ -29,6 +29,7 @@ import { Route as AuthForgotPasswordRouteImport } from './pages/auth/forgot-pass
 const DashboardSettingsLazyRouteImport = createFileRoute(
   '/dashboard/settings',
 )()
+const DashboardSeoLazyRouteImport = createFileRoute('/dashboard/seo')()
 const DashboardEditorLazyRouteImport = createFileRoute('/dashboard/editor')()
 const DashboardAnalyticsLazyRouteImport = createFileRoute(
   '/dashboard/analytics',
@@ -53,6 +54,11 @@ const DashboardSettingsLazyRoute = DashboardSettingsLazyRouteImport.update({
 } as any).lazy(() =>
   import('./pages/dashboard/settings.lazy').then((d) => d.Route),
 )
+const DashboardSeoLazyRoute = DashboardSeoLazyRouteImport.update({
+  id: '/dashboard/seo',
+  path: '/dashboard/seo',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./pages/dashboard/seo.lazy').then((d) => d.Route))
 const DashboardEditorLazyRoute = DashboardEditorLazyRouteImport.update({
   id: '/dashboard/editor',
   path: '/dashboard/editor',
@@ -158,6 +164,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/about': typeof DashboardAboutLazyRoute
   '/dashboard/analytics': typeof DashboardAnalyticsLazyRoute
   '/dashboard/editor': typeof DashboardEditorLazyRoute
+  '/dashboard/seo': typeof DashboardSeoLazyRoute
   '/dashboard/settings': typeof DashboardSettingsLazyRoute
   '/dashboard': typeof DashboardIndexRoute
 }
@@ -179,6 +186,7 @@ export interface FileRoutesByTo {
   '/dashboard/about': typeof DashboardAboutLazyRoute
   '/dashboard/analytics': typeof DashboardAnalyticsLazyRoute
   '/dashboard/editor': typeof DashboardEditorLazyRoute
+  '/dashboard/seo': typeof DashboardSeoLazyRoute
   '/dashboard/settings': typeof DashboardSettingsLazyRoute
   '/dashboard': typeof DashboardIndexRoute
 }
@@ -201,6 +209,7 @@ export interface FileRoutesById {
   '/dashboard/about': typeof DashboardAboutLazyRoute
   '/dashboard/analytics': typeof DashboardAnalyticsLazyRoute
   '/dashboard/editor': typeof DashboardEditorLazyRoute
+  '/dashboard/seo': typeof DashboardSeoLazyRoute
   '/dashboard/settings': typeof DashboardSettingsLazyRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
@@ -224,6 +233,7 @@ export interface FileRouteTypes {
     | '/dashboard/about'
     | '/dashboard/analytics'
     | '/dashboard/editor'
+    | '/dashboard/seo'
     | '/dashboard/settings'
     | '/dashboard'
   fileRoutesByTo: FileRoutesByTo
@@ -245,6 +255,7 @@ export interface FileRouteTypes {
     | '/dashboard/about'
     | '/dashboard/analytics'
     | '/dashboard/editor'
+    | '/dashboard/seo'
     | '/dashboard/settings'
     | '/dashboard'
   id:
@@ -266,6 +277,7 @@ export interface FileRouteTypes {
     | '/dashboard/about'
     | '/dashboard/analytics'
     | '/dashboard/editor'
+    | '/dashboard/seo'
     | '/dashboard/settings'
     | '/dashboard/'
   fileRoutesById: FileRoutesById
@@ -288,6 +300,7 @@ export interface RootRouteChildren {
   DashboardAboutLazyRoute: typeof DashboardAboutLazyRoute
   DashboardAnalyticsLazyRoute: typeof DashboardAnalyticsLazyRoute
   DashboardEditorLazyRoute: typeof DashboardEditorLazyRoute
+  DashboardSeoLazyRoute: typeof DashboardSeoLazyRoute
   DashboardSettingsLazyRoute: typeof DashboardSettingsLazyRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
@@ -313,6 +326,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard/settings'
       fullPath: '/dashboard/settings'
       preLoaderRoute: typeof DashboardSettingsLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/seo': {
+      id: '/dashboard/seo'
+      path: '/dashboard/seo'
+      fullPath: '/dashboard/seo'
+      preLoaderRoute: typeof DashboardSeoLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard/editor': {
@@ -448,6 +468,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardAboutLazyRoute: DashboardAboutLazyRoute,
   DashboardAnalyticsLazyRoute: DashboardAnalyticsLazyRoute,
   DashboardEditorLazyRoute: DashboardEditorLazyRoute,
+  DashboardSeoLazyRoute: DashboardSeoLazyRoute,
   DashboardSettingsLazyRoute: DashboardSettingsLazyRoute,
   DashboardIndexRoute: DashboardIndexRoute,
 }

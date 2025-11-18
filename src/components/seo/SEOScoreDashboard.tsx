@@ -4,14 +4,14 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  AlertTriangle, 
-  CheckCircle, 
-  XCircle, 
-  Smartphone, 
-  Tablet, 
+import {
+  TrendingUp,
+  TrendingDown,
+  AlertTriangle,
+  CheckCircle,
+  XCircle,
+  Smartphone,
+  Tablet,
   Monitor,
   BarChart3,
   Target,
@@ -39,11 +39,11 @@ interface ScoreCardProps {
   isAnalyzing?: boolean;
 }
 
-const ScoreCard: React.FC<ScoreCardProps> = ({ 
-  title, 
-  score, 
-  maxScore, 
-  icon, 
+const ScoreCard: React.FC<ScoreCardProps> = ({
+  title,
+  score,
+  maxScore,
+  icon,
   color,
   onAnalyze,
   isAnalyzing
@@ -71,8 +71,8 @@ const ScoreCard: React.FC<ScoreCardProps> = ({
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold">{score}/{maxScore}</div>
-        <Progress 
-          value={percentage} 
+        <Progress
+          value={percentage}
           className={`mt-2 ${getProgressColor()}`}
         />
         <div className="flex justify-between items-center mt-2">
@@ -80,8 +80,8 @@ const ScoreCard: React.FC<ScoreCardProps> = ({
             {percentage >= 80 ? 'Excellent' : percentage >= 60 ? 'Good' : 'Needs Improvement'}
           </p>
           {onAnalyze && (
-            <Button 
-              size="sm" 
+            <Button
+              size="sm"
               variant="outline"
               onClick={onAnalyze}
               disabled={isAnalyzing}
@@ -138,8 +138,8 @@ const IssueList: React.FC<IssueListProps> = ({ issues, title }) => {
       <CardContent>
         <div className="space-y-3">
           {issues.map(issue => (
-            <div key={issue.id} className="border-l-4 pl-4 py-2" 
-                 style={{ borderColor: issue.type === 'error' ? '#ef4444' : issue.type === 'warning' ? '#f59e0b' : '#3b82f6' }}>
+            <div key={issue.id} className="border-l-4 pl-4 py-2"
+              style={{ borderColor: issue.type === 'error' ? '#ef4444' : issue.type === 'warning' ? '#f59e0b' : '#3b82f6' }}>
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <p className="font-medium">{issue.message}</p>
@@ -163,23 +163,23 @@ export const SEOScoreDashboard: React.FC = () => {
   const [analysisType, setAnalysisType] = useState<'page' | 'mobile' | 'content'>('page');
 
   const {
-    analyses,
-    overallScore,
-    pageAnalysis,
-    mobileAnalysis,
-    contentAnalysis,
-    isLoading,
-    runAnalysis,
-    runMobileAnalysis,
-    runContentAnalysis,
-    getRecommendations,
-    exportReport,
-    shareReport
+    // analyses,
+    // overallScore,
+    // pageAnalysis,
+    // mobileAnalysis,
+    // contentAnalysis,
+    // isLoading,
+    // runAnalysis,
+    // runMobileAnalysis,
+    // // runContentAnalysis,
+    // getRecommendations,
+    // exportReport,
+    // shareReport
   } = useSEOAnalysis();
 
   const handleAnalyze = async (type: 'page' | 'mobile' | 'content') => {
     setIsAnalyzing({ ...isAnalyzing, [type]: true });
-    
+
     try {
       switch (type) {
         case 'page':
@@ -206,11 +206,11 @@ export const SEOScoreDashboard: React.FC = () => {
     // This would typically call the actual analysis function
   };
 
-  const runMobileAnalysis = async () => {
-    // Simulate mobile analysis
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    // This would typically call the actual analysis function
-  };
+  // const runMobileAnalysis = async () => {
+  //   // Simulate mobile analysis
+  //   await new Promise(resolve => setTimeout(resolve, 2000));
+  //   // This would typically call the actual analysis function
+  // };
 
   const runContentAnalysis = async () => {
     // Simulate content analysis
@@ -502,9 +502,9 @@ export const SEOScoreDashboard: React.FC = () => {
 
       {/* Issues and Recommendations */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <IssueList 
-          issues={mockIssues} 
-          title="Critical Issues" 
+        <IssueList
+          issues={mockIssues}
+          title="Critical Issues"
         />
         <Card>
           <CardHeader>

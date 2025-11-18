@@ -9,7 +9,11 @@
     "build": "vite build",
     "serve": "vite preview",
     "start": "vite",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "test:seo": "vitest run src/__tests__/seo"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^19.6.0",
@@ -19,6 +23,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.2",
+    "@vitest": "link:@vitest",
     "autoprefixer": "^10.4.20",
     "commitizen": "^4.3.1",
     "cz-git": "^1.11.0",
@@ -29,7 +34,8 @@
     "terser": "^5.37.0",
     "typescript": "^5.7.2",
     "vite": "^5.4.12",
-    "vite-plugin-compression": "^0.5.1"
+    "vite-plugin-compression": "^0.5.1",
+    "vitest": "^4.0.10"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",

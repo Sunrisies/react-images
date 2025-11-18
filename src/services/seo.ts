@@ -489,6 +489,181 @@ export const useGenerateSEOReport = () => {
   });
 };
 
+// 传统服务 API 对象 (用于测试和非 React 场景)
+export const seoService = {
+  // SEO 设置
+  getSettings: async (): Promise<SEOSettings> => {
+    const data = await fetchWithError(`${API_BASE_URL}/settings`);
+    return data.data;
+  },
+  
+  updateSettings: async (settings: SEOSettings): Promise<SEOSettings> => {
+    const data = await fetchWithError(`${API_BASE_URL}/settings`, {
+      method: 'PUT',
+      body: JSON.stringify(settings),
+    });
+    return data.data;
+  },
+
+  // 关键词管理
+  getKeywords: async (filter?: SEOKeywordFilter): Promise<{ data: SEOKeyword[]; pagination?: any }> => {
+    const params = new URLSearchParams();
+    if (filter) {
+      Object.entries(filter).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          params.append(key, String(value));
+        }
+      });
+    }
+    
+    const data = await fetchWithError(`${API_BASE_URL}/keywords?${params}`);
+    return data;
+  },
+  
+  createKeyword: async (keyword: Omit<SEOKeyword, 'id'>): Promise<SEOKeyword> => {
+    const data = await fetchWithError(`${API_BASE_URL}/keywords`, {
+      method: 'POST',
+      body: JSON.stringify(keyword),
+    });
+    return data.data;
+  },
+  
+  updateKeyword: async (id: string, keyword: Partial<SEOKeyword>): Promise<SEOKeyword> => {
+    const data = await fetchWithError(`${API_BASE_URL}/keywords/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(keyword),
+    });
+    return data.data;
+  },
+  
+  deleteKeyword: async (id: string): Promise<boolean> => {
+    await fetchWithError(`${API_BASE_URL}/keywords/${id}`, {
+      method: 'DELETE',
+    });
+    return true;
+  },
+  
+  analyzeKeyword: async (content: string): Promise<{ keywords: SEOKeyword[]; density: Record<string, number> }> => {
+    const data = await fetchWithError(`${API_BASE_URL}/keywords/analyze`, {
+      method: 'POST',
+      body: JSON.stringify({ content }),
+    });
+    return data.data;
+  },
+
+  // 站点地图
+  getSitemaps: async (): Promise<{ data: SEOSitemap[]; pagination?: any }> => {
+    const data = await fetchWithError(`${API_BASE_URL}/sitemaps`);
+    return data;
+  },
+  
+  generateSitemap: async (type: 'xml' | 'html' | 'news' | 'video' = 'xml'): Promise<SEOSitemap> => {
+    const data = await fetchWithError(`${API_BASE_URL}/sitemaps/generate`, {
+      method: 'POST',
+      body: JSON.stringify({ type }),
+    });
+    return data.data;
+  },
+  
+  submitSitemap: async (sitemapId: string): Promise<boolean> => {
+    await fetchWithError(`${API_BASE_URL}/sitemaps/submit`, {
+      method: 'POST',
+      body: JSON.stringify({ searchEngines: ['google', 'bing'] }),
+    });
+    return true;
+  },
+
+  // Meta 标签
+  getMetaTags: async (pageId?: string): Promise<{ data: SEOMetaTags[]; pagination?: any }> => {
+    const params = pageId ? `?pageId=${pageId}` : '';
+    const data = await fetchWithError(`${API_BASE_URL}/meta-tags${params}`);
+    return data;
+  },
+  
+  updateMetaTags: async (id: string, metaTags: SEOMetaTags): Promise<SEOMetaTags> => {
+    const data = await fetchWithError(`${API_BASE_URL}/meta-tags/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(metaTags),
+    });
+    return data.data;
+  },
+
+  // 链接管理
+  getLinks: async (pageId?: string): Promise<{ data: SEOLink[]; pagination?: any }> => {
+    const params = pageId ? `?pageId=${pageId}` : '';
+    const data = await fetchWithError(`${API_BASE_URL}/links${params}`);
+    return data;
+  },
+  
+  analyzeLinks: async (pageId?: string): Promise<{
+    brokenLinks: SEOLink[];
+    internalLinks: SEOLink[];
+    externalLinks: SEOLink[];
+    suggestions: string[];
+  }> => {
+    const params = pageId ? `?pageId=${pageId}` : '';
+    const data = await fetchWithError(`${API_BASE_URL}/links/analyze${params}`);
+    return data.data;
+  },
+
+  // SEO 分析
+  getSEOScore: async (url: string): Promise<SEOAnalysis> => {
+    const data = await fetchWithError(`${API_BASE_URL}/analysis/score?url=${encodeURIComponent(url)}`);
+    return data.data;
+  },
+  
+  analyzePage: async (pageId: string): Promise<SEOAnalysis> => {
+    const data = await fetchWithError(`${API_BASE_URL}/analysis/${pageId}`, {
+      method: 'POST',
+    });
+    return data.data;
+  },
+
+  // 竞争对手分析
+  getCompetitors: async (): Promise<{ data: SEOCompetitor[]; pagination?: any }> => {
+    const data = await fetchWithError(`${API_BASE_URL}/competitors`);
+    return data;
+  },
+  
+  addCompetitor: async (competitor: Omit<SEOCompetitor, 'id'>): Promise<SEOCompetitor> => {
+    const data = await fetchWithError(`${API_BASE_URL}/competitors`, {
+      method: 'POST',
+      body: JSON.stringify(competitor),
+    });
+    return data.data;
+  },
+  
+  analyzeCompetitor: async (id: string): Promise<SEOCompetitor> => {
+    const data = await fetchWithError(`${API_BASE_URL}/competitors/${id}/analyze`, {
+      method: 'POST',
+    });
+    return data.data;
+  },
+
+  // 排名追踪
+  getRankings: async (filter?: SEORankingFilter): Promise<{ data: SEORanking[]; pagination?: any }> => {
+    const params = new URLSearchParams();
+    if (filter) {
+      Object.entries(filter).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          params.append(key, String(value));
+        }
+      });
+    }
+    
+    const data = await fetchWithError(`${API_BASE_URL}/rankings?${params}`);
+    return data;
+  },
+  
+  trackRanking: async (params: { keyword: string; url: string; searchEngine: string }): Promise<SEORanking> => {
+    const data = await fetchWithError(`${API_BASE_URL}/rankings/track`, {
+      method: 'POST',
+      body: JSON.stringify(params),
+    });
+    return data.data;
+  },
+};
+
 // 工具函数
 export const useSEOHealthCheck = () => {
   return useMutation({
