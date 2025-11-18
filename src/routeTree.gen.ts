@@ -10,297 +10,135 @@
 
 import { createFileRoute } from '@tanstack/react-router'
 
-// Import Routes
+import { Route as rootRouteImport } from './pages/__root.lazy'
+import { Route as IndexRouteImport } from './pages/index'
+import { Route as DashboardIndexRouteImport } from './pages/dashboard/index'
+import { Route as DashboardVisitLogRouteImport } from './pages/dashboard/visit-log'
+import { Route as DashboardUsersRouteImport } from './pages/dashboard/users'
+import { Route as DashboardThirdRouteImport } from './pages/dashboard/third'
+import { Route as DashboardTagsRouteImport } from './pages/dashboard/tags'
+import { Route as DashboardPersonalInfoRouteImport } from './pages/dashboard/personalInfo'
+import { Route as DashboardMediaRouteImport } from './pages/dashboard/media'
+import { Route as DashboardLinksRouteImport } from './pages/dashboard/links'
+import { Route as DashboardCommentsRouteImport } from './pages/dashboard/comments'
+import { Route as DashboardCategoriesRouteImport } from './pages/dashboard/categories'
+import { Route as DashboardBlogRouteImport } from './pages/dashboard/blog'
+import { Route as DashboardArticlesRouteImport } from './pages/dashboard/articles'
+import { Route as AuthForgotPasswordRouteImport } from './pages/auth/forgot-password'
 
-import { Route as rootRoute } from './pages/__root.lazy'
-import { Route as IndexImport } from './pages/index'
-import { Route as DashboardIndexImport } from './pages/dashboard/index'
-import { Route as DashboardVisitLogImport } from './pages/dashboard/visit-log'
-import { Route as DashboardUsersImport } from './pages/dashboard/users'
-import { Route as DashboardThirdImport } from './pages/dashboard/third'
-import { Route as DashboardTagsImport } from './pages/dashboard/tags'
-import { Route as DashboardPersonalInfoImport } from './pages/dashboard/personalInfo'
-import { Route as DashboardMediaImport } from './pages/dashboard/media'
-import { Route as DashboardLinksImport } from './pages/dashboard/links'
-import { Route as DashboardCommentsImport } from './pages/dashboard/comments'
-import { Route as DashboardCategoriesImport } from './pages/dashboard/categories'
-import { Route as DashboardBlogImport } from './pages/dashboard/blog'
-import { Route as DashboardArticlesImport } from './pages/dashboard/articles'
-import { Route as AuthForgotPasswordImport } from './pages/auth/forgot-password'
+const DashboardSettingsLazyRouteImport = createFileRoute(
+  '/dashboard/settings',
+)()
+const DashboardEditorLazyRouteImport = createFileRoute('/dashboard/editor')()
+const DashboardAnalyticsLazyRouteImport = createFileRoute(
+  '/dashboard/analytics',
+)()
+const DashboardAboutLazyRouteImport = createFileRoute('/dashboard/about')()
+const AuthLoginLazyRouteImport = createFileRoute('/auth/login')()
 
-// Create Virtual Routes
-
-const DashboardSettingsLazyImport = createFileRoute('/dashboard/settings')()
-const DashboardEditorLazyImport = createFileRoute('/dashboard/editor')()
-const DashboardAnalyticsLazyImport = createFileRoute('/dashboard/analytics')()
-const DashboardAboutLazyImport = createFileRoute('/dashboard/about')()
-const AuthLoginLazyImport = createFileRoute('/auth/login')()
-
-// Create/Update Routes
-
-const IndexRoute = IndexImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const DashboardIndexRoute = DashboardIndexImport.update({
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/dashboard/',
   path: '/dashboard/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const DashboardSettingsLazyRoute = DashboardSettingsLazyImport.update({
+const DashboardSettingsLazyRoute = DashboardSettingsLazyRouteImport.update({
   id: '/dashboard/settings',
   path: '/dashboard/settings',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any).lazy(() =>
   import('./pages/dashboard/settings.lazy').then((d) => d.Route),
 )
-
-const DashboardEditorLazyRoute = DashboardEditorLazyImport.update({
+const DashboardEditorLazyRoute = DashboardEditorLazyRouteImport.update({
   id: '/dashboard/editor',
   path: '/dashboard/editor',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any).lazy(() =>
   import('./pages/dashboard/editor.lazy').then((d) => d.Route),
 )
-
-const DashboardAnalyticsLazyRoute = DashboardAnalyticsLazyImport.update({
+const DashboardAnalyticsLazyRoute = DashboardAnalyticsLazyRouteImport.update({
   id: '/dashboard/analytics',
   path: '/dashboard/analytics',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any).lazy(() =>
   import('./pages/dashboard/analytics.lazy').then((d) => d.Route),
 )
-
-const DashboardAboutLazyRoute = DashboardAboutLazyImport.update({
+const DashboardAboutLazyRoute = DashboardAboutLazyRouteImport.update({
   id: '/dashboard/about',
   path: '/dashboard/about',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any).lazy(() =>
   import('./pages/dashboard/about.lazy').then((d) => d.Route),
 )
-
-const AuthLoginLazyRoute = AuthLoginLazyImport.update({
+const AuthLoginLazyRoute = AuthLoginLazyRouteImport.update({
   id: '/auth/login',
   path: '/auth/login',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./pages/auth/login.lazy').then((d) => d.Route))
-
-const DashboardVisitLogRoute = DashboardVisitLogImport.update({
+const DashboardVisitLogRoute = DashboardVisitLogRouteImport.update({
   id: '/dashboard/visit-log',
   path: '/dashboard/visit-log',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const DashboardUsersRoute = DashboardUsersImport.update({
+const DashboardUsersRoute = DashboardUsersRouteImport.update({
   id: '/dashboard/users',
   path: '/dashboard/users',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const DashboardThirdRoute = DashboardThirdImport.update({
+const DashboardThirdRoute = DashboardThirdRouteImport.update({
   id: '/dashboard/third',
   path: '/dashboard/third',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const DashboardTagsRoute = DashboardTagsImport.update({
+const DashboardTagsRoute = DashboardTagsRouteImport.update({
   id: '/dashboard/tags',
   path: '/dashboard/tags',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const DashboardPersonalInfoRoute = DashboardPersonalInfoImport.update({
+const DashboardPersonalInfoRoute = DashboardPersonalInfoRouteImport.update({
   id: '/dashboard/personalInfo',
   path: '/dashboard/personalInfo',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const DashboardMediaRoute = DashboardMediaImport.update({
+const DashboardMediaRoute = DashboardMediaRouteImport.update({
   id: '/dashboard/media',
   path: '/dashboard/media',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const DashboardLinksRoute = DashboardLinksImport.update({
+const DashboardLinksRoute = DashboardLinksRouteImport.update({
   id: '/dashboard/links',
   path: '/dashboard/links',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const DashboardCommentsRoute = DashboardCommentsImport.update({
+const DashboardCommentsRoute = DashboardCommentsRouteImport.update({
   id: '/dashboard/comments',
   path: '/dashboard/comments',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const DashboardCategoriesRoute = DashboardCategoriesImport.update({
+const DashboardCategoriesRoute = DashboardCategoriesRouteImport.update({
   id: '/dashboard/categories',
   path: '/dashboard/categories',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const DashboardBlogRoute = DashboardBlogImport.update({
+const DashboardBlogRoute = DashboardBlogRouteImport.update({
   id: '/dashboard/blog',
   path: '/dashboard/blog',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const DashboardArticlesRoute = DashboardArticlesImport.update({
+const DashboardArticlesRoute = DashboardArticlesRouteImport.update({
   id: '/dashboard/articles',
   path: '/dashboard/articles',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const AuthForgotPasswordRoute = AuthForgotPasswordImport.update({
+const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
   id: '/auth/forgot-password',
   path: '/auth/forgot-password',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-// Populate the FileRoutesByPath interface
-
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/auth/forgot-password': {
-      id: '/auth/forgot-password'
-      path: '/auth/forgot-password'
-      fullPath: '/auth/forgot-password'
-      preLoaderRoute: typeof AuthForgotPasswordImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard/articles': {
-      id: '/dashboard/articles'
-      path: '/dashboard/articles'
-      fullPath: '/dashboard/articles'
-      preLoaderRoute: typeof DashboardArticlesImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard/blog': {
-      id: '/dashboard/blog'
-      path: '/dashboard/blog'
-      fullPath: '/dashboard/blog'
-      preLoaderRoute: typeof DashboardBlogImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard/categories': {
-      id: '/dashboard/categories'
-      path: '/dashboard/categories'
-      fullPath: '/dashboard/categories'
-      preLoaderRoute: typeof DashboardCategoriesImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard/comments': {
-      id: '/dashboard/comments'
-      path: '/dashboard/comments'
-      fullPath: '/dashboard/comments'
-      preLoaderRoute: typeof DashboardCommentsImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard/links': {
-      id: '/dashboard/links'
-      path: '/dashboard/links'
-      fullPath: '/dashboard/links'
-      preLoaderRoute: typeof DashboardLinksImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard/media': {
-      id: '/dashboard/media'
-      path: '/dashboard/media'
-      fullPath: '/dashboard/media'
-      preLoaderRoute: typeof DashboardMediaImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard/personalInfo': {
-      id: '/dashboard/personalInfo'
-      path: '/dashboard/personalInfo'
-      fullPath: '/dashboard/personalInfo'
-      preLoaderRoute: typeof DashboardPersonalInfoImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard/tags': {
-      id: '/dashboard/tags'
-      path: '/dashboard/tags'
-      fullPath: '/dashboard/tags'
-      preLoaderRoute: typeof DashboardTagsImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard/third': {
-      id: '/dashboard/third'
-      path: '/dashboard/third'
-      fullPath: '/dashboard/third'
-      preLoaderRoute: typeof DashboardThirdImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard/users': {
-      id: '/dashboard/users'
-      path: '/dashboard/users'
-      fullPath: '/dashboard/users'
-      preLoaderRoute: typeof DashboardUsersImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard/visit-log': {
-      id: '/dashboard/visit-log'
-      path: '/dashboard/visit-log'
-      fullPath: '/dashboard/visit-log'
-      preLoaderRoute: typeof DashboardVisitLogImport
-      parentRoute: typeof rootRoute
-    }
-    '/auth/login': {
-      id: '/auth/login'
-      path: '/auth/login'
-      fullPath: '/auth/login'
-      preLoaderRoute: typeof AuthLoginLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard/about': {
-      id: '/dashboard/about'
-      path: '/dashboard/about'
-      fullPath: '/dashboard/about'
-      preLoaderRoute: typeof DashboardAboutLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard/analytics': {
-      id: '/dashboard/analytics'
-      path: '/dashboard/analytics'
-      fullPath: '/dashboard/analytics'
-      preLoaderRoute: typeof DashboardAnalyticsLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard/editor': {
-      id: '/dashboard/editor'
-      path: '/dashboard/editor'
-      fullPath: '/dashboard/editor'
-      preLoaderRoute: typeof DashboardEditorLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard/settings': {
-      id: '/dashboard/settings'
-      path: '/dashboard/settings'
-      fullPath: '/dashboard/settings'
-      preLoaderRoute: typeof DashboardSettingsLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard/': {
-      id: '/dashboard/'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardIndexImport
-      parentRoute: typeof rootRoute
-    }
-  }
-}
-
-// Create and export the route tree
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -323,7 +161,6 @@ export interface FileRoutesByFullPath {
   '/dashboard/settings': typeof DashboardSettingsLazyRoute
   '/dashboard': typeof DashboardIndexRoute
 }
-
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
@@ -345,9 +182,8 @@ export interface FileRoutesByTo {
   '/dashboard/settings': typeof DashboardSettingsLazyRoute
   '/dashboard': typeof DashboardIndexRoute
 }
-
 export interface FileRoutesById {
-  __root__: typeof rootRoute
+  __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/dashboard/articles': typeof DashboardArticlesRoute
@@ -368,7 +204,6 @@ export interface FileRoutesById {
   '/dashboard/settings': typeof DashboardSettingsLazyRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
-
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
@@ -435,7 +270,6 @@ export interface FileRouteTypes {
     | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
-
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
@@ -456,6 +290,144 @@ export interface RootRouteChildren {
   DashboardEditorLazyRoute: typeof DashboardEditorLazyRoute
   DashboardSettingsLazyRoute: typeof DashboardSettingsLazyRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
+}
+
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/settings': {
+      id: '/dashboard/settings'
+      path: '/dashboard/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof DashboardSettingsLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/editor': {
+      id: '/dashboard/editor'
+      path: '/dashboard/editor'
+      fullPath: '/dashboard/editor'
+      preLoaderRoute: typeof DashboardEditorLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/analytics': {
+      id: '/dashboard/analytics'
+      path: '/dashboard/analytics'
+      fullPath: '/dashboard/analytics'
+      preLoaderRoute: typeof DashboardAnalyticsLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/about': {
+      id: '/dashboard/about'
+      path: '/dashboard/about'
+      fullPath: '/dashboard/about'
+      preLoaderRoute: typeof DashboardAboutLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/auth/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/visit-log': {
+      id: '/dashboard/visit-log'
+      path: '/dashboard/visit-log'
+      fullPath: '/dashboard/visit-log'
+      preLoaderRoute: typeof DashboardVisitLogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/users': {
+      id: '/dashboard/users'
+      path: '/dashboard/users'
+      fullPath: '/dashboard/users'
+      preLoaderRoute: typeof DashboardUsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/third': {
+      id: '/dashboard/third'
+      path: '/dashboard/third'
+      fullPath: '/dashboard/third'
+      preLoaderRoute: typeof DashboardThirdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/tags': {
+      id: '/dashboard/tags'
+      path: '/dashboard/tags'
+      fullPath: '/dashboard/tags'
+      preLoaderRoute: typeof DashboardTagsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/personalInfo': {
+      id: '/dashboard/personalInfo'
+      path: '/dashboard/personalInfo'
+      fullPath: '/dashboard/personalInfo'
+      preLoaderRoute: typeof DashboardPersonalInfoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/media': {
+      id: '/dashboard/media'
+      path: '/dashboard/media'
+      fullPath: '/dashboard/media'
+      preLoaderRoute: typeof DashboardMediaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/links': {
+      id: '/dashboard/links'
+      path: '/dashboard/links'
+      fullPath: '/dashboard/links'
+      preLoaderRoute: typeof DashboardLinksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/comments': {
+      id: '/dashboard/comments'
+      path: '/dashboard/comments'
+      fullPath: '/dashboard/comments'
+      preLoaderRoute: typeof DashboardCommentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/categories': {
+      id: '/dashboard/categories'
+      path: '/dashboard/categories'
+      fullPath: '/dashboard/categories'
+      preLoaderRoute: typeof DashboardCategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/blog': {
+      id: '/dashboard/blog'
+      path: '/dashboard/blog'
+      fullPath: '/dashboard/blog'
+      preLoaderRoute: typeof DashboardBlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/articles': {
+      id: '/dashboard/articles'
+      path: '/dashboard/articles'
+      fullPath: '/dashboard/articles'
+      preLoaderRoute: typeof DashboardArticlesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/forgot-password': {
+      id: '/auth/forgot-password'
+      path: '/auth/forgot-password'
+      fullPath: '/auth/forgot-password'
+      preLoaderRoute: typeof AuthForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+  }
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -479,95 +451,6 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardSettingsLazyRoute: DashboardSettingsLazyRoute,
   DashboardIndexRoute: DashboardIndexRoute,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.lazy.tsx",
-      "children": [
-        "/",
-        "/auth/forgot-password",
-        "/dashboard/articles",
-        "/dashboard/blog",
-        "/dashboard/categories",
-        "/dashboard/comments",
-        "/dashboard/links",
-        "/dashboard/media",
-        "/dashboard/personalInfo",
-        "/dashboard/tags",
-        "/dashboard/third",
-        "/dashboard/users",
-        "/dashboard/visit-log",
-        "/auth/login",
-        "/dashboard/about",
-        "/dashboard/analytics",
-        "/dashboard/editor",
-        "/dashboard/settings",
-        "/dashboard/"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/auth/forgot-password": {
-      "filePath": "auth/forgot-password.tsx"
-    },
-    "/dashboard/articles": {
-      "filePath": "dashboard/articles.tsx"
-    },
-    "/dashboard/blog": {
-      "filePath": "dashboard/blog.tsx"
-    },
-    "/dashboard/categories": {
-      "filePath": "dashboard/categories.tsx"
-    },
-    "/dashboard/comments": {
-      "filePath": "dashboard/comments.tsx"
-    },
-    "/dashboard/links": {
-      "filePath": "dashboard/links.tsx"
-    },
-    "/dashboard/media": {
-      "filePath": "dashboard/media.tsx"
-    },
-    "/dashboard/personalInfo": {
-      "filePath": "dashboard/personalInfo.tsx"
-    },
-    "/dashboard/tags": {
-      "filePath": "dashboard/tags.tsx"
-    },
-    "/dashboard/third": {
-      "filePath": "dashboard/third.tsx"
-    },
-    "/dashboard/users": {
-      "filePath": "dashboard/users.tsx"
-    },
-    "/dashboard/visit-log": {
-      "filePath": "dashboard/visit-log.tsx"
-    },
-    "/auth/login": {
-      "filePath": "auth/login.lazy.tsx"
-    },
-    "/dashboard/about": {
-      "filePath": "dashboard/about.lazy.tsx"
-    },
-    "/dashboard/analytics": {
-      "filePath": "dashboard/analytics.lazy.tsx"
-    },
-    "/dashboard/editor": {
-      "filePath": "dashboard/editor.lazy.tsx"
-    },
-    "/dashboard/settings": {
-      "filePath": "dashboard/settings.lazy.tsx"
-    },
-    "/dashboard/": {
-      "filePath": "dashboard/index.tsx"
-    }
-  }
-}
-ROUTE_MANIFEST_END */

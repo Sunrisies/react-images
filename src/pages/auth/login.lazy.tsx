@@ -1,20 +1,8 @@
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { createLazyFileRoute, Link, useNavigate } from "@tanstack/react-router"
-import { Eye, EyeOff, Lock, Mail, User } from "lucide-react"
-import { useLoginApi } from "@/services/auth"
-import { useState } from "react"
+import { createLazyFileRoute } from "@tanstack/react-router"
+import ModernAuthPage from "./login-modern"
 
 export const Route = createLazyFileRoute("/auth/login")({
-  component: AuthPage,
+  component: ModernAuthPage,
 })
 
 function AuthPage() {

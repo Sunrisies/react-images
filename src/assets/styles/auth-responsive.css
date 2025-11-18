@@ -1,0 +1,253 @@
+/* Modern Auth Page Responsive Styles */
+
+/* Base styles for all screen sizes */
+.auth-container {
+  padding: 1rem;
+}
+
+.auth-grid {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+}
+
+.auth-brand-section {
+  display: block;
+}
+
+.auth-form-section {
+  width: 100%;
+}
+
+.particle-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+/* Mobile First Approach */
+@media (max-width: 768px) {
+  .auth-container {
+    padding: 1rem;
+  }
+  
+  .auth-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .auth-brand-section {
+    display: none;
+  }
+  
+  .auth-form-section {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .particle-canvas {
+    opacity: 0.3;
+  }
+  
+  .auth-footer {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    margin-top: 2rem;
+  }
+  
+  /* Touch optimizations */
+  .form-input {
+    font-size: 16px; /* Prevent zoom on iOS */
+    min-height: 44px;
+  }
+  
+  .btn-touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .social-login-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .feature-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+}
+
+/* Tablet Styles */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .auth-container {
+    padding: 2rem;
+  }
+  
+  .auth-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .auth-brand-section {
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .auth-form-section {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .feature-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  
+  .social-login-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Large Desktop Styles */
+@media (min-width: 1025px) {
+  .auth-container {
+    padding: 4rem 2rem;
+  }
+  
+  .auth-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  
+  .auth-brand-section {
+    padding-right: 2rem;
+  }
+  
+  .auth-form-section {
+    padding-left: 2rem;
+  }
+  
+  .feature-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .social-login-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Ultra-wide Screens */
+@media (min-width: 1440px) {
+  .auth-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  .auth-grid {
+    gap: 6rem;
+  }
+  
+  .auth-brand-section {
+    padding-right: 4rem;
+  }
+  
+  .auth-form-section {
+    padding-left: 4rem;
+  }
+}
+
+/* Performance Optimizations */
+@media (prefers-reduced-motion: reduce) {
+  .particle-canvas {
+    display: none;
+  }
+  
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .auth-card {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #000;
+  }
+  
+  .form-input {
+    border: 2px solid #000;
+    background: #fff;
+    color: #000;
+  }
+  
+  .btn-primary {
+    background: #000;
+    color: #fff;
+    border: 2px solid #fff;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .auth-card {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .form-input {
+    background: rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+  }
+  
+  .form-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .btn-touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .form-input {
+    min-height: 44px;
+  }
+  
+  .social-login-btn {
+    padding: 12px 16px;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .particle-canvas,
+  .animated-bg,
+  .auth-footer {
+    display: none;
+  }
+  
+  .auth-card {
+    background: white;
+    border: 1px solid #000;
+    box-shadow: none;
+  }
+  
+  .form-input {
+    background: white;
+    border: 1px solid #000;
+    color: black;
+  }
+}
