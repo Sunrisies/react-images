@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  Users, 
-  Target, 
-  Link, 
-  Search, 
+import React, { useState, useEffect } from 'react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Progress } from '@/components/ui/progress'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import {
+  TrendingUp,
+  TrendingDown,
+  Users,
+  Target,
+  Link,
+  Search,
   Globe,
   Plus,
   Trash2,
@@ -23,18 +23,19 @@ import {
   Award,
   Zap,
   Clock
-} from 'lucide-react';
-import { useSEOCompetitors } from '@/hooks/useSEOCompetitors';
-import { SEOCompetitor, CompetitorKeyword, CompetitorBacklink } from '@/types/seo.types';
-import { toast } from 'sonner';
+} from 'lucide-react'
+import { useSEOCompetitors } from '@/hooks/useSEOCompetitors'
+import { SEOCompetitor, CompetitorKeyword, CompetitorBacklink } from '@/types/seo.types'
+import { toast } from 'sonner'
+import { Input } from '../ui/input'
 
 export const CompetitorAnalysis: React.FC = () => {
-  const [selectedCompetitor, setSelectedCompetitor] = useState<string>('');
-  const [analysisType, setAnalysisType] = useState<'keywords' | 'backlinks' | 'rankings'>('keywords');
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [showAddForm, setShowAddForm] = useState(false);
-  const [newCompetitorUrl, setNewCompetitorUrl] = useState('');
+  const [selectedCompetitor, setSelectedCompetitor] = useState<string>('')
+  const [analysisType, setAnalysisType] = useState<'keywords' | 'backlinks' | 'rankings'>('keywords')
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [showAddForm, setShowAddForm] = useState(false)
+  const [newCompetitorUrl, setNewCompetitorUrl] = useState('')
 
   const {
     competitors,
@@ -48,67 +49,67 @@ export const CompetitorAnalysis: React.FC = () => {
     analyzeBacklinks,
     getRankingComparison,
     exportAnalysis
-  } = useSEOCompetitors();
+  } = useSEOCompetitors()
 
   const handleAddCompetitor = async () => {
     if (!newCompetitorUrl) {
-      toast.error('Please enter a competitor URL');
-      return;
+      toast.error('Please enter a competitor URL')
+      return
     }
 
     try {
-      await addCompetitor(newCompetitorUrl);
-      toast.success('Competitor added successfully');
-      setNewCompetitorUrl('');
-      setShowAddForm(false);
+      await addCompetitor(newCompetitorUrl)
+      toast.success('Competitor added successfully')
+      setNewCompetitorUrl('')
+      setShowAddForm(false)
     } catch (error) {
-      toast.error('Failed to add competitor');
+      toast.error('Failed to add competitor')
     }
-  };
+  }
 
   const handleAnalyzeCompetitor = async (competitorId: string) => {
-    setIsAnalyzing(true);
+    setIsAnalyzing(true)
     try {
-      await analyzeCompetitor(competitorId);
-      toast.success('Competitor analysis completed');
+      await analyzeCompetitor(competitorId)
+      toast.success('Competitor analysis completed')
     } catch (error) {
-      toast.error('Failed to analyze competitor');
+      toast.error('Failed to analyze competitor')
     } finally {
-      setIsAnalyzing(false);
+      setIsAnalyzing(false)
     }
-  };
+  }
 
   const handleExportAnalysis = async () => {
     try {
-      await exportAnalysis();
-      toast.success('Analysis exported successfully');
+      await exportAnalysis()
+      toast.success('Analysis exported successfully')
     } catch (error) {
-      toast.error('Failed to export analysis');
+      toast.error('Failed to export analysis')
     }
-  };
+  }
 
   const getTrendIcon = (trend: 'up' | 'down' | 'stable') => {
     switch (trend) {
       case 'up':
-        return <TrendingUp className="w-4 h-4 text-green-500" />;
+        return <TrendingUp className="w-4 h-4 text-green-500" />
       case 'down':
-        return <TrendingDown className="w-4 h-4 text-red-500" />;
+        return <TrendingDown className="w-4 h-4 text-red-500" />
       default:
-        return <div className="w-4 h-4 text-gray-500">—</div>;
+        return <div className="w-4 h-4 text-gray-500">—</div>
     }
-  };
+  }
 
   const getScoreColor = (score: number) => {
-    if (score >= 80) return 'text-green-600';
-    if (score >= 60) return 'text-yellow-600';
-    return 'text-red-600';
-  };
+    if (score >= 80) return 'text-green-600'
+    if (score >= 60) return 'text-yellow-600'
+    return 'text-red-600'
+  }
 
   const getScoreBadge = (score: number) => {
-    if (score >= 80) return { color: 'bg-green-100 text-green-800', text: 'Strong' };
-    if (score >= 60) return { color: 'bg-yellow-100 text-yellow-800', text: 'Moderate' };
-    return { color: 'bg-red-100 text-red-800', text: 'Weak' };
-  };
+    if (score >= 80) return { color: 'bg-green-100 text-green-800', text: 'Strong' }
+    if (score >= 60) return { color: 'bg-yellow-100 text-yellow-800', text: 'Moderate' }
+    return { color: 'bg-red-100 text-red-800', text: 'Weak' }
+  }
 
   // Mock data for demonstration
   const mockCompetitors = [
@@ -145,7 +146,7 @@ export const CompetitorAnalysis: React.FC = () => {
       lastAnalyzed: new Date().toISOString(),
       status: 'active'
     }
-  ];
+  ]
 
   const mockKeywords = [
     {
@@ -178,7 +179,7 @@ export const CompetitorAnalysis: React.FC = () => {
       trend: 'down' as const,
       competitorId: '2'
     }
-  ];
+  ]
 
   const mockBacklinks = [
     {
@@ -211,7 +212,7 @@ export const CompetitorAnalysis: React.FC = () => {
       discovered: new Date().toISOString(),
       status: 'active'
     }
-  ];
+  ]
 
   return (
     <div className="space-y-6">
@@ -221,19 +222,19 @@ export const CompetitorAnalysis: React.FC = () => {
           <p className="text-gray-600">Analyze your competitors' SEO strategies</p>
         </div>
         <div className="flex space-x-2">
-          <Button variant="outline" onClick={handleExportAnalysis}>
+          <Button variant="outline" onClick={ handleExportAnalysis }>
             <Download className="w-4 h-4 mr-1" />
             Export Analysis
           </Button>
-          <Button onClick={() => setShowAddForm(true)}>
+          <Button onClick={ () => setShowAddForm(true) }>
             <Plus className="w-4 h-4 mr-1" />
             Add Competitor
           </Button>
         </div>
       </div>
 
-      {/* Add Competitor Form */}
-      {showAddForm && (
+      {/* Add Competitor Form */ }
+      { showAddForm && (
         <Card>
           <CardHeader>
             <CardTitle>Add New Competitor</CardTitle>
@@ -245,86 +246,86 @@ export const CompetitorAnalysis: React.FC = () => {
             <div className="flex space-x-2">
               <Input
                 placeholder="https://competitor-website.com"
-                value={newCompetitorUrl}
-                onChange={(e) => setNewCompetitorUrl(e.target.value)}
+                value={ newCompetitorUrl }
+                onChange={ (e) => setNewCompetitorUrl(e.target.value) }
                 className="flex-1"
               />
-              <Button onClick={handleAddCompetitor}>
+              <Button onClick={ handleAddCompetitor }>
                 Add Competitor
               </Button>
-              <Button 
-                variant="outline" 
-                onClick={() => {
-                  setShowAddForm(false);
-                  setNewCompetitorUrl('');
-                }}
+              <Button
+                variant="outline"
+                onClick={ () => {
+                  setShowAddForm(false)
+                  setNewCompetitorUrl('')
+                } }
               >
                 Cancel
               </Button>
             </div>
           </CardContent>
         </Card>
-      )}
+      ) }
 
-      {/* Competitor Overview */}
+      {/* Competitor Overview */ }
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {mockCompetitors.map(competitor => (
-          <Card key={competitor.id} className="hover:shadow-lg transition-shadow">
+        { mockCompetitors.map(competitor => (
+          <Card key={ competitor.id } className="hover:shadow-lg transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                {competitor.domain}
+                { competitor.domain }
               </CardTitle>
-              <Badge className={getScoreBadge(competitor.domainAuthority).color}>
-                DA: {competitor.domainAuthority}
+              <Badge className={ getScoreBadge(competitor.domainAuthority).color }>
+                DA: { competitor.domainAuthority }
               </Badge>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-600">Organic Traffic</span>
-                  <span className="font-semibold">{competitor.organicTraffic.toLocaleString()}</span>
+                  <span className="font-semibold">{ competitor.organicTraffic.toLocaleString() }</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-600">Keywords</span>
-                  <span className="font-semibold">{competitor.keywords.toLocaleString()}</span>
+                  <span className="font-semibold">{ competitor.keywords.toLocaleString() }</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-600">Backlinks</span>
-                  <span className="font-semibold">{competitor.backlinks.toLocaleString()}</span>
+                  <span className="font-semibold">{ competitor.backlinks.toLocaleString() }</span>
                 </div>
                 <div className="flex justify-between items-center text-xs text-gray-500">
                   <span>Last analyzed:</span>
-                  <span>{new Date(competitor.lastAnalyzed).toLocaleDateString()}</span>
+                  <span>{ new Date(competitor.lastAnalyzed).toLocaleDateString() }</span>
                 </div>
               </div>
               <div className="flex space-x-2 mt-4">
-                <Button 
-                  size="sm" 
+                <Button
+                  size="sm"
                   variant="outline"
-                  onClick={() => handleAnalyzeCompetitor(competitor.id)}
-                  disabled={isAnalyzing}
+                  onClick={ () => handleAnalyzeCompetitor(competitor.id) }
+                  disabled={ isAnalyzing }
                 >
-                  {isAnalyzing ? (
+                  { isAnalyzing ? (
                     <RefreshCw className="w-3 h-3 animate-spin" />
                   ) : (
                     <BarChart3 className="w-3 h-3" />
-                  )}
+                  ) }
                   Analyze
                 </Button>
-                <Button 
-                  size="sm" 
+                <Button
+                  size="sm"
                   variant="ghost"
-                  onClick={() => removeCompetitor(competitor.id)}
+                  onClick={ () => removeCompetitor(competitor.id) }
                 >
                   <Trash2 className="w-3 h-3" />
                 </Button>
               </div>
             </CardContent>
           </Card>
-        ))}
+        )) }
       </div>
 
-      {/* Analysis Type Selection */}
+      {/* Analysis Type Selection */ }
       <Card>
         <CardHeader>
           <CardTitle>Detailed Analysis</CardTitle>
@@ -335,37 +336,37 @@ export const CompetitorAnalysis: React.FC = () => {
         <CardContent>
           <div className="flex space-x-2 mb-6">
             <Button
-              variant={analysisType === 'keywords' ? 'default' : 'outline'}
-              onClick={() => setAnalysisType('keywords')}
+              variant={ analysisType === 'keywords' ? 'default' : 'outline' }
+              onClick={ () => setAnalysisType('keywords') }
             >
               <Search className="w-4 h-4 mr-2" />
               Keyword Comparison
             </Button>
             <Button
-              variant={analysisType === 'backlinks' ? 'default' : 'outline'}
-              onClick={() => setAnalysisType('backlinks')}
+              variant={ analysisType === 'backlinks' ? 'default' : 'outline' }
+              onClick={ () => setAnalysisType('backlinks') }
             >
               <Link className="w-4 h-4 mr-2" />
               Backlink Analysis
             </Button>
             <Button
-              variant={analysisType === 'rankings' ? 'default' : 'outline'}
-              onClick={() => setAnalysisType('rankings')}
+              variant={ analysisType === 'rankings' ? 'default' : 'outline' }
+              onClick={ () => setAnalysisType('rankings') }
             >
               <Target className="w-4 h-4 mr-2" />
               Ranking Comparison
             </Button>
           </div>
 
-          {/* Keyword Comparison */}
-          {analysisType === 'keywords' && (
+          {/* Keyword Comparison */ }
+          { analysisType === 'keywords' && (
             <div>
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold">Keyword Comparison</h3>
                 <Input
                   placeholder="Search keywords..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  value={ searchTerm }
+                  onChange={ (e) => setSearchTerm(e.target.value) }
                   className="max-w-xs"
                 />
               </div>
@@ -384,67 +385,67 @@ export const CompetitorAnalysis: React.FC = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {mockKeywords
+                    { mockKeywords
                       .filter(kw => kw.keyword.toLowerCase().includes(searchTerm.toLowerCase()))
                       .map(keyword => {
-                        const rankDiff = keyword.yourRank - keyword.competitorRank;
-                        const opportunity = rankDiff > 0 ? 'Improve' : 'Maintain';
-                        
+                        const rankDiff = keyword.yourRank - keyword.competitorRank
+                        const opportunity = rankDiff > 0 ? 'Improve' : 'Maintain'
+
                         return (
-                          <TableRow key={keyword.id}>
-                            <TableCell className="font-medium">{keyword.keyword}</TableCell>
-                            <TableCell>{keyword.searchVolume.toLocaleString()}</TableCell>
+                          <TableRow key={ keyword.id }>
+                            <TableCell className="font-medium">{ keyword.keyword }</TableCell>
+                            <TableCell>{ keyword.searchVolume.toLocaleString() }</TableCell>
                             <TableCell>
-                              <Badge variant="outline">{keyword.difficulty}</Badge>
+                              <Badge variant="outline">{ keyword.difficulty }</Badge>
                             </TableCell>
                             <TableCell>
-                              <Badge 
-                                variant={keyword.yourRank <= 10 ? 'default' : 'secondary'}
+                              <Badge
+                                variant={ keyword.yourRank <= 10 ? 'default' : 'secondary' }
                               >
-                                #{keyword.yourRank}
+                                #{ keyword.yourRank }
                               </Badge>
                             </TableCell>
                             <TableCell>
-                              <Badge 
-                                variant={keyword.competitorRank <= 10 ? 'default' : 'secondary'}
+                              <Badge
+                                variant={ keyword.competitorRank <= 10 ? 'default' : 'secondary' }
                               >
-                                #{keyword.competitorRank}
+                                #{ keyword.competitorRank }
                               </Badge>
                             </TableCell>
                             <TableCell>
-                              <span className={rankDiff > 0 ? 'text-red-600' : 'text-green-600'}>
-                                {rankDiff > 0 ? `+${rankDiff}` : rankDiff}
+                              <span className={ rankDiff > 0 ? 'text-red-600' : 'text-green-600' }>
+                                { rankDiff > 0 ? `+${rankDiff}` : rankDiff }
                               </span>
                             </TableCell>
                             <TableCell>
-                              {getTrendIcon(keyword.trend)}
+                              { getTrendIcon(keyword.trend) }
                             </TableCell>
                             <TableCell>
-                              <Badge 
-                                variant={opportunity === 'Improve' ? 'destructive' : 'outline'}
+                              <Badge
+                                variant={ opportunity === 'Improve' ? 'destructive' : 'outline' }
                               >
-                                {opportunity}
+                                { opportunity }
                               </Badge>
                             </TableCell>
                           </TableRow>
-                        );
-                      })}
+                        )
+                      }) }
                   </TableBody>
                 </Table>
               </div>
             </div>
-          )}
+          ) }
 
-          {/* Backlink Analysis */}
-          {analysisType === 'backlinks' && (
+          {/* Backlink Analysis */ }
+          { analysisType === 'backlinks' && (
             <div>
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold">Competitor Backlinks</h3>
                 <div className="flex space-x-2">
                   <Input
                     placeholder="Filter backlinks..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    value={ searchTerm }
+                    onChange={ (e) => setSearchTerm(e.target.value) }
                     className="max-w-xs"
                   />
                 </div>
@@ -463,37 +464,37 @@ export const CompetitorAnalysis: React.FC = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {mockBacklinks
-                      .filter(b => b.url.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                                   b.anchorText.toLowerCase().includes(searchTerm.toLowerCase()))
+                    { mockBacklinks
+                      .filter(b => b.url.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        b.anchorText.toLowerCase().includes(searchTerm.toLowerCase()))
                       .map(backlink => (
-                        <TableRow key={backlink.id}>
+                        <TableRow key={ backlink.id }>
                           <TableCell className="max-w-xs truncate">
-                            <a 
-                              href={backlink.url} 
-                              target="_blank" 
+                            <a
+                              href={ backlink.url }
+                              target="_blank"
                               rel="noopener noreferrer"
                               className="text-blue-600 hover:underline"
                             >
-                              {backlink.url}
+                              { backlink.url }
                             </a>
                           </TableCell>
-                          <TableCell>{backlink.anchorText}</TableCell>
+                          <TableCell>{ backlink.anchorText }</TableCell>
                           <TableCell>
-                            <Badge className={getScoreBadge(backlink.domainAuthority).color}>
-                              {backlink.domainAuthority}
+                            <Badge className={ getScoreBadge(backlink.domainAuthority).color }>
+                              { backlink.domainAuthority }
                             </Badge>
                           </TableCell>
                           <TableCell>
-                            <Badge variant={backlink.follow ? 'default' : 'secondary'}>
-                              {backlink.follow ? 'Follow' : 'No-Follow'}
+                            <Badge variant={ backlink.follow ? 'default' : 'secondary' }>
+                              { backlink.follow ? 'Follow' : 'No-Follow' }
                             </Badge>
                           </TableCell>
                           <TableCell>
-                            {mockCompetitors.find(c => c.id === backlink.competitorId)?.domain}
+                            { mockCompetitors.find(c => c.id === backlink.competitorId)?.domain }
                           </TableCell>
                           <TableCell>
-                            {new Date(backlink.discovered).toLocaleDateString()}
+                            { new Date(backlink.discovered).toLocaleDateString() }
                           </TableCell>
                           <TableCell>
                             <Button size="sm" variant="outline">
@@ -501,15 +502,15 @@ export const CompetitorAnalysis: React.FC = () => {
                             </Button>
                           </TableCell>
                         </TableRow>
-                      ))}
+                      )) }
                   </TableBody>
                 </Table>
               </div>
             </div>
-          )}
+          ) }
 
-          {/* Ranking Comparison */}
-          {analysisType === 'rankings' && (
+          {/* Ranking Comparison */ }
+          { analysisType === 'rankings' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
@@ -520,18 +521,18 @@ export const CompetitorAnalysis: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {mockKeywords.slice(0, 5).map((keyword, index) => (
-                      <div key={keyword.id} className="flex items-center justify-between">
+                    { mockKeywords.slice(0, 5).map((keyword, index) => (
+                      <div key={ keyword.id } className="flex items-center justify-between">
                         <div className="flex items-center space-x-2">
-                          <Badge variant="outline">#{index + 1}</Badge>
-                          <span className="font-medium">{keyword.keyword}</span>
+                          <Badge variant="outline">#{ index + 1 }</Badge>
+                          <span className="font-medium">{ keyword.keyword }</span>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <Badge variant="default">#{keyword.competitorRank}</Badge>
-                          {getTrendIcon(keyword.trend)}
+                          <Badge variant="default">#{ keyword.competitorRank }</Badge>
+                          { getTrendIcon(keyword.trend) }
                         </div>
                       </div>
-                    ))}
+                    )) }
                   </div>
                 </CardContent>
               </Card>
@@ -565,11 +566,11 @@ export const CompetitorAnalysis: React.FC = () => {
                 </CardContent>
               </Card>
             </div>
-          )}
+          ) }
         </CardContent>
       </Card>
 
-      {/* Strategic Insights */}
+      {/* Strategic Insights */ }
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -638,5 +639,5 @@ export const CompetitorAnalysis: React.FC = () => {
         </CardContent>
       </Card>
     </div>
-  );
-};
+  )
+}
