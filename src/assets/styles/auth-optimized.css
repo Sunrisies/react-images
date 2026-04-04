@@ -32,7 +32,8 @@
   position: relative;
   z-index: 10;
   width: 100%;
-  max-width: 28rem; /* 448px */
+  max-width: 28rem;
+  /* 448px */
   margin: 0 auto;
 }
 
@@ -41,59 +42,62 @@
   .auth-container {
     padding: 0.75rem;
   }
-  
+
   .main-content {
     max-width: 100%;
   }
-  
+
   /* Reduce particle animation on mobile */
   .particle-canvas {
     opacity: 0.4;
   }
-  
+
   /* Touch optimizations */
   input[type="text"],
   input[type="email"],
   input[type="password"] {
-    font-size: 16px !important; /* Prevent zoom on iOS */
+    font-size: 16px !important;
+    /* Prevent zoom on iOS */
     min-height: 44px;
   }
-  
+
   button {
     min-height: 44px;
     padding: 0.75rem 1rem;
   }
-  
+
   /* Card adjustments */
   .auth-card {
     margin: 0.5rem;
   }
-  
+
   /* Social login buttons */
   .social-login-grid {
     grid-template-columns: 1fr;
     gap: 0.5rem;
   }
-  
+
   /* Form spacing */
   .form-group {
     margin-bottom: 1rem;
   }
-  
+
   /* Typography adjustments */
   .auth-title {
-    font-size: 1.5rem; /* 24px */
+    font-size: 1.5rem;
+    /* 24px */
   }
-  
+
   .auth-subtitle {
-    font-size: 0.875rem; /* 14px */
+    font-size: 0.875rem;
+    /* 14px */
   }
-  
+
   /* Button text */
   .btn-text {
     font-size: 0.875rem;
   }
-  
+
   /* Footer positioning */
   .auth-footer {
     position: relative;
@@ -110,11 +114,12 @@
   .auth-container {
     padding: 1rem;
   }
-  
+
   .main-content {
-    max-width: 26rem; /* 416px */
+    max-width: 26rem;
+    /* 416px */
   }
-  
+
   /* Particle visibility */
   .particle-canvas {
     opacity: 0.5;
@@ -126,11 +131,12 @@
   .auth-container {
     padding: 2rem;
   }
-  
+
   .main-content {
-    max-width: 30rem; /* 480px */
+    max-width: 30rem;
+    /* 480px */
   }
-  
+
   /* Enhanced particle effects */
   .particle-canvas {
     opacity: 0.6;
@@ -142,16 +148,17 @@
   .auth-container {
     padding: 2rem;
   }
-  
+
   .main-content {
-    max-width: 32rem; /* 512px */
+    max-width: 32rem;
+    /* 512px */
   }
-  
+
   /* Full particle effects on desktop */
   .particle-canvas {
     opacity: 0.7;
   }
-  
+
   /* Enhanced animations */
   .auth-card {
     backdrop-filter: blur(16px);
@@ -163,9 +170,10 @@
   .auth-container {
     padding: 3rem;
   }
-  
+
   .main-content {
-    max-width: 36rem; /* 576px */
+    max-width: 36rem;
+    /* 576px */
   }
 }
 
@@ -174,13 +182,13 @@
   .particle-canvas {
     display: none !important;
   }
-  
+
   * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  
+
   .motion-element {
     animation: none !important;
     transition: none !important;
@@ -194,19 +202,19 @@
     border: 2px solid #000 !important;
     color: #000 !important;
   }
-  
+
   .auth-input {
     border: 2px solid #000 !important;
     background: #fff !important;
     color: #000 !important;
   }
-  
+
   .auth-button {
     background: #000 !important;
     color: #fff !important;
     border: 2px solid #fff !important;
   }
-  
+
   .auth-link {
     color: #000 !important;
     text-decoration: underline !important;
@@ -219,13 +227,13 @@
     background: rgba(0, 0, 0, 0.3);
     border-color: rgba(255, 255, 255, 0.2);
   }
-  
+
   .auth-input {
     background: rgba(0, 0, 0, 0.2);
     border-color: rgba(255, 255, 255, 0.2);
     color: #fff;
   }
-  
+
   .auth-input::placeholder {
     color: rgba(255, 255, 255, 0.6);
   }
@@ -233,23 +241,24 @@
 
 /* Touch Device Optimizations */
 @media (hover: none) and (pointer: coarse) {
+
   /* Larger touch targets */
   .touch-target {
     min-height: 44px;
     min-width: 44px;
   }
-  
+
   /* Enhanced button feedback */
   button:active {
     transform: scale(0.98);
   }
-  
+
   /* Input field optimizations */
   .touch-input {
     min-height: 44px;
     padding: 12px 16px;
   }
-  
+
   /* Prevent accidental selections */
   .no-select {
     user-select: none;
@@ -264,12 +273,12 @@
   .particle-canvas {
     display: none !important;
   }
-  
+
   .auth-card {
     backdrop-filter: none !important;
     background: rgba(0, 0, 0, 0.8) !important;
   }
-  
+
   .gradient-overlay {
     opacity: 0.3 !important;
   }
@@ -277,25 +286,26 @@
 
 /* Print Styles */
 @media print {
+
   .particle-canvas,
   .gradient-overlay,
   .auth-footer {
     display: none !important;
   }
-  
+
   .auth-card {
     background: white !important;
     border: 1px solid #000 !important;
     box-shadow: none !important;
     backdrop-filter: none !important;
   }
-  
+
   .auth-input {
     background: white !important;
     border: 1px solid #000 !important;
     color: black !important;
   }
-  
+
   .auth-button {
     background: black !important;
     color: white !important;
@@ -335,6 +345,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -346,13 +357,24 @@
 }
 
 @keyframes shake {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateX(0);
   }
-  10%, 30%, 50%, 70%, 90% {
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
     transform: translateX(-2px);
   }
-  20%, 40%, 60%, 80% {
+
+  20%,
+  40%,
+  60%,
+  80% {
     transform: translateX(2px);
   }
 }
@@ -366,9 +388,11 @@
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.05);
   }
+
   100% {
     transform: scale(1);
   }

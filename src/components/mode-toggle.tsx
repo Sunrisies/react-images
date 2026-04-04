@@ -14,6 +14,7 @@ export function ModeToggle() {
     const isDarkToLight = theme === 'dark'
 
     if (document.startViewTransition) {
+      console.log(document.startViewTransition, "=======")
       const transition = document.startViewTransition(() => {
         setTheme(isDarkToLight ? 'light' : 'dark')
       })

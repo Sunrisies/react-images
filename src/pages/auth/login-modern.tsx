@@ -43,14 +43,14 @@ export default function ModernAuthPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const particlesRef = useRef<Particle[]>([])
   const animationRef = useRef<number>()
-  
+
   const [activeTab, setActiveTab] = useState("login")
   const [loginType, setLoginType] = useState<"account" | "email">("account")
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<FormErrors>({})
-  
+
   const [formData, setFormData] = useState<FormData>({
     account: "",
     email: "",
@@ -72,7 +72,7 @@ export default function ModernAuthPage() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const isLowEndDevice = navigator.hardwareConcurrency <= 2
     const isMobile = window.innerWidth <= 768
-    
+
     if (prefersReducedMotion) {
       canvas.style.display = 'none'
       return
@@ -114,7 +114,7 @@ export default function ModernAuthPage() {
       lastTime = currentTime
 
       ctx.clearRect(0, 0, canvas.width, canvas.height)
-      
+
       particlesRef.current.forEach((particle) => {
         particle.x += particle.vx
         particle.y += particle.vy
@@ -133,7 +133,7 @@ export default function ModernAuthPage() {
 
     resizeCanvas()
     initParticles()
-    animate()
+    animate(0)
 
     window.addEventListener("resize", resizeCanvas)
 
@@ -191,14 +191,14 @@ export default function ModernAuthPage() {
 
   const handleInputChange = (field: keyof FormData, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }))
-    if (errors[field]) {
+    if (field in errors) {
       setErrors(prev => ({ ...prev, [field]: undefined }))
     }
   }
 
   const handleSubmit = async (e: React.FormEvent, action: "login" | "register") => {
     e.preventDefault()
-    
+
     if (!validateForm(action)) {
       toast.error("请检查输入内容")
       return
@@ -234,30 +234,41 @@ export default function ModernAuthPage() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      {/* Particle Canvas */}
+    <div className="relative h-full overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      {/* Animated Background */ }
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Gradient Orbs */ }
+        <div className="absolute top-1/4 -left-32 w-96 h-96 bg-red-500/30 rounded-full blur-3xl animate-pulse" style={ { animationDuration: '4s' } } />
+        <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-amber-500/30 rounded-full blur-3xl animate-pulse" style={ { animationDuration: '5s', animationDelay: '1s' } } />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/20 rounded-full blur-3xl" />
+
+        {/* Grid Pattern */ }
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:50px_50px]" />
+      </div>
+
+      {/* Particle Canvas */ }
       <canvas
-        ref={canvasRef}
+        ref={ canvasRef }
         className="absolute inset-0 w-full h-full"
-        style={{ background: "transparent" }}
+        style={ { background: "transparent" } }
       />
-      
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-red-500/20 via-purple-500/20 to-amber-500/20" />
-      
-      {/* Main Content - Centered Auth Card */}
+
+      {/* Gradient Overlay */ }
+      <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 via-purple-500/10 to-amber-500/10" />
+
+      {/* Main Content - Centered Auth Card */ }
       <div className="auth-container">
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          initial={ { opacity: 0, scale: 0.95 } }
+          animate={ { opacity: 1, scale: 1 } }
+          transition={ { duration: 0.5, ease: "easeOut" } }
           className="main-content"
         >
-          {/* Brand Header - Mobile Only */}
+          {/* Brand Header - Mobile Only */ }
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            initial={ { opacity: 0, y: -20 } }
+            animate={ { opacity: 1, y: 0 } }
+            transition={ { duration: 0.6, delay: 0.2 } }
             className="text-center mb-8 lg:hidden"
           >
             <div className="flex items-center justify-center space-x-3 mb-4">
@@ -273,18 +284,18 @@ export default function ModernAuthPage() {
             </div>
           </motion.div>
 
-          {/* Auth Card */}
+          {/* Auth Card */ }
           <Card className="backdrop-blur-lg bg-white/10 border-white/20 shadow-2xl">
             <CardHeader className="space-y-1 text-center pb-6">
               <CardTitle className="text-2xl font-bold text-white">
-                {activeTab === "login" ? "欢迎回来" : "创建账户"}
+                { activeTab === "login" ? "欢迎回来" : "创建账户" }
               </CardTitle>
               <CardDescription className="text-gray-300">
-                {activeTab === "login" ? "登录您的账户继续创作" : "注册新账户开始博客之旅"}
+                { activeTab === "login" ? "登录您的账户继续创作" : "注册新账户开始博客之旅" }
               </CardDescription>
             </CardHeader>
-            
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+
+            <Tabs value={ activeTab } onValueChange={ setActiveTab } className="w-full">
               <TabsList className="grid w-full grid-cols-2 bg-white/10 mb-6">
                 <TabsTrigger value="login" className="data-[state=active]:bg-white/20 text-white">
                   登录
@@ -293,30 +304,30 @@ export default function ModernAuthPage() {
                   注册
                 </TabsTrigger>
               </TabsList>
-              
+
               <CardContent className="space-y-4">
                 <TabsContent value="login" className="space-y-4 mt-0">
-                  <form onSubmit={(e) => handleSubmit(e, "login")} className="space-y-4">
+                  <form onSubmit={ (e) => handleSubmit(e, "login") } className="space-y-4">
                     <div className="flex justify-end mb-2">
                       <Button
                         type="button"
                         variant="link"
                         size="sm"
-                        onClick={() => setLoginType(loginType === "account" ? "email" : "account")}
+                        onClick={ () => setLoginType(loginType === "account" ? "email" : "account") }
                         className="text-gray-300 hover:text-white p-0 h-auto text-sm"
                       >
-                        切换到{loginType === "account" ? "邮箱" : "用户名"}登录
+                        切换到{ loginType === "account" ? "邮箱" : "用户名" }登录
                       </Button>
                     </div>
-                    
+
                     <AnimatePresence mode="wait">
-                      {loginType === "account" ? (
+                      { loginType === "account" ? (
                         <motion.div
                           key="account"
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: 20 }}
-                          transition={{ duration: 0.2 }}
+                          initial={ { opacity: 0, x: -20 } }
+                          animate={ { opacity: 1, x: 0 } }
+                          exit={ { opacity: 0, x: 20 } }
+                          transition={ { duration: 0.2 } }
                           className="space-y-2"
                         >
                           <Label htmlFor="account" className="text-gray-300 text-sm">用户名</Label>
@@ -325,20 +336,20 @@ export default function ModernAuthPage() {
                             <Input
                               id="account"
                               placeholder="请输入用户名"
-                              value={formData.account}
-                              onChange={(e) => handleInputChange("account", e.target.value)}
+                              value={ formData.account }
+                              onChange={ (e) => handleInputChange("account", e.target.value) }
                               className="pl-10 bg-white/10 border-white/20 text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:border-transparent"
                             />
                           </div>
-                          {errors.account && <p className="text-red-400 text-xs mt-1">{errors.account}</p>}
+                          { errors.account && <p className="text-red-400 text-xs mt-1">{ errors.account }</p> }
                         </motion.div>
                       ) : (
                         <motion.div
                           key="email"
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: 20 }}
-                          transition={{ duration: 0.2 }}
+                          initial={ { opacity: 0, x: -20 } }
+                          animate={ { opacity: 1, x: 0 } }
+                          exit={ { opacity: 0, x: 20 } }
+                          transition={ { duration: 0.2 } }
                           className="space-y-2"
                         >
                           <Label htmlFor="email" className="text-gray-300 text-sm">邮箱</Label>
@@ -348,26 +359,26 @@ export default function ModernAuthPage() {
                               id="email"
                               type="email"
                               placeholder="请输入邮箱"
-                              value={formData.email}
-                              onChange={(e) => handleInputChange("email", e.target.value)}
+                              value={ formData.email }
+                              onChange={ (e) => handleInputChange("email", e.target.value) }
                               className="pl-10 bg-white/10 border-white/20 text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:border-transparent"
                             />
                           </div>
-                          {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
+                          { errors.email && <p className="text-red-400 text-xs mt-1">{ errors.email }</p> }
                         </motion.div>
-                      )}
+                      ) }
                     </AnimatePresence>
-                    
+
                     <div className="space-y-2">
                       <Label htmlFor="password" className="text-gray-300 text-sm">密码</Label>
                       <div className="relative">
                         <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                         <Input
                           id="password"
-                          type={showPassword ? "text" : "password"}
+                          type={ showPassword ? "text" : "password" }
                           placeholder="请输入密码"
-                          value={formData.password}
-                          onChange={(e) => handleInputChange("password", e.target.value)}
+                          value={ formData.password }
+                          onChange={ (e) => handleInputChange("password", e.target.value) }
                           className="pl-10 pr-10 bg-white/10 border-white/20 text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:border-transparent"
                         />
                         <Button
@@ -375,43 +386,43 @@ export default function ModernAuthPage() {
                           variant="ghost"
                           size="sm"
                           className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 text-gray-400 hover:text-white"
-                          onClick={() => setShowPassword(!showPassword)}
+                          onClick={ () => setShowPassword(!showPassword) }
                         >
-                          {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                          { showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" /> }
                         </Button>
                       </div>
-                      {errors.password && <p className="text-red-400 text-xs mt-1">{errors.password}</p>}
+                      { errors.password && <p className="text-red-400 text-xs mt-1">{ errors.password }</p> }
                     </div>
-                    
+
                     <div className="flex items-center space-x-2">
                       <input
                         type="checkbox"
                         id="remember"
-                        checked={formData.rememberMe}
-                        onChange={(e) => handleInputChange("rememberMe", e.target.checked)}
+                        checked={ formData.rememberMe }
+                        onChange={ (e) => handleInputChange("rememberMe", e.target.checked) }
                         className="h-4 w-4 rounded border-white/20 bg-white/10 text-red-500 focus:ring-red-500 focus:ring-offset-0"
                       />
                       <Label htmlFor="remember" className="text-sm text-gray-300">记住我</Label>
                     </div>
-                    
+
                     <Button
                       type="submit"
                       className="w-full bg-gradient-to-r from-red-500 to-amber-500 hover:from-red-600 hover:to-amber-600 text-white font-semibold py-3"
-                      disabled={isLoading}
+                      disabled={ isLoading }
                     >
-                      {isLoading ? "登录中..." : "登录"}
+                      { isLoading ? "登录中..." : "登录" }
                     </Button>
-                    
+
                     <div className="text-center">
-                      <Link 
-                        to="/auth/forgot-password" 
+                      <Link
+                        to="/auth/forgot-password"
                         className="text-sm text-gray-400 hover:text-white transition-colors underline"
                       >
                         忘记密码?
                       </Link>
                     </div>
                   </form>
-                  
+
                   <div className="relative my-4">
                     <div className="absolute inset-0 flex items-center">
                       <span className="w-full border-t border-white/20" />
@@ -420,19 +431,19 @@ export default function ModernAuthPage() {
                       <span className="bg-transparent px-2 text-gray-400">或使用以下方式登录</span>
                     </div>
                   </div>
-                  
+
                   <div className="grid grid-cols-2 gap-3">
-                    <Button 
-                      type="button" 
-                      variant="outline" 
+                    <Button
+                      type="button"
+                      variant="outline"
                       className="bg-white/10 border-white/20 text-white hover:bg-white/20 py-3"
                     >
                       <Github className="w-4 h-4 mr-2" />
                       GitHub
                     </Button>
-                    <Button 
-                      type="button" 
-                      variant="outline" 
+                    <Button
+                      type="button"
+                      variant="outline"
                       className="bg-white/10 border-white/20 text-white hover:bg-white/20 py-3"
                     >
                       <Chrome className="w-4 h-4 mr-2" />
@@ -440,9 +451,9 @@ export default function ModernAuthPage() {
                     </Button>
                   </div>
                 </TabsContent>
-                
+
                 <TabsContent value="register" className="space-y-4 mt-0">
-                  <form onSubmit={(e) => handleSubmit(e, "register")} className="space-y-4">
+                  <form onSubmit={ (e) => handleSubmit(e, "register") } className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="register-email" className="text-gray-300 text-sm">邮箱</Label>
                       <div className="relative">
@@ -451,24 +462,24 @@ export default function ModernAuthPage() {
                           id="register-email"
                           type="email"
                           placeholder="请输入邮箱"
-                          value={formData.email}
-                          onChange={(e) => handleInputChange("email", e.target.value)}
+                          value={ formData.email }
+                          onChange={ (e) => handleInputChange("email", e.target.value) }
                           className="pl-10 bg-white/10 border-white/20 text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:border-transparent"
                         />
                       </div>
-                      {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
+                      { errors.email && <p className="text-red-400 text-xs mt-1">{ errors.email }</p> }
                     </div>
-                    
+
                     <div className="space-y-2">
                       <Label htmlFor="register-password" className="text-gray-300 text-sm">密码</Label>
                       <div className="relative">
                         <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                         <Input
                           id="register-password"
-                          type={showPassword ? "text" : "password"}
+                          type={ showPassword ? "text" : "password" }
                           placeholder="请输入密码"
-                          value={formData.password}
-                          onChange={(e) => handleInputChange("password", e.target.value)}
+                          value={ formData.password }
+                          onChange={ (e) => handleInputChange("password", e.target.value) }
                           className="pl-10 pr-10 bg-white/10 border-white/20 text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:border-transparent"
                         />
                         <Button
@@ -476,24 +487,24 @@ export default function ModernAuthPage() {
                           variant="ghost"
                           size="sm"
                           className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 text-gray-400 hover:text-white"
-                          onClick={() => setShowPassword(!showPassword)}
+                          onClick={ () => setShowPassword(!showPassword) }
                         >
-                          {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                          { showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" /> }
                         </Button>
                       </div>
-                      {errors.password && <p className="text-red-400 text-xs mt-1">{errors.password}</p>}
+                      { errors.password && <p className="text-red-400 text-xs mt-1">{ errors.password }</p> }
                     </div>
-                    
+
                     <div className="space-y-2">
                       <Label htmlFor="confirm-password" className="text-gray-300 text-sm">确认密码</Label>
                       <div className="relative">
                         <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                         <Input
                           id="confirm-password"
-                          type={showConfirmPassword ? "text" : "password"}
+                          type={ showConfirmPassword ? "text" : "password" }
                           placeholder="请再次输入密码"
-                          value={formData.confirmPassword}
-                          onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
+                          value={ formData.confirmPassword }
+                          onChange={ (e) => handleInputChange("confirmPassword", e.target.value) }
                           className="pl-10 pr-10 bg-white/10 border-white/20 text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:border-transparent"
                         />
                         <Button
@@ -501,20 +512,20 @@ export default function ModernAuthPage() {
                           variant="ghost"
                           size="sm"
                           className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 text-gray-400 hover:text-white"
-                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          onClick={ () => setShowConfirmPassword(!showConfirmPassword) }
                         >
-                          {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                          { showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" /> }
                         </Button>
                       </div>
-                      {errors.confirmPassword && <p className="text-red-400 text-xs mt-1">{errors.confirmPassword}</p>}
+                      { errors.confirmPassword && <p className="text-red-400 text-xs mt-1">{ errors.confirmPassword }</p> }
                     </div>
-                    
+
                     <div className="flex items-center space-x-2">
                       <input
                         type="checkbox"
                         id="terms"
-                        checked={formData.agreeToTerms}
-                        onChange={(e) => handleInputChange("agreeToTerms", e.target.checked)}
+                        checked={ formData.agreeToTerms }
+                        onChange={ (e) => handleInputChange("agreeToTerms", e.target.checked) }
                         className="h-4 w-4 rounded border-white/20 bg-white/10 text-red-500 focus:ring-red-500 focus:ring-offset-0"
                       />
                       <Label htmlFor="terms" className="text-sm text-gray-300">
@@ -524,14 +535,14 @@ export default function ModernAuthPage() {
                         <a href="#" className="text-amber-400 hover:text-amber-300 underline mx-1">隐私政策</a>
                       </Label>
                     </div>
-                    {errors.agreeToTerms && <p className="text-red-400 text-xs mt-1">{errors.agreeToTerms}</p>}
-                    
+                    { errors.agreeToTerms && <p className="text-red-400 text-xs mt-1">{ errors.agreeToTerms }</p> }
+
                     <Button
                       type="submit"
                       className="w-full bg-gradient-to-r from-red-500 to-amber-500 hover:from-red-600 hover:to-amber-600 text-white font-semibold py-3"
-                      disabled={isLoading}
+                      disabled={ isLoading }
                     >
-                      {isLoading ? "注册中..." : "注册"}
+                      { isLoading ? "注册中..." : "注册" }
                     </Button>
                   </form>
                 </TabsContent>
@@ -540,9 +551,9 @@ export default function ModernAuthPage() {
           </Card>
         </motion.div>
       </div>
-      
-      {/* Footer */}
-      <div className="auth-footer">
+
+      {/* Footer */ }
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20">
         <div className="text-center text-xs text-gray-400">
           <a
             href="https://beian.miit.gov.cn/"

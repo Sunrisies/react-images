@@ -65,7 +65,7 @@ export default function ModernForgotPasswordPage() {
 
   const handleResendCode = async () => {
     if (countdown > 0) return
-    
+
     setIsResending(true)
     try {
       await new Promise(resolve => setTimeout(resolve, 1000))
@@ -79,59 +79,59 @@ export default function ModernForgotPasswordPage() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      {/* Animated background with performance optimizations */}
+    <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      {/* Animated background with performance optimizations */ }
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 via-purple-500/10 to-amber-500/10" />
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-red-500/20 to-amber-500/20 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-full blur-3xl animate-pulse delay-1000" />
       </div>
 
-      {/* Main Content */}
+      {/* Main Content */ }
       <div className="relative z-10 min-h-screen flex items-center justify-center p-4 auth-container">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
+          initial={ { opacity: 0, scale: 0.9 } }
+          animate={ { opacity: 1, scale: 1 } }
+          transition={ { duration: 0.5 } }
           className="w-full max-w-md auth-form-section"
         >
           <Card className="backdrop-blur-lg bg-white/10 border-white/20 shadow-2xl">
             <CardHeader className="space-y-1 text-center">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
+                initial={ { opacity: 0, y: 20 } }
+                animate={ { opacity: 1, y: 0 } }
+                transition={ { duration: 0.5, delay: 0.1 } }
                 className="flex justify-center mb-4"
               >
                 <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-amber-500 rounded-2xl flex items-center justify-center shadow-2xl">
                   <Key className="w-8 h-8 text-white" />
                 </div>
               </motion.div>
-              
+
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
+                initial={ { opacity: 0, y: 20 } }
+                animate={ { opacity: 1, y: 0 } }
+                transition={ { duration: 0.5, delay: 0.2 } }
               >
                 <CardTitle className="text-2xl font-bold text-white">
-                  {step === "email" ? "找回密码" : "验证邮箱"}
+                  { step === "email" ? "找回密码" : "验证邮箱" }
                 </CardTitle>
                 <CardDescription className="text-gray-300">
-                  {step === "email" 
-                    ? "输入您的邮箱地址，我们将发送验证码" 
+                  { step === "email"
+                    ? "输入您的邮箱地址，我们将发送验证码"
                     : "请输入您收到的验证码"
                   }
                 </CardDescription>
               </motion.div>
             </CardHeader>
-            
-            <form onSubmit={handleSubmit}>
+
+            <form onSubmit={ handleSubmit }>
               <CardContent className="space-y-4">
-                {step === "email" ? (
+                { step === "email" ? (
                   <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
+                    initial={ { opacity: 0, x: 20 } }
+                    animate={ { opacity: 1, x: 0 } }
+                    transition={ { duration: 0.5, delay: 0.3 } }
                     className="space-y-2"
                   >
                     <Label htmlFor="email" className="text-gray-300">邮箱地址</Label>
@@ -141,8 +141,8 @@ export default function ModernForgotPasswordPage() {
                         id="email"
                         type="email"
                         placeholder="请输入您的邮箱"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={ email }
+                        onChange={ (e) => setEmail(e.target.value) }
                         className="pl-10 bg-white/10 border-white/20 text-white placeholder-gray-400"
                         required
                       />
@@ -151,9 +151,9 @@ export default function ModernForgotPasswordPage() {
                 ) : (
                   <>
                     <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.3 }}
+                      initial={ { opacity: 0, x: 20 } }
+                      animate={ { opacity: 1, x: 0 } }
+                      transition={ { duration: 0.5, delay: 0.3 } }
                       className="space-y-2"
                     >
                       <Label htmlFor="email" className="text-gray-300">邮箱地址</Label>
@@ -162,17 +162,17 @@ export default function ModernForgotPasswordPage() {
                         <Input
                           id="email"
                           type="email"
-                          value={email}
+                          value={ email }
                           disabled
                           className="pl-10 bg-white/10 border-white/20 text-gray-400"
                         />
                       </div>
                     </motion.div>
-                    
+
                     <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.4 }}
+                      initial={ { opacity: 0, x: 20 } }
+                      animate={ { opacity: 1, x: 0 } }
+                      transition={ { duration: 0.5, delay: 0.4 } }
                       className="space-y-2"
                     >
                       <Label htmlFor="captcha" className="text-gray-300">验证码</Label>
@@ -182,8 +182,8 @@ export default function ModernForgotPasswordPage() {
                           id="captcha"
                           type="text"
                           placeholder="请输入验证码"
-                          value={captcha}
-                          onChange={(e) => setCaptcha(e.target.value)}
+                          value={ captcha }
+                          onChange={ (e) => setCaptcha(e.target.value) }
                           className="pl-10 bg-white/10 border-white/20 text-white placeholder-gray-400"
                           required
                         />
@@ -192,36 +192,36 @@ export default function ModernForgotPasswordPage() {
                           variant="ghost"
                           size="sm"
                           className="absolute right-1 top-1 h-8 px-2 text-xs text-amber-400 hover:text-amber-300"
-                          onClick={handleResendCode}
-                          disabled={countdown > 0 || isResending}
+                          onClick={ handleResendCode }
+                          disabled={ countdown > 0 || isResending }
                         >
-                          {countdown > 0 ? `${countdown}s` : isResending ? (
+                          { countdown > 0 ? `${countdown}s` : isResending ? (
                             <RefreshCw className="w-3 h-3 animate-spin" />
                           ) : (
                             "重新发送"
-                          )}
+                          ) }
                         </Button>
                       </div>
                     </motion.div>
                   </>
-                )}
+                ) }
               </CardContent>
-              
+
               <CardFooter className="flex flex-col space-y-4">
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.5 }}
+                  initial={ { opacity: 0, y: 20 } }
+                  animate={ { opacity: 1, y: 0 } }
+                  transition={ { duration: 0.5, delay: 0.5 } }
                   className="w-full space-y-3"
                 >
                   <Button
                     type="submit"
                     className="w-full bg-gradient-to-r from-red-500 to-amber-500 hover:from-red-600 hover:to-amber-600 text-white font-semibold btn-touch-target"
-                    disabled={isLoading}
+                    disabled={ isLoading }
                   >
-                    {isLoading ? "处理中..." : (step === "email" ? "发送验证码" : "重置密码")}
+                    { isLoading ? "处理中..." : (step === "email" ? "发送验证码" : "重置密码") }
                   </Button>
-                  
+
                   <Link to="/auth/login" className="block">
                     <Button
                       type="button"
@@ -233,23 +233,23 @@ export default function ModernForgotPasswordPage() {
                     </Button>
                   </Link>
                 </motion.div>
-                
-                {message && (
+
+                { message && (
                   <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
+                    initial={ { opacity: 0 } }
+                    animate={ { opacity: 1 } }
                     className="text-sm text-center text-green-400"
                   >
-                    {message}
+                    { message }
                   </motion.p>
-                )}
+                ) }
               </CardFooter>
             </form>
           </Card>
         </motion.div>
       </div>
-      
-      {/* Footer */}
+
+      {/* Footer */ }
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 auth-footer">
         <div className="text-center text-sm text-gray-400">
           <a
