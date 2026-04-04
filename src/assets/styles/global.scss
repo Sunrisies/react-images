@@ -1,5 +1,5 @@
-@import url('./shadcn.scss');
-@import url('./tailwind.scss');
+@import url("./shadcn.scss");
+@import url("./tailwind.scss");
 
 :root {
   --purple-primary: #727cf5;
@@ -41,4 +41,8 @@ button {
   svg {
     box-sizing: content-box !important;
   }
+}
+input::-webkit-input-placeholder {
+  font-size: 16px; /* 或者你希望的其他大小 */
+  color: rgba(225, 219, 219, 0.8) !important;
 }

@@ -296,7 +296,7 @@ export default function ModernAuthPage() {
             </CardHeader>
 
             <Tabs value={ activeTab } onValueChange={ setActiveTab } className="w-full">
-              <TabsList className="grid w-full grid-cols-2 bg-white/10 mb-6">
+              <TabsList className="grid grid-cols-2 bg-white/10 mb-6 mx-3">
                 <TabsTrigger value="login" className="data-[state=active]:bg-white/20 text-white">
                   登录
                 </TabsTrigger>
