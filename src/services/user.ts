@@ -1,17 +1,19 @@
 import { User, UserUpdateParams } from "@/types/user.type";
-import { request } from '@/utils/fetch';
+import { request } from "@/utils/fetch";
 import {
   keepPreviousData,
   useMutation,
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { toast } from 'sonner';
-
-
+import { toast } from "sonner";
 
 // 获取用户列表
-export const useGetUsers = (page: number, limit: number, user_name?: string) => {
+export const useGetUsers = (
+  page: number,
+  limit: number,
+  user_name?: string,
+) => {
   return useQuery({
     queryKey: ["users", page, limit, user_name],
     queryFn: async () => {
@@ -20,9 +22,11 @@ export const useGetUsers = (page: number, limit: number, user_name?: string) => 
         limit: limit.toString(),
       });
       if (user_name) {
-        params.append('user_name', user_name);
+        params.append("user_name", user_name);
       }
-      const response = await request.get<User[]>(`/user?${params.toString()}`);
+      const response = await request.get<User[]>(
+        `/v1/users?${params.toString()}`,
+      );
       return response.data;
     },
     placeholderData: keepPreviousData,
@@ -35,7 +39,7 @@ export const useCreateUser = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (params: UserUpdateParams) => {
-      const { code } = await request.post('/auth/register', params);
+      const { code } = await request.post("/auth/register", params);
       if (code === 200) {
         toast.success("创建用户成功");
       } else {
@@ -54,7 +58,10 @@ export const useCreateUser = () => {
 export const useUpdateUser = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({ id, ...params }: { id: number } & UserUpdateParams) => {
+    mutationFn: async ({
+      id,
+      ...params
+    }: { id: number } & UserUpdateParams) => {
       const { code } = await request.put(`/user/${id}`, params);
       if (code === 200) {
         toast.success("更新成功");
@@ -82,5 +89,5 @@ export const useDeleteUser = () => {
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: ["users"] });
     },
-  })
-}
+  });
+};

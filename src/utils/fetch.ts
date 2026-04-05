@@ -22,6 +22,10 @@ type RequestConfig = {
   body?: any;
   redirect?: RequestRedirect;
 };
+// 检查当前是否在登录页面
+const isLoginPage = () => {
+  return window.location.pathname === "/auth/login";
+};
 // 错误处理函数类型
 type ErrorHandler = (error: any) => void;
 const errorHandler: ErrorHandler = (error) => {
@@ -35,7 +39,7 @@ const errorHandler: ErrorHandler = (error) => {
         const errorMessage = error.data
           .map(
             (error: { field: string; errors: string[] }) =>
-              `${error.field}: ${error.errors.join(", ")}`
+              `${error.field}: ${error.errors.join(", ")}`,
           )
           .join("; ");
         toast.error(errorMessage);
@@ -44,10 +48,14 @@ const errorHandler: ErrorHandler = (error) => {
       }
       break;
     case 401:
+      console.log("未登录");
       toast.error(error.message || "未登录");
-      requestAnimationFrame(() => {
-        window.location.href = "/auth/login";
-      });
+      // 只有当前不在登录页面时才跳转
+      if (!isLoginPage()) {
+        setTimeout(() => {
+          window.location.href = "/auth/login";
+        }, 50);
+      }
       break;
     case 403:
       toast.error(error.message || "没有权限");
@@ -69,7 +77,7 @@ const errorHandler: ErrorHandler = (error) => {
 // 基础请求方法
 const baseFetch = async <T, R = GetRequestType<T> | PostRequestType<T>>(
   url: string,
-  config: RequestConfig
+  config: RequestConfig,
 ): Promise<R> => {
   const token = sessionStorage.getItem("token");
   const defaultHeaders = {
@@ -90,17 +98,17 @@ const baseFetch = async <T, R = GetRequestType<T> | PostRequestType<T>>(
 function RequestInterceptor<T, U>(
   target: any,
   propertyKey: string,
-  descriptor: PropertyDescriptor
+  descriptor: PropertyDescriptor,
 ) {
   const originalMethod = descriptor.value as (
     url: string,
     data: T,
-    config: any
+    config: any,
   ) => Promise<GetRequestType<U>>;
 
   descriptor.value = async function (
     url: string,
-    data: T
+    data: T,
   ): Promise<GetRequestType<U>> {
     // 请求拦截器逻辑
     console.log("请求拦截器：", url, data);
@@ -108,7 +116,7 @@ function RequestInterceptor<T, U>(
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: token ? `Bearer ${token}` : "",
+        // Authorization: token ? `Bearer ${token}` : "",
       },
     };
     // 调用原始方法
@@ -123,7 +131,7 @@ function RequestInterceptor<T, U>(
 function ResponseInterceptor(
   target: any,
   propertyKey: string,
-  descriptor: PropertyDescriptor
+  descriptor: PropertyDescriptor,
 ) {
   const originalMethod = descriptor.value;
 
@@ -183,7 +191,7 @@ class Request {
   async post<T, U>(
     url: string,
     data: T,
-    config?: any
+    config?: any,
   ): Promise<PostRequestType<U>> {
     return baseFetch<U, PostRequestType<U>>(this.getFullUrl(url), {
       method: "POST",
