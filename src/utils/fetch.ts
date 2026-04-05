@@ -86,6 +86,7 @@ const baseFetch = async <T, R = GetRequestType<T> | PostRequestType<T>>(
   };
   const response = await fetch(url, {
     ...config,
+    credentials: "include",
     headers: {
       ...defaultHeaders,
       ...config.headers,
@@ -233,6 +234,7 @@ class Request {
     const response = await fetch(this.BaseUrl + url, {
       method: "POST",
       body,
+      credentials: "include",
       redirect: "follow",
     });
     if (response.ok) {

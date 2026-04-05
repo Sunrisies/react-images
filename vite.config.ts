@@ -6,7 +6,18 @@ import { visualizer } from "rollup-plugin-visualizer";
 import viteCompression from "vite-plugin-compression";
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [TanStackRouterVite(), react()],
+  plugins: [
+    TanStackRouterVite(),
+    react(),
+    viteCompression({
+      verbose: false,
+      disable: false,
+      threshold: 10240,
+      algorithm: "brotliCompress",
+      ext: ".br",
+      deleteOriginFile: false,
+    }),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -16,6 +27,7 @@ export default defineConfig({
     open: true,
     host: "0.0.0.0",
     port: 12002,
+    allowedHosts: true,
   },
   css: {
     preprocessorOptions: {
@@ -26,43 +38,30 @@ export default defineConfig({
   },
   build: {
     target: "es2020",
-    minify: "terser",
-    // rollup 配置
+    minify: "esbuild",
+    sourcemap: false,
+    cssCodeSplit: true,
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
-        chunkFileNames: "js/[name]-[hash].js", // 引入文件名的名称
-        entryFileNames: "js/[name]-[hash].js", // 包的入口文件名称
-        assetFileNames: "[ext]/[name]-[hash].[ext]", // 资源文件像 字体，图片等
+        chunkFileNames: "js/[name]-[hash].js",
+        entryFileNames: "js/[name]-[hash].js",
+        assetFileNames: "[ext]/[name]-[hash].[ext]",
         manualChunks(id) {
           if (id.includes("node_modules")) {
+            if (id.includes("react") || id.includes("react-dom")) {
+              return "react-vendor";
+            }
+            if (id.includes("tanstack")) {
+              return "router";
+            }
             return "vendor";
-          }
-          if (id.includes("src/components")) {
-            return "components"; // 将组件分离
           }
         },
       },
-      plugins: [
-        visualizer({
-          open: true, // 直接在浏览器中打开分析报告
-          filename: "stats.html", // 输出文件的名称
-          gzipSize: true, // 显示gzip后的大小
-          brotliSize: true, // 显示brotli压缩后的大小
-        }),
-        viteCompression({
-          verbose: true, // 是否在控制台中输出压缩结果
-          disable: false,
-          threshold: 10240, // 如果体积大于阈值，将被压缩，单位为b，体积过小时请不要压缩，以免适得其反
-          ext: ".gz",
-          deleteOriginFile: false, // 源文件压缩后是否删除
-        }),
-      ],
     },
-    // terserOptions: {
-    //   compress: {
-    //     drop_console: true,
-    //     drop_debugger: true,
-    //   },
-    // },
+  },
+  esbuild: {
+    drop: ["console", "debugger"],
   },
 });
