@@ -16,7 +16,7 @@ import { KeyboardEvent } from 'react'
 interface Column<T> {
     key: keyof T
     title: string
-    render?: (value: any, record: T) => React.ReactNode
+    render?: (value: any, record: T, index: number) => React.ReactNode
 }
 
 interface DataTableProps<T> {
@@ -35,9 +35,17 @@ interface DataTableProps<T> {
     }
     actions?: {
         title?: string
-        render: (record: T) => React.ReactNode
+        render: (record: T, index: number) => React.ReactNode
     }
     className?: string
+    // 新增：自定义行渲染
+    rowRender?: (record: T, index: number) => React.ReactNode
+    // 新增：自定义单元格渲染
+    cellRender?: (column: Column<T>, value: any, record: T, index: number) => React.ReactNode
+    // 新增：行属性
+    rowProps?: (record: T, index: number) => React.HTMLAttributes<HTMLTableRowElement>
+    // 新增：单元格属性
+    cellProps?: (column: Column<T>, record: T, index: number) => React.HTMLAttributes<HTMLTableCellElement>
 }
 
 export function DataTable<T extends Record<string, any>>({
@@ -47,7 +55,11 @@ export function DataTable<T extends Record<string, any>>({
     pagination,
     search,
     actions,
-    className
+    className,
+    rowRender,
+    cellRender,
+    rowProps,
+    cellProps
 }: DataTableProps<T>) {
     const [searchValue, setSearchValue] = useState("")
 
@@ -62,6 +74,38 @@ export function DataTable<T extends Record<string, any>>({
             <div className="flex items-center justify-center min-h-[400px]">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
             </div>
+        )
+    }
+    // 默认行渲染函数
+    const defaultRowRender = (record: T, index: number) => {
+        const rowAttributes = rowProps ? rowProps(record, index) : {}
+
+        return (
+            <TableRow key={ index } { ...rowAttributes }>
+                { columns.map((column) => {
+                    const value = record[column.key]
+                    const cellAttributes = cellProps ? cellProps(column, record, index) : {}
+
+                    return (
+                        <TableCell key={ String(column.key) } { ...cellAttributes }>
+                            { cellRender ? (
+                                cellRender(column, value, record, index)
+                            ) : column.render ? (
+                                column.render(value, record, index)
+                            ) : (
+                                value
+                            ) }
+                        </TableCell>
+                    )
+                }) }
+                { actions && (
+                    <TableCell>
+                        <div className="flex items-center gap-2">
+                            { actions.render(record, index) }
+                        </div>
+                    </TableCell>
+                ) }
+            </TableRow>
         )
     }
 
@@ -84,7 +128,7 @@ export function DataTable<T extends Record<string, any>>({
                     <TableHeader>
                         <TableRow className="bg-muted/50">
                             { columns.map((column) => (
-                                <TableHead key={ String(column.key) }>
+                                <TableHead key={ String(column.key) } className="border border-black-400 w-64">
                                     { column.title }
                                 </TableHead>
                             )) }
@@ -92,24 +136,9 @@ export function DataTable<T extends Record<string, any>>({
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        { data.map((record, index) => (
-                            <TableRow key={ index }>
-                                { columns.map((column) => (
-                                    <TableCell key={ String(column.key) }>
-                                        { column.render
-                                            ? column.render(record[column.key], record)
-                                            : record[column.key] }
-                                    </TableCell>
-                                )) }
-                                { actions && (
-                                    <TableCell>
-                                        <div className="flex items-center gap-2">
-                                            { actions.render(record) }
-                                        </div>
-                                    </TableCell>
-                                ) }
-                            </TableRow>
-                        )) }
+                        { data.map((record, index) =>
+                            rowRender ? rowRender(record, index) : defaultRowRender(record, index)
+                        ) }
                     </TableBody>
                 </Table>
             </div>
