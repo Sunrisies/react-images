@@ -71,7 +71,7 @@ function RouteComponent() {
 
   return (
     <Layout>
-      <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
+      <div className="flex-1 space-y-4 ">
         <div className="flex items-center justify-between">
           <h2 className="text-3xl font-bold tracking-tight">文章管理</h2>
           <Button className="bg-primary">
@@ -122,7 +122,10 @@ function RouteComponent() {
             cellProps={ (column, record, index) => {
               // 根据列键设置不同的样式
               if (column.key === 'title') {
-                return { className: 'font-medium text-blue-600 border border-red-400 max-w-[200px]' }
+                return { className: 'font-medium text-blue-600 w-64 max-w-[600px]' }
+              }
+              if (column.key === 'is_top') {
+                return { className: 'text-center w-24' }
               }
               return {}
             } }
@@ -134,13 +137,10 @@ function RouteComponent() {
                       <span className="truncate block" title={ record.title }>
                         { record.title }
                       </span>
-                      {/* <div className="absolute hidden group-hover:block bg-popover p-2 rounded-md shadow-md -top-1 left-0 z-50 max-w-[400px] break-words">
-                        { record.title }
-                      </div> */}
                     </div>
-                    {/* <span className="text-sm text-muted-foreground truncate" title={ record.description }>
+                    <span className="text-sm text-muted-foreground truncate" title={ record.description }>
                       { record.description || '暂无描述' }
-                    </span> */}
+                    </span>
                   </div>
                 )
               }
@@ -206,7 +206,7 @@ function RouteComponent() {
               pageSize: 10,
               onChange: (newPage) => {
                 navigate({
-                  to: "/dashboard/tags",
+                  to: "/dashboard/articles",
                   search: { page: newPage, search: searchQuery }
                 })
               }

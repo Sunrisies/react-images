@@ -128,7 +128,7 @@ export function DataTable<T extends Record<string, any>>({
                     <TableHeader>
                         <TableRow className="bg-muted/50">
                             { columns.map((column) => (
-                                <TableHead key={ String(column.key) } className="border border-black-400 w-64">
+                                <TableHead key={ String(column.key) } className="border border-black-400">
                                     { column.title }
                                 </TableHead>
                             )) }
