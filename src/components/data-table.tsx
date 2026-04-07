@@ -112,7 +112,7 @@ export function DataTable<T extends Record<string, any>>({
     return (
         <div className={ `${className}` }>
             { search && (
-                <div className="flex items-center justify-between p-4 border">
+                <div className="flex items-center justify-between px-4 py-2 border">
                     <Input
                         placeholder={ search.placeholder || "搜索..." }
                         value={ searchValue }
